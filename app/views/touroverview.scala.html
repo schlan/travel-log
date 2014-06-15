@@ -1,0 +1,21 @@
+@(message: String, guiTrip: at.droelf.gui.entities.GuiTrip)
+
+
+    @metadata = {
+        <p>Metadata</p>
+    }
+
+    @sidebar = {
+        <ul class="nav nav-sidebar" >
+            <li class="active"><a href="/@guiTrip.shortName/overview"><h5>Overview</h5></a></li>
+            @for((dT, index) <- guiTrip.guiDayTours.zipWithIndex) {
+                <li><a href="/@guiTrip.shortName/@dT.dayTourId"><h4>Day @(index+1)<br /><small>(@dT.date.toString("dd. MMMM YYYY"))</small></h4></a></li>
+            }
+        </ul>
+    }
+@main("GPX-Tracker")(sidebar)(metadata) {
+    <h1 class="page-header">@guiTrip.title</h1>
+    <span>@guiTrip.description</span>
+}
+
+

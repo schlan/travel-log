@@ -1,0 +1,23 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET        /                              @controllers.Application.index(trackId: String ?="")
+
+GET        /:trip                         @controllers.TripController.getTripById(trip)
+GET        /:trip/overview                @controllers.TripController.getTripById(trip)
+GET        /:trip/:daytour                @controllers.TripController.getDayTour(trip, daytour)
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET        /assets/*file                  controllers.Assets.at(path="/public", file)
+
+
+PUT        /putTrack/:name                @controllers.TracksController.uploadTracks(name)
+
+GET        /json/getTrack/:id/points           @controllers.TracksController.getTrackPoints(id)
+
+GET        /json/getTrack/:id/elevation        @controllers.TracksController.getTrackElevation(id)
+
+GET        /json/getTrack/:date                @controllers.TracksController.getTrackForLocalDate(date)
