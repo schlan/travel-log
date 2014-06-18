@@ -4,12 +4,10 @@ import play.api.libs.json.{JsValue, Json, Writes}
 
 
 trait JsonSerializer {
-
-
   implicit val guiTrackMetadataWrites = new Writes[GuiTrackMetaData] {
     override def writes(o: GuiTrackMetaData): JsValue = Json.obj(
       "description" -> o.description,
-      "distance" -> o.displayColor,
+      "distance" -> o.distance,
       "timerTime" -> o.timerTime,
       "totalElapsedTime" -> o.totalElapsedTime,
       "movingTime" -> o.movingTime,

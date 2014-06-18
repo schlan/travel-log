@@ -16,20 +16,6 @@ class TracksController(gpxTrackService: GpxTrackService) extends Controller with
     Ok(s"upload ok\n\n")
   }
 
-  def getTrackPoints(id: String) = Action {
-    gpxTrackService.getTrackById(UUID.fromString(id)) match{
-      case Some(track) => Ok(Json.toJson(track.trackPoints.map(pt => Map(pt.dateTime.toString() -> Array(pt.longitude, pt.latitude)))))
-      case None => Ok(Json.toJson(Array(0.0,0.0)))
-    }
-  }
-
-  def getTrackElevation(id: String) = Action{
-    gpxTrackService.getTrackById(UUID.fromString(id)) match{
-      case Some(track) => Ok(Json.toJson(track.trackPoints.map(pt => Map(pt.dateTime.toString() -> pt.elevation))))
-      case None => Ok(Json.toJson(Array(0.0,0.0)))
-    }
-  }
-
   def getAllTracks() = Action {
     //Ok(Json.toJson(gpxTrackService.getAllTracks().map(_.name)))
     Ok("")
@@ -44,4 +30,6 @@ class TracksController(gpxTrackService: GpxTrackService) extends Controller with
       case e => NotFound("blub")
     }
   }
+
+
 }

@@ -28,6 +28,12 @@ object TrackPoints {
 
   def insertTrackPoint(trackPoint: TrackPoint)(implicit session: Session) = trackPointTable.insert(trackPoint)
 
+  def insertIfNotExists(trackPoint: TrackPoint)(implicit session: Session) = {
+    if(!trackPointTable.filter(_.dateTime === trackPoint.dateTime).exists.run){
+      insertTrackPoint(trackPoint)
+    }
+  }
+
   def getTrackPointsForTrack(trackId: UUID)(implicit session: Session): Seq[TrackPoint] = return trackPointTable.filter(_.trackId === trackId).list
 
 }

@@ -25,7 +25,7 @@ class DBStorageService {
 
         track.trackSegments.foreach{ trkSeg =>
           trkSeg.trackPoints.foreach{ wpt =>
-            TrackPoints.insertTrackPoint(TrackPoint(id, wpt.latitude, wpt.longitude, wpt.ele.get, DateTime.parse(wpt.time.get)))
+            TrackPoints.insertIfNotExists(TrackPoint(id, wpt.latitude, wpt.longitude, wpt.ele.getOrElse(0), DateTime.parse(wpt.time.get)))
           }
         }
       }

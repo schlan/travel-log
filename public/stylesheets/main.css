@@ -116,3 +116,19 @@ body {
     display: inline-block;
     border-radius: 50%;
 }
+
+
+
+/*zoom out button fort chart*/
+
+#chart .button {
+    position: absolute;
+    cursor: pointer;
+
+}
+#chart div.button {
+    font-size: smaller;
+    color: #999;
+    background-color: #eee;
+    padding: 2px;
+}
