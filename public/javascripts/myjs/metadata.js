@@ -5,8 +5,8 @@
 
 function initMetadata(data){
     var index = 0
-    for(i in data){
-        var track = data[i]
+    for(i in data["tracks"]){
+        var track = data["tracks"][i]
         var metadata = track["metadata"];
         $('#accordion').append($(
            getMetaDataTabHtml(track['name'], metadata, i)
@@ -15,7 +15,7 @@ function initMetadata(data){
     }
 
     $('#accordion').append($(
-        getMetaDataTabHtml("Sum", sumMetaData(data), index+1)
+        getMetaDataTabHtml("Sum", data["summarizedMetadata"], index+1)
     ));
 }
 
@@ -36,34 +36,12 @@ function getMetaDataTabHtml(name, metadata, i){
     '</div>'
 }
 
-
-function sumMetaData(data){
-
-    var sum = Array()
-
-    for(i in data){
-        var meta = data[i]["metadata"];
-
-        for(key in meta){
-
-            if(meta[key] == null) continue
-
-            if(key in sum){
-                sum[key] = sum[key] + meta[key]
-            }else{
-                sum[key] = meta[key]
-            }
-        }
-    }
-    return sum
-}
-
 function getMetaDataAsHtml(metadata){
-    var table = '<table class="table table-condensed table-hover"><tr><th>Key</th><th>Value</th></tr>'
+    var table = '<table class="table table-condensed table-hover"><tr><th>Key</th><th style="text-align:right;">Value</th></tr>'
 
     for(x in metadata){
         if(metadata[x] == null) continue
-        table += '<tr><td>'+ x + '</td><td>' + metadata[x] + '</td></tr>'
+        table += '<tr><td>'+ x + '</td><td style="text-align:right;">' + metadata[x] + '</td></tr>'
     }
 
     table += '</table>'

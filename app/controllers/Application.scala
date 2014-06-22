@@ -10,7 +10,7 @@ class Application(gpxTrackService: GpxTrackService)extends Controller {
 
 
   def index(trackId: String) = Action {
-    Ok("asdf")
+    Ok("asdf#")
   }
 
 }

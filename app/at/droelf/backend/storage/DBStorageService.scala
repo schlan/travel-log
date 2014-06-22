@@ -36,7 +36,7 @@ class DBStorageService {
 
   def getTrackById(trackId: UUID): Option[Track] = DB.withSession{implicit session => Tracks.getTrackById(trackId)}
 
-  def getTrackByDate(date: LocalDate): Seq[Track] = DB.withSession{implicit sessino => Tracks.getTracksByDate(date)}
+  def getTrackByDate(date: LocalDate): Seq[Track] = DB.withSession{implicit session => Tracks.getTracksByDate(date)}
 
   def getAllTrackPointsForTrackId(trackId: UUID) =  DB.withSession{implicit session => TrackPoints.getTrackPointsForTrack(trackId)}
 

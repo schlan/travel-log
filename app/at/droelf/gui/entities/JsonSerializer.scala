@@ -47,4 +47,11 @@ trait JsonSerializer {
     )
   }
 
+  implicit val guiTrackInformationResponseWriter = new Writes[TrackInformationResponse] {
+    override def writes(o: TrackInformationResponse): JsValue = Json.obj(
+      "tracks" -> o.tracks,
+      "summarizedMetadata" -> o.summarizedMetaData
+    )
+  }
+
 }

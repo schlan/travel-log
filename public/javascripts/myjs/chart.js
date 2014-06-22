@@ -5,10 +5,11 @@
 var initialRange;
 
 function initFlot(data) {
+    var tracks = data["tracks"]
 
     var dataSet = []
-    for (x in data) {
-        var track = data[x];
+    for (x in tracks) {
+        var track = tracks[x];
         dataSet.push(getDataSet(track))
     }
 
@@ -65,8 +66,8 @@ function initFlot(data) {
         var bestTrkPt;
         var bestDiff = Number.MAX_VALUE;
 
-        for(x in data){
-            var track = data[x];
+        for(x in tracks){
+            var track = tracks[x];
             for(y in track["trackPoints"]){
                var trackPt = track["trackPoints"][y];
                if(Math.abs(new Date(Date.parse(trackPt["datetime"])).getTime() - selectedDate) < bestDiff){

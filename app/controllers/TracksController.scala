@@ -13,6 +13,7 @@ class TracksController(gpxTrackService: GpxTrackService) extends Controller with
   def uploadTracks(name: String) = Action(parse.raw) { implicit request =>
     val file = request.body.asFile
     gpxTrackService.saveTracks(file)
+
     Ok(s"upload ok\n\n")
   }
 
@@ -25,9 +26,9 @@ class TracksController(gpxTrackService: GpxTrackService) extends Controller with
     try{
       val date = LocalDate.parse(localDate)
 
-      Ok(Json.toJson(gpxTrackService.getTracksForLocalDate(date)))
+      Ok(Json.toJson(gpxTrackService.getTrackInformationForLocalDate(date)))
     }catch {
-      case e => NotFound("blub")
+      case e: Throwable=> NotFound("blub")
     }
   }
 

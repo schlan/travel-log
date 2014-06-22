@@ -1,7 +1,7 @@
 /**
  * Created by basti on 6/14/14.
  */
-var map,marker;
+var map, marker;
 
 function initMap(data) {
 
@@ -14,23 +14,36 @@ function initMap(data) {
 
     var ol = new OpenLayers.Layer.OSM();
 
-    var gm = new OpenLayers.Layer.Google(
+
+    var googleSat = new OpenLayers.Layer.Google(
         "Google Satellite",
         {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22}
     );
 
-    var gmap = new OpenLayers.Layer.Google(
+    var googleStreet = new OpenLayers.Layer.Google(
         "Google Streets",
         {numZoomLevels: 22}
     );
 
-    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    var googleHybrid = new OpenLayers.Layer.Google(
+        "Google Hybrid",
+        {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}
+    );
+
+    var googlePyhs = new OpenLayers.Layer.Google(
+        "Google Physical",
+        {type: google.maps.MapTypeId.TERRAIN}
+    );
+
+    var markers = new OpenLayers.Layer.Markers("Markers");
     map.addLayer(markers);
 
 
     map.addLayer(ol);
-    map.addLayer(gm);
-    map.addLayer(gmap);
+    map.addLayer(googleStreet);
+    map.addLayer(googleSat);
+    map.addLayer(googleHybrid);
+    map.addLayer(googlePyhs);
 
     map.addControl(new OpenLayers.Control.LayerSwitcher());
     map.addControl(new OpenLayers.Control.PanZoomBar());
@@ -41,8 +54,8 @@ function initMap(data) {
     marker.map = map;
     markers.addMarker(marker);
 
-    for(x in data){
-        var track = data[x];
+    for (x in data["tracks"]) {
+        var track = data["tracks"][x];
         var layer = getLineLayer(track, map);
         map.addLayer(layer);
         map.addControl(new OpenLayers.Control.DrawFeature(layer, OpenLayers.Handler.Path));
@@ -50,23 +63,23 @@ function initMap(data) {
 }
 
 
-function moveMarkerTo(lon, lat){
-    var px = map.getLayerPxFromViewPortPx(map.getPixelFromLonLat(new OpenLayers.LonLat(lon,lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject())));
+function moveMarkerTo(lon, lat) {
+    var px = map.getLayerPxFromViewPortPx(map.getPixelFromLonLat(new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject())));
     marker.moveTo(px)
 }
 
-function getLineLayer(track, map){
+function getLineLayer(track, map) {
     var lineLayer = new OpenLayers.Layer.Vector(track["name"]);
 
     var points = [];
 
-    for(i in track["trackPoints"]){
+    for (i in track["trackPoints"]) {
 
         var trkPt = track["trackPoints"][i];
         var lat = trkPt['latitude'];
-        var lon= trkPt['longitude'];
+        var lon = trkPt['longitude'];
 
-        points.push(new OpenLayers.Geometry.Point(lon,lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()))
+        points.push(new OpenLayers.Geometry.Point(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()))
     }
 
     var line = new OpenLayers.Geometry.LineString(points);
