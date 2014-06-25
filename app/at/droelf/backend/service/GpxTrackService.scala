@@ -11,10 +11,10 @@ import models.{TrackMetaData, TrackPoint}
 class GpxTrackService(fileStorageService: FileStorageService, dbTrackStorageService: DBStorageService) {
 
   // Put
-  def saveTracks(file: File){
+  def saveTracks(file: File, activity: String){
     val x = GPXDecoder.decodeFile(file)
     fileStorageService.saveGpxTrackFile(file)
-    dbTrackStorageService.saveTracks(x.tracks)
+    dbTrackStorageService.saveTracks(x.tracks, activity)
   }
 
   // Get

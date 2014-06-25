@@ -6,7 +6,7 @@ import com.github.tototoshi.slick.H2JodaSupport._
 import java.util.UUID
 
 
-case class Track(trackId:UUID, name: Option[String])
+case class Track(trackId:UUID, name: Option[String], activity: String)
 
 class TrackTable(tag: Tag) extends Table[Track](tag, "TRACK") {
 
@@ -14,7 +14,9 @@ class TrackTable(tag: Tag) extends Table[Track](tag, "TRACK") {
 
   def name = column[Option[String]]("TRACK_NAME", O.Nullable)
 
-  override def * = (trackId, name) <> (Track.tupled, Track.unapply)
+  def activity = column[String]("TRACK_ACTIVITY_TYPE", O.NotNull)
+
+  override def * = (trackId, name, activity) <> (Track.tupled, Track.unapply)
 
 }
 

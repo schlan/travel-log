@@ -13,12 +13,12 @@ import at.droelf.gui.entities.GuiTrip
 
 class DBStorageService {
 
-  def saveTracks(tracks: List[GPXTrack]) = {
+  def saveTracks(tracks: List[GPXTrack], activity: String) = {
 
     DB.withTransaction{ implicit session =>
       tracks.foreach { track =>
         val id = getRandomId
-        Tracks.insertTrack(Track(id, track.name))
+        Tracks.insertTrack(Track(id, track.name, activity))
         TrackMetaDatas.insertTrackMetaData(gpxTrackToTrackMetaData(id, track))
 
         track.trackSegments.foreach{ trkSeg =>
@@ -62,7 +62,7 @@ class DBStorageService {
         for(i <- 0 to 50){
           val id = UUID.randomUUID()
           DayTours.insertDayTour(DayTour(date.plusDays(i),id,"pacific",231321,123123))
-          DayTourMetaDatas.insert(DayTourMetaData(id,"<h1>test</h1><br>asdf bl asbasd <ul>asdfasdf</ul>","Sunny, rainy", "Asphalt"))
+          DayTourMetaDatas.insert(DayTourMetaData(id,"<p><b>test</b></p>asdf bl asbasd <u>asdfasdf</u>","Sunny, rainy", "Asphalt"))
         }
 
       }

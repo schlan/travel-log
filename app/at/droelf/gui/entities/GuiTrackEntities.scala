@@ -5,13 +5,14 @@ import org.joda.time.DateTime
 import models.{Track, TrackMetaData, TrackPoint}
 
 
-  case class GuiTrack(trackId: UUID, name: Option[String], metaData: GuiTrackMetaData, trackPoints: Seq[GuiTrackPoint])
+  case class GuiTrack(trackId: UUID, name: Option[String], activity: String, metaData: GuiTrackMetaData, trackPoints: Seq[GuiTrackPoint])
 
   object GuiTrack {
     def apply(track: Track, metaData: TrackMetaData, trkPt: Seq[TrackPoint]): GuiTrack = {
       GuiTrack(
         track.trackId,
         track.name,
+        track.activity,
         GuiTrackMetaData(metaData),
         trkPt.map(GuiTrackPoint(_))
       )

@@ -7,7 +7,7 @@
 GET        /assets/*file               controllers.Assets.at(path="/public", file)
 
 
-PUT        /putTrack/:name             @controllers.TracksController.uploadTracks(name)
+PUT        /putTrack/:activity         @controllers.TracksController.uploadTracks(activity)
 
 GET        /json/getTrack/:date        @controllers.TracksController.getTrackForLocalDate(date)
 
@@ -18,7 +18,7 @@ GET        /json/demoData              @controllers.TripController.insertDemoTri
 # Home page
 GET        /                           @controllers.Application.index(trackId: String ?="")
 GET        /:trip                      @controllers.TripController.getTripById(trip)
-GET        /:trip/overview             @controllers.TripController.getTripById(trip)
+
 GET        /:trip/:daytour             @controllers.TripController.getDayTour(trip, daytour)
 
 

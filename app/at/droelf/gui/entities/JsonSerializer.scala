@@ -43,7 +43,8 @@ trait JsonSerializer {
       "name" -> o.name,
       "trackId" -> o.trackId.toString,
       "metadata" -> o.metaData,
-      "trackPoints" -> o.trackPoints
+      "trackPoints" -> o.trackPoints,
+      "activity" -> o.activity
     )
   }
 

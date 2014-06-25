@@ -30,6 +30,8 @@ class TripController(tripService: TripService) extends Controller  {
     }
   }
 
+
+
   def insertDemoTrip() = Action{
     tripService.insertDemoContent()
     Ok("Demo Trips Added")
