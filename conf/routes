@@ -15,14 +15,14 @@ GET         /api/demoData                  @controllers.TripController.insertDem
 GET         /admin                         @controllers.AdminController.index
 
 # auth
-GET         /admin/login                   @controllers.Auth.login
-GET         /admin/logout                  @controllers.Auth.logout
-POST        /admin/auth                    @controllers.Auth.authenticate
+GET         /admin/login                   @controllers.AuthController.login
+GET         /admin/logout                  @controllers.AuthController.logout
+POST        /admin/auth                    @controllers.AuthController.authenticate
 
 # Home page
 GET         /                              @controllers.Application.index
-GET         /:trip                       @controllers.TripController.getTripById(trip)
-GET         /:trip/:daytour              @controllers.TripController.getDayTour(trip, daytour)
+GET         /:trip                         @controllers.TripController.getTripById(trip)
+GET         /:trip/:daytour                @controllers.TripController.getDayTour(trip, daytour)
 
 
 

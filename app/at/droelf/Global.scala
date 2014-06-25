@@ -17,8 +17,8 @@ object Global extends GlobalSettings {
     (classOf[Application] -> new Application(gpxTrackService)),
     (classOf[TracksController] -> new TracksController(gpxTrackService)),
     (classOf[TripController] -> new TripController(tripService)),
-    (classOf[Auth] -> new Auth(userService)),
-    (classOf[AdminController] -> new AdminController())
+    (classOf[AuthController] -> new AuthController(userService)),
+    (classOf[AdminController] -> new AdminController(userService))
   )
 
   override def getControllerInstance[A](controllerClass: Class[A]): A = {

@@ -6,7 +6,8 @@ import views.html
 import play.api.data.Forms._
 import play.api.data.Form
 
-class Auth(userService: UserService) extends Controller{
+
+class AuthController(userService: UserService) extends Controller{
 
   val loginForm = Form(
     tuple(
@@ -18,7 +19,11 @@ class Auth(userService: UserService) extends Controller{
   )
 
   def login = Action { implicit request =>
-    Ok(html.admin.login(loginForm))
+    request.session.get(Security.username).map { user =>
+      Redirect(routes.AdminController.index())
+    }.getOrElse {
+      Ok(html.admin.login(loginForm))
+    }
   }
 
   def authenticate = Action { implicit request =>
@@ -29,9 +34,7 @@ class Auth(userService: UserService) extends Controller{
   }
 
   def logout = Action {
-    Redirect(routes.Application.index).withNewSession.flashing(
-      "success" -> "You are now logged out."
-    )
+    Redirect(routes.Application.index).withNewSession
   }
 
 }

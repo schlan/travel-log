@@ -1,14 +1,16 @@
 package at.droelf.backend.service
 
-
 import at.droelf.backend.storage.DBStorageService
-import play.api.Logger
+import models.User
 
 class UserService(dbStorage: DBStorageService) {
+  //FIXME
 
   def checkUserPassword(user: String, password: String): Boolean = {
-    Logger.info(user + " " + password)
     (user== "admin" && password == "1234")
+
   }
+
+  def findUserByName(userName: String): Option[User] = ???
 
 }

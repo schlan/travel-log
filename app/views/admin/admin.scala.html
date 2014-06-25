@@ -1,4 +1,6 @@
 @(title: String)(main: Html)(implicit session: play.api.mvc.Session)
+@import helper.twitterBootstrap._
+
 <!DOCTYPE html>
 
 <html>
@@ -17,7 +19,7 @@
 
 
     <body>
-        <div class="container-fluid">
+        <div class="container">
                 @main
         </div>
     </body>

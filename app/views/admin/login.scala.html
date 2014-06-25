@@ -1,7 +1,7 @@
 @(form: Form[(String, String)])(implicit session: play.api.mvc.Session)
 
 @admin("Login")  {
-    @helper.form(action = routes.Auth.authenticate) {
+    @helper.form(action = routes.AuthController.authenticate) {
         @helper.inputText(form("username"))
         @helper.inputText(form("password"))
         <input type="submit" value="Login">

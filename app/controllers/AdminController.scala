@@ -1,11 +1,15 @@
 package controllers
 
-import play.api.mvc.{Action, Controller}
+import at.droelf.backend.Secured
+import at.droelf.backend.service.UserService
+import play.api.mvc.{Security, Action, Controller}
 
-class AdminController extends Controller{
+class AdminController(userSer: UserService) extends Controller with Secured{
 
-  def index = Action{ implicit request =>
-    Ok(views.html.admin.adminarea("Admin"))
+  override val userService: UserService = userSer
+
+  def index = withAuth{ username => implicit request =>
+      Ok(views.html.admin.adminarea(username))
   }
 
 
