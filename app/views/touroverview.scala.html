@@ -1,10 +1,10 @@
-@(message: String, guiTrip: at.droelf.gui.entities.GuiTrip)
+@(message: String, trips: Seq[(String, String)], guiTrip: at.droelf.gui.entities.GuiTrip)
 
     @metadata = {
         <p>Metadata</p>
     }
 
-@main("GPX-Tracker")(sidebar(guiTrip,java.util.UUID.randomUUID()))(metadata) {
+@main(message, trips)(sidebar(guiTrip,java.util.UUID.randomUUID()))(metadata) {
     <h1 class="page-header">@guiTrip.title</h1>
     <span>@guiTrip.description</span>
 }

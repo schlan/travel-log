@@ -10,7 +10,7 @@ class TripController(tripService: TripService) extends Controller  {
 
   def getTripById(tripId: String) = Action {
     tripService.getTripById(tripId) match {
-      case Some(x) => Ok(views.html.touroverview("Tracks:", x))
+      case Some(x) => Ok(views.html.touroverview("Tracks:", tripService.getAllTripsForNavBar, x))
       case None => NotFound("getTripById: Err0r: Not found :(")
     }
 
@@ -21,7 +21,7 @@ class TripController(tripService: TripService) extends Controller  {
       val dId = UUID.fromString(dayTourId)
 
       (tripService.getTripById(tripId), tripService.getDayTour(tripId, dId)) match {
-        case (Some(trip), Some(dayTour)) => Ok(views.html.tour("DayTour:", trip, dayTour))
+        case (Some(trip), Some(dayTour)) => Ok(views.html.tour("DayTour:", tripService.getAllTripsForNavBar(),trip, dayTour))
         case (_, _) => NotFound("getDayTour: Err0r: Not found :(")
       }
 

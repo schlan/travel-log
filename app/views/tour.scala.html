@@ -1,4 +1,4 @@
-@(message: String, guiTrip: at.droelf.gui.entities.GuiTrip, dayTour: at.droelf.gui.entities.GuiDayTour)
+@(message: String, nav: Seq[(String,String)], guiTrip: at.droelf.gui.entities.GuiTrip, dayTour: at.droelf.gui.entities.GuiDayTour)
 
 
     @metadata = {
@@ -9,7 +9,7 @@
         </div>
     }
 
-@main("GPX-Tracker")(sidebar(guiTrip, dayTour.dayTourId))(metadata) {
+@main(message, nav)(sidebar(guiTrip, dayTour.dayTourId))(metadata) {
 
     <h1 class="page-header">@guiTrip.title - @dayTour.date</h1>
 

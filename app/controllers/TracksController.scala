@@ -9,7 +9,6 @@ import at.droelf.backend.service.GpxTrackService
 
 class TracksController(gpxTrackService: GpxTrackService) extends Controller with JsonSerializer {
 
-
   def uploadTracks(activity: String) = Action(parse.raw) { implicit request =>
     val file = request.body.asFile
     gpxTrackService.saveTracks(file, activity)

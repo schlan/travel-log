@@ -9,15 +9,19 @@ GET         /assets/*file                  controllers.Assets.at(path="/public",
 # api
 PUT         /api/putTrack/:activity        @controllers.TracksController.uploadTracks(activity)
 GET         /api/getTrack/:date            @controllers.TracksController.getTrackForLocalDate(date)
-GET         /api/demoData                  @controllers.TripController.insertDemoTrip()
+GET         /api/demoData                  @controllers.TripController.insertDemoTrip
 
 # admin
-GET         /admin                         @controllers.AdminController.index
+GET         /admin                          @controllers.AdminController.index
+GET         /admin/edit/:trip               @controllers.AdminController.tripDetails(trip)
+POST        /admin/trip/addTrip             @controllers.AdminController.addTrip
+POST        /admin/dayTour/addDayTour/:trip @controllers.AdminController.addDayTour(trip)
 
 # auth
 GET         /admin/login                   @controllers.AuthController.login
 GET         /admin/logout                  @controllers.AuthController.logout
 POST        /admin/auth                    @controllers.AuthController.authenticate
+
 
 # Home page
 GET         /                              @controllers.Application.index

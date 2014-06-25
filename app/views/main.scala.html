@@ -1,4 +1,4 @@
-@(title: String)(sidebar: Html)(metadata: Html)(content: Html)
+@(title: String,trips: Seq[(String, String)])(sidebar: Html)(metadata: Html)(content: Html))
 <!DOCTYPE html>
 
 <html>
@@ -30,9 +30,19 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Trips</a></li>
-                        <li><a href="#">Gear</a></li>
-                        <li><a href="#">About</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Trips <b class="caret"></b></a>
+
+                            <ul class="dropdown-menu">
+
+                                @for((id, name) <- trips){
+                                    <li><a href="/@id">@name</a></li>
+                                }
+
+                            </ul>
+
+                        </li>
+                        <li><a href="/admin">Admin</a></li>
                     </ul>
                 </div>
             </div>

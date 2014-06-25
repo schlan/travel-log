@@ -46,11 +46,21 @@ class DBStorageService {
 
   def getTripById(tripId: String): Option[Trip] = DB.withSession{implicit session => Trips.getTripById(tripId)}
 
+  def insertTrip(trip: Trip) = DB.withSession{implicit session => Trips.insertTrip(trip)}
+
+
   def getDayTourByTripId(tripId: String): Seq[DayTour] =  DB.withSession{implicit session => DayTours.getDayToursByTripId(tripId)}
 
   def getDayTour(tripId: String, dayTourId: UUID): Option[DayTour] = DB.withSession{implicit session => DayTours.getDayToursd(tripId, dayTourId)}
 
   def getDayTourMetaDataForId(dayTourId: UUID): DayTourMetaData = DB.withSession{implicit  session => DayTourMetaDatas.getDayTourMetaDataById(dayTourId)}
+
+  def insertDayTourWithMetadata(dayTour: DayTour, dayTourMetaData: DayTourMetaData) = DB.withTransaction{implicit session =>
+    DayTours.insertDayTour(dayTour)
+    DayTourMetaDatas.insert(dayTourMetaData)
+  }
+
+
 
 
   def insertDemoTrips() {

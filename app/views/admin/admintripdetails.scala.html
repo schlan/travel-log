@@ -1,0 +1,75 @@
+@(form: Form[(org.joda.time.LocalDate, Int, Int, String, String, String)])(title: String, trip: Trip, dayTours: Seq[DayTour])(implicit session: play.api.mvc.Session)
+@import helper.twitterBootstrap._
+
+@admin("Adminarea")  {
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Trip: @trip.title</h3>
+        </div>
+        <div class="panel-body">
+            <dl>
+                <dt>Titel</dt>
+                <dd>@trip.title</dd>
+                <dt>Description</dt>
+                <dd>@trip.description</dd>
+                <dt>Short Name</dt>
+                <dd>@trip.shortName</dd>
+                <dt>Start Date</dt>
+                <dd>@trip.startDate</dd>
+                <dt>End Date</dt>
+                <dd>@trip.endDate</dd>
+            </dl>
+
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Add DayTour</h3>
+        </div>
+        <div class="panel-body">
+            @helper.form(action = routes.AdminController.addDayTour(trip.shortName)) {
+                @helper.inputDate(form("date"))
+                @helper.inputText(form("startPoint"))
+                @helper.inputText(form("endPoint"))
+                @helper.inputText(form("description"))
+                @helper.inputText(form("weatherCond"))
+                @helper.inputText(form("roadCond"))
+                <input type="submit" value="Submit">
+            }
+
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Daytours</h3>
+        </div>
+        <div class="panel-body">
+
+            <table class="table table-hover">
+                    <tr>
+                        <th>Tourd ID</th>
+                        <th>Date</th>
+                        <th>Start Point</th>
+                        <th>End Point</th>
+
+                    </tr>
+                @for(dayTour <- dayTours){
+                    <tr class="clickableRow" href="#">
+                        <td>@dayTour.dayTourId</td>
+                        <td>@dayTour.date.toString</td>
+                        <td>@dayTour.startPoint</td>
+                        <td>@dayTour.endPoint</td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+    </div>
+
+
+
+
+}
