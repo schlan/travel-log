@@ -15,3 +15,17 @@ class DayTourMetaDataTable(tag: Tag) extends Table[DayTourMetaData](tag, "DAYTOU
 
   def dayTour = foreignKey("DAYTOUR_METADATA_FK", dayTourId, TableQuery[DayTourTable])(_.dayTourId)
 }
+
+object DayTourMetaDatas{
+
+  val dayTourMetaDataTable = TableQuery[DayTourMetaDataTable]
+
+  def insert(dayTourMetaData: DayTourMetaData)(implicit session: Session) = {
+    dayTourMetaDataTable.insert(dayTourMetaData)
+  }
+
+  def getDayTourMetaDataById(dayTourId: UUID)(implicit session: Session): DayTourMetaData = {
+    dayTourMetaDataTable.filter(_.dayTourId === dayTourId).list.head
+  }
+
+}
