@@ -4,7 +4,7 @@
 
 
 function loadTracks(date, callbacks){
-    $.getJSON("/json/getTrack/" + date,
+    $.getJSON("/api/getTrack/" + date,
         function (data) {
             for(i in callbacks){
                 callbacks[i](data);

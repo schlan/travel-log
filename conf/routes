@@ -4,21 +4,25 @@
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file               controllers.Assets.at(path="/public", file)
+GET         /assets/*file                  controllers.Assets.at(path="/public", file)
 
+# api
+PUT         /api/putTrack/:activity        @controllers.TracksController.uploadTracks(activity)
+GET         /api/getTrack/:date            @controllers.TracksController.getTrackForLocalDate(date)
+GET         /api/demoData                  @controllers.TripController.insertDemoTrip()
 
-PUT        /putTrack/:activity         @controllers.TracksController.uploadTracks(activity)
+# admin
+GET         /admin                         @controllers.AdminController.index
 
-GET        /json/getTrack/:date        @controllers.TracksController.getTrackForLocalDate(date)
-
-GET        /json/demoData              @controllers.TripController.insertDemoTrip()
-
-
+# auth
+GET         /admin/login                   @controllers.Auth.login
+GET         /admin/logout                  @controllers.Auth.logout
+POST        /admin/auth                    @controllers.Auth.authenticate
 
 # Home page
-GET        /                           @controllers.Application.index(trackId: String ?="")
-GET        /:trip                      @controllers.TripController.getTripById(trip)
+GET         /                              @controllers.Application.index
+GET         /:trip                       @controllers.TripController.getTripById(trip)
+GET         /:trip/:daytour              @controllers.TripController.getDayTour(trip, daytour)
 
-GET        /:trip/:daytour             @controllers.TripController.getDayTour(trip, daytour)
 
 

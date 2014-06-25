@@ -1,0 +1,6 @@
+@(title: String)(implicit session: play.api.mvc.Session)
+
+@admin("Adminarea")  {
+    <p>@title</p>
+    <p>@session.get("username")</p>
+}
