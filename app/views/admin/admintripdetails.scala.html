@@ -50,16 +50,16 @@
 
             <table class="table table-hover">
                     <tr>
-                        <th>Tourd ID</th>
                         <th>Date</th>
+                        <th>Tourd ID</th>
                         <th>Start Point</th>
                         <th>End Point</th>
 
                     </tr>
                 @for(dayTour <- dayTours){
                     <tr class="clickableRow" href="#">
-                        <td>@dayTour.dayTourId</td>
                         <td>@dayTour.date.toString</td>
+                        <td>@dayTour.dayTourId</td>
                         <td>@dayTour.startPoint</td>
                         <td>@dayTour.endPoint</td>
                     </tr>
@@ -68,8 +68,5 @@
 
         </div>
     </div>
-
-
-
 
 }
