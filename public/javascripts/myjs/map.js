@@ -56,9 +56,11 @@ function moveMarkerTo(lon, lat, elevation, datetime) {
     marker.closePopup()
     marker.setLatLng({lat: lat, lng: lon})
     marker.bindPopup(
-        "<b>Datetime:  </b>" + new Date(Date.parse(datetime)) + "<br />" +
-        "<b>Elevation:  </b>" + elevation + "m<br />" +
-        "<b>Position: </b>" + lat +"/" + lon + "<br />"
+        "<table class='table table-condensed'>"+
+        "<tr><th>Datetime:</th><td>" + new Date(Date.parse(datetime)) + "</td></tr>" +
+        "<tr><th>Elevation:</th><td>" + elevation + "m</td></tr>" +
+        "<tr><th>Position:</th><td>" + lat +"/" + lon + "</td></tr>" +
+        "</table>"
     )
 }
 
