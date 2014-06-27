@@ -76,7 +76,7 @@ function initFlot(data) {
                 }
             }
         }
-        moveMarkerTo(bestTrkPt["longitude"], bestTrkPt["latitude"])
+        moveMarkerTo(bestTrkPt["longitude"], bestTrkPt["latitude"], bestTrkPt["elevation"], bestTrkPt["datetime"])
     });
 }
 

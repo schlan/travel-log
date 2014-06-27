@@ -5,95 +5,76 @@ var map, marker;
 
 function initMap(data) {
 
-    map = new OpenLayers.Map("map",
-        {
-            projection: new OpenLayers.Projection("EPSG:4326"),
-            displayProjection: new OpenLayers.Projection("EPSG:4326")
-        }
-    );
+    var googleLayerRoad = new L.Google('ROADMAP', {featureType: 'all'});
+    var googleLayerSat = new L.Google('SATELLITE', {featureType: 'all'});
+    var googleLayerHybrid = new L.Google('HYBRID', {featureType: 'all'});
+    var googleLayerTerrain = new L.Google('TERRAIN', {featureType: 'all'});
 
-    var ol = new OpenLayers.Layer.OSM();
+    var cloudmadeLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    })
 
+    map = L.map('map', {
+        center: [39.73, -104.99],
+        zoom: 10
 
-    var googleSat = new OpenLayers.Layer.Google(
-        "Google Satellite",
-        {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22}
-    );
+    });
 
-    var googleStreet = new OpenLayers.Layer.Google(
-        "Google Streets",
-        {numZoomLevels: 22}
-    );
+    var mapsLayer = {
+        'OSM':cloudmadeLayer,
+        'Google Satellite': googleLayerSat,
+        'Google Road': googleLayerRoad,
+        'Google Hybrid': googleLayerHybrid,
+        'Google Terrain': googleLayerTerrain
+    }
 
-    var googleHybrid = new OpenLayers.Layer.Google(
-        "Google Hybrid",
-        {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}
-    );
+    marker = L.marker([0, 0],{
+        clickable: true
+    })
+    marker.addTo(map)
 
-    var googlePyhs = new OpenLayers.Layer.Google(
-        "Google Physical",
-        {type: google.maps.MapTypeId.TERRAIN}
-    );
-
-    var markers = new OpenLayers.Layer.Markers("Markers");
-    map.addLayer(markers);
-
-
-    map.addLayer(ol);
-    map.addLayer(googleStreet);
-    map.addLayer(googleSat);
-    map.addLayer(googleHybrid);
-    map.addLayer(googlePyhs);
-
-    map.addControl(new OpenLayers.Control.LayerSwitcher());
-    map.addControl(new OpenLayers.Control.PanZoomBar());
-    map.addControl(new OpenLayers.Control.KeyboardDefaults());
-    map.addControl(new OpenLayers.Control.MousePosition());
-
-    marker = new OpenLayers.Marker(new OpenLayers.LonLat(0, 0).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()));
-    marker.map = map;
-    markers.addMarker(marker);
+    var linesLayer = {}
 
     for (x in data["tracks"]) {
-        var track = data["tracks"][x];
-        var layer = getLineLayer(track, map);
-        map.addLayer(layer);
-        map.addControl(new OpenLayers.Control.DrawFeature(layer, OpenLayers.Handler.Path));
+        var track = data["tracks"][x]
+        var polyline = getPolyLine(track)
+
+        polyline.addTo(map)
+        map.fitBounds(polyline.getBounds());
+
+        linesLayer[track['name']] = polyline
     }
+
+    L.control.layers(mapsLayer, linesLayer).addTo(map)
+    L.control.scale().addTo(map)
+    cloudmadeLayer.addTo(map)
+
 }
 
 
-function moveMarkerTo(lon, lat) {
-    var px = map.getLayerPxFromViewPortPx(map.getPixelFromLonLat(new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject())));
-    marker.moveTo(px)
+function moveMarkerTo(lon, lat, elevation, datetime) {
+    marker.closePopup()
+    marker.setLatLng({lat: lat, lng: lon})
+    marker.bindPopup(
+        "<b>Datetime:  </b>" + new Date(Date.parse(datetime)) + "<br />" +
+        "<b>Elevation:  </b>" + elevation + "m<br />" +
+        "<b>Position: </b>" + lat +"/" + lon + "<br />"
+    )
 }
 
-function getLineLayer(track, map) {
-    var lineLayer = new OpenLayers.Layer.Vector(track["name"]);
+function getPolyLine(track) {
 
-    var points = [];
+    var points = []
 
     for (i in track["trackPoints"]) {
-
-        var trkPt = track["trackPoints"][i];
-        var lat = trkPt['latitude'];
-        var lon = trkPt['longitude'];
-
-        points.push(new OpenLayers.Geometry.Point(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()))
+        var trkPt = track["trackPoints"][i]
+        var lat = trkPt['latitude']
+        var lon = trkPt['longitude']
+        points.push(L.latLng(lat, lon))
     }
 
-    var line = new OpenLayers.Geometry.LineString(points);
-
-    var style = {
-        strokeColor: getColorForTrackId(track["trackId"]),
-        strokeOpacity: 0.7,
-        strokeWidth: 5
-    };
-
-    var lineFeature = new OpenLayers.Feature.Vector(line, null, style);
-    lineLayer.addFeatures([ lineFeature ]);
-    map.zoomToExtent(lineLayer.getDataExtent())
-    return lineLayer
+    var color = getColorForTrackId(track["trackId"])
+    return L.polyline(points, {color: color})
 }
 
 
