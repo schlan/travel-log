@@ -28,5 +28,6 @@ GET         /                              @controllers.Application.index
 GET         /:trip                         @controllers.TripController.getTripById(trip)
 GET         /:trip/:daytour                @controllers.TripController.getDayTour(trip, daytour)
 
-
+# Image upload
+PUT         /api/images/uploadImage/:date/:name        @controllers.ImageController.uploadImage(date, name)
 

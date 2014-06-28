@@ -3,7 +3,7 @@ package at.droelf
 import controllers._
 import play.api.GlobalSettings
 import at.droelf.backend.storage.{FileStorageService, DBStorageService}
-import at.droelf.backend.service.{AdminService, UserService, TripService, GpxTrackService}
+import at.droelf.backend.service._
 
 object Global extends GlobalSettings {
 
@@ -13,13 +13,15 @@ object Global extends GlobalSettings {
   lazy val tripService = new TripService(dbStorageService)
   lazy val userService = new UserService(dbStorageService)
   lazy val adminService = new AdminService(dbStorageService)
+  lazy val imageService = new ImageService
 
   lazy val controllerSingletons = Map[Class[_], AnyRef](
     (classOf[Application] -> new Application(gpxTrackService)),
     (classOf[TracksController] -> new TracksController(gpxTrackService)),
     (classOf[TripController] -> new TripController(tripService)),
     (classOf[AuthController] -> new AuthController(userService)),
-    (classOf[AdminController] -> new AdminController(userService,adminService))
+    (classOf[AdminController] -> new AdminController(userService,adminService)),
+    (classOf[ImageController] -> new ImageController(imageService))
   )
 
   override def getControllerInstance[A](controllerClass: Class[A]): A = {
