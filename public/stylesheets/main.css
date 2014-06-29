@@ -16,6 +16,12 @@ body {
     border-bottom: 1px solid #eee;
 }
 
+.main {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+
 /*
  * Sidebar
  */
@@ -57,23 +63,23 @@ body {
         display:none;
     }
 
-}
-
-.main {
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-
-
-@media (min-width: 768px) {
     .main {
         padding-right: 10px;
-        padding-left: 10px;
+        padding-left: 0px;
+        position: fixed;
+        top: 51px;
+
+        bottom: 0;
+        z-index: 10000;
+        display: block;
+        overflow-x: hidden;
+        overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
     }
 
     .tourPanel{
         padding: 10px;
     }
+
 }
 
 
