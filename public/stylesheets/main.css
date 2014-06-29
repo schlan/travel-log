@@ -59,6 +59,36 @@ body {
 
 }
 
+.main {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+
+@media (min-width: 768px) {
+    .main {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .tourPanel{
+        padding: 10px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .main{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .tourPanel{
+        padding: 0px;
+    }
+}
+
+
 /* Sidebar navigation */
 .nav-sidebar {
     margin-right: -21px; /* 20px padding + 1px border */
@@ -80,16 +110,7 @@ body {
  * Main content
  */
 
-.main {
-    padding: 20px;
-}
 
-@media (min-width: 768px) {
-    .main {
-        padding-right: 40px;
-        padding-left: 40px;
-    }
-}
 
 .main .page-header {
     margin-top: 0;

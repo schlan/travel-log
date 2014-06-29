@@ -4,21 +4,63 @@
 
 
 function initMetadata(data){
-    var index = 0
-    for(i in data["tracks"]){
-        var track = data["tracks"][i]
-        var activity = track["activity"];
-        var metadata = track["metadata"];
-        metadata["activity"] = activity;
-        $('#accordion').append($(
-           getMetaDataTabHtml(track['name'], metadata, i)
-        ));
-        index = i
+    var niceMetaData = Array()
+
+    // Merge Data
+    for(x in data["tracks"]){
+        var track = data["tracks"][x]
+        var nm = Array()
+        nm["Name"] = track["name"]
+
+        var formatted = makeMetaDataLookNice(track["metadata"])
+        for (attr in formatted) { nm[attr] = formatted[attr]; }
+
+        nm["Acivity"] = track["activity"]
+        niceMetaData[track["trackId"]] = nm
+    }
+
+    var sum = Array()
+    sum["Name"] = "Sum"
+    var formatted = makeMetaDataLookNice(data["summarizedMetadata"])
+    for (attr in formatted) { sum[attr] = formatted[attr]; }
+    niceMetaData["1565165ad"] = sum
+
+    // Get All Keys
+    var keys = Array()
+    for(x in niceMetaData){
+        var meta = niceMetaData[x]
+        for(y in meta){
+            if($.inArray(y, keys) == -1) {
+                keys.push(y)
+            }
+        }
+    }
+
+    var table = "<thead>" + getMetaDataTableRow("Name", niceMetaData,"<th>","</th>") + "</thead>"
+
+    keys.splice(keys.indexOf("Name"),1)
+
+    for(key in keys){
+       table += getMetaDataTableRow(keys[key],niceMetaData, "<td>", "</td>")
     }
 
     $('#accordion').append($(
-        getMetaDataTabHtml("Sum", data["summarizedMetadata"], index+1)
+        "<table class='table table-responsive table-condensed table-hover'>" +
+            table +
+        "</table>"
     ));
+
+}
+
+function getMetaDataTableRow(key,niceMetaData, celltypeStart,celltypeEnd){
+    var row = "<tr>" + celltypeStart + key + celltypeEnd + "</th>"
+
+    for(x in niceMetaData){
+        var value = niceMetaData[x][key]
+        row += celltypeStart + value + celltypeEnd
+    }
+
+    return row + "</tr>"
 }
 
 function getMetaDataTabHtml(name, metadata, i){

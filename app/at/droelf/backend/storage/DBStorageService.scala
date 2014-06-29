@@ -58,7 +58,7 @@ class DBStorageService {
 
   def getDayTour(tripId: String, dayTourId: UUID): Option[DayTour] = DB.withSession{implicit session => DayTours.getDayToursd(tripId, dayTourId)}
 
-  def getDayTourMetaDataForId(dayTourId: UUID): DayTourMetaData = DB.withSession{implicit  session => DayTourMetaDatas.getDayTourMetaDataById(dayTourId)}
+  def getDayTourMetaDataForId(dayTourId: UUID): DayTourMetaData = DB.withTransaction{implicit  session => DayTourMetaDatas.getDayTourMetaDataById(dayTourId)}
 
   def insertDayTourWithMetadata(dayTour: DayTour, dayTourMetaData: DayTourMetaData) = DB.withTransaction{implicit session =>
     DayTours.insertDayTour(dayTour)
