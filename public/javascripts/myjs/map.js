@@ -87,11 +87,23 @@ function getPolyLine(track) {
 
 function getImageMarkerGroup(images){
     var markers = Array()
+
+    var icon =  L.AwesomeMarkers.icon({
+        icon: 'glyphicon glyphicon-picture',
+        markerColor: 'darkred'
+    })
+
     for(x in images){
         var image = images[x]
         var location = image["location"]
 
-        var marker = L.marker([location["latitude"], location["longitude"]])
+
+
+
+        var marker = L.marker([location["latitude"], location["longitude"]],{
+            'icon' : icon,
+            'riseOnHover':true
+        })
         var path = "/api/images/getImage/" + image["path"]
         marker.bindPopup(
             "<a href='"+ path +"'>" +
