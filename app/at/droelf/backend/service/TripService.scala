@@ -8,7 +8,6 @@ import models.Trip
 class TripService(dbStorage: DBStorageService) {
 
 
-
   def getTripById(tripId: String): Option[GuiTrip] = dbStorage.getTripById(tripId).map(GuiTrip(_, getDayToursByTripId(tripId)))
 
   def getAllTrips(): Seq[GuiTrip] = dbStorage.getAllTrips().map(trip => GuiTrip(trip, getDayToursByTripId(trip.shortName)))

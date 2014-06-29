@@ -77,6 +77,6 @@ import models.{Track, TrackMetaData, TrackPoint}
   case class GuiTrackPoint(latitude: Float, longitude: Float, elevation: Float, dateTime: DateTime)
 
   object GuiTrackPoint {
-    def apply(trkPt: TrackPoint): GuiTrackPoint = GuiTrackPoint(trkPt.latitude, trkPt.longitude, trkPt.elevation, trkPt.dateTime)
+    def apply(trkPt: TrackPoint): GuiTrackPoint = GuiTrackPoint(trkPt.latitude, trkPt.longitude, trkPt.elevation, trkPt.dateTime.toDateTime(trkPt.dateTimeZone))
   }
 

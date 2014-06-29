@@ -9,7 +9,6 @@ function initColors(data) {
 
     for (x in data["tracks"]) {
         var trackId = data["tracks"][x]["trackId"];
-        console.log(x)
         var color = availableColors[(x % availableColors.length)]
         usedColors[trackId] = color;
     }

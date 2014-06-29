@@ -52,7 +52,6 @@ function getMetaDataAsHtml(metadata){
 
 function makeMetaDataLookNice(metadata){
     var newMetaData = Array()
-    console.log(metadata)
     for(x in metadata){
         if(metadata[x] == null) continue
         switch (x){

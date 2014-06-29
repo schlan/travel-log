@@ -1,6 +1,6 @@
 package models
 
-import org.joda.time.LocalDate
+import org.joda.time.{LocalTime, LocalDate}
 import play.api.db.slick.Config.driver.simple._
 import com.github.tototoshi.slick.H2JodaSupport._
 import java.util.UUID
@@ -43,8 +43,8 @@ object Tracks{
 
   def getTracksByDate(date: LocalDate)(implicit session: Session): Seq[Track] = {
 
-    val start = date.toDateTimeAtStartOfDay
-    val end = date.plusDays(1).toDateTimeAtStartOfDay
+    val start = date.toLocalDateTime(LocalTime.MIDNIGHT)
+    val end = date.plusDays(1).toLocalDateTime(LocalTime.MIDNIGHT)
 
     val q = (for {
       trkPt <- trackPoints

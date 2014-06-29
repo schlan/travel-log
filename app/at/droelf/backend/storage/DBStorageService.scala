@@ -2,7 +2,7 @@ package at.droelf.backend.storage
 
 import parser.gpxtype.GPXTrack
 import models._
-import org.joda.time.{LocalDate, DateTime}
+import org.joda.time.{LocalDateTime, DateTimeZone, LocalDate, DateTime}
 import play.api.db.slick.DB
 import play.api.Play.current
 import models.Track
@@ -13,7 +13,7 @@ import at.droelf.gui.entities.GuiTrip
 
 class DBStorageService {
 
-  def saveTracks(tracks: List[GPXTrack], activity: String) = {
+  def saveTracks(tracks: List[GPXTrack], dateTimeZone: DateTimeZone, activity: String) = {
 
     DB.withTransaction{ implicit session =>
       tracks.foreach { track =>
@@ -23,7 +23,12 @@ class DBStorageService {
 
         track.trackSegments.foreach{ trkSeg =>
           trkSeg.trackPoints.foreach{ wpt =>
-            TrackPoints.insertIfNotExists(TrackPoint(id, wpt.latitude, wpt.longitude, wpt.ele.getOrElse(0), DateTime.parse(wpt.time.get)))
+
+            val time = wpt.time.get
+            (time.charAt(time.length -1)) match{
+              case 'Z' => TrackPoints.insertIfNotExists(TrackPoint(id, wpt.latitude, wpt.longitude, wpt.ele.getOrElse(0), LocalDateTime.parse(time.substring(0,time.length-2)),dateTimeZone))
+              case _ => TrackPoints.insertIfNotExists(TrackPoint(id, wpt.latitude, wpt.longitude, wpt.ele.getOrElse(0), LocalDateTime.parse(time),dateTimeZone))
+            }
           }
         }
       }
@@ -34,7 +39,7 @@ class DBStorageService {
 
   def getTrackById(trackId: UUID): Option[Track] = DB.withSession{implicit session => Tracks.getTrackById(trackId)}
 
-  def getTrackByDate(date: LocalDate): Seq[Track] = DB.withSession{implicit session => Tracks.getTracksByDate(date)}
+  def getTrackByDate(date: LocalDate): Seq[Track] = DB.withTransaction{implicit session => Tracks.getTracksByDate(date)}
 
   def getAllTrackPointsForTrackId(trackId: UUID) =  DB.withSession{implicit session => TrackPoints.getTrackPointsForTrack(trackId)}
 
@@ -60,6 +65,9 @@ class DBStorageService {
     DayTourMetaDatas.insert(dayTourMetaData)
   }
 
+  def insertImage(image: Image) = DB.withSession{implicit session => Images.insertImage(image)}
+
+  def getImagesForLocalDate(date: LocalDate) = DB.withSession{implicit session => Images.getImagesByLocalDate(date)}
 
 
 
@@ -78,6 +86,7 @@ class DBStorageService {
       }
   }
 
+  // TODO auslagern!
   private def getRandomId = UUID.randomUUID()
 
   private def gpxTrackToTrackMetaData(id: UUID, track: GPXTrack): TrackMetaData = (track.trackStatsExtension, track.trackExtension) match{

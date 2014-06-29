@@ -88,7 +88,9 @@ function getDataSet(track){
 
         var date = trkPt["datetime"]
         var elevation = trkPt["elevation"]
-        points.push(Array(new Date(Date.parse(date)).getTime(), elevation))
+
+        var date = new Date(Date.parse(date))
+        points.push(Array(date.getTime(), elevation))
     }
 
     var dataSet = {

@@ -1,21 +1,23 @@
 package at.droelf.backend.service
 
 import java.io.File
-import parser.gpxtype.GPXDecoder
 import java.util.UUID
-import at.droelf.backend.storage.{FileStorageService, DBStorageService}
-import org.joda.time.LocalDate
-import at.droelf.gui.entities.{TrackInformationResponse, GuiTrackMetaData, GuiTrack, GuiTrackPoint}
+
+import at.droelf.backend.storage.{DBStorageService, FileStorageService}
+import at.droelf.gui.entities.{GuiTrack, GuiTrackMetaData}
 import models.{TrackMetaData, TrackPoint}
+import org.joda.time.{DateTimeZone, LocalDate}
+import parser.gpxtype.GPXDecoder
 
 class GpxTrackService(fileStorageService: FileStorageService, dbTrackStorageService: DBStorageService) {
 
   // Put
-  def saveTracks(file: File, activity: String){
+  def saveTracks(file: File, activity: String, timeZoneOffset: DateTimeZone) {
     val x = GPXDecoder.decodeFile(file)
     fileStorageService.saveGpxTrackFile(file)
-    dbTrackStorageService.saveTracks(x.tracks, activity)
+    dbTrackStorageService.saveTracks(x.tracks, timeZoneOffset, activity)
   }
+
 
   // Get
   def getAllTracks(): Seq[GuiTrack] = {
@@ -26,14 +28,14 @@ class GpxTrackService(fileStorageService: FileStorageService, dbTrackStorageServ
     dbTrackStorageService.getTrackById(trackId).map(trk => GuiTrack(trk, getTrackMetaDataForTrackId(trk.trackId), getTrackPointsForTrackId(trk.trackId)))
   }
 
-  def getTracksForLocalDate(date: LocalDate): Seq[GuiTrack] = dbTrackStorageService.getTrackByDate(date).map(trk => GuiTrack(trk,getTrackMetaDataForTrackId(trk.trackId),getTrackPointsForTrackId(trk.trackId)))
+  def getTracksForLocalDate(date: LocalDate): Seq[GuiTrack] = dbTrackStorageService.getTrackByDate(date).map(trk => GuiTrack(trk, getTrackMetaDataForTrackId(trk.trackId), getTrackPointsForTrackId(trk.trackId)))
 
-  def getTrackInformationForLocalDate(date: LocalDate): TrackInformationResponse = {
+  def getTrackInformationForLocalDate(date: LocalDate): (Seq[GuiTrack], GuiTrackMetaData) = {
     val tracks = getTracksForLocalDate(date)
-    TrackInformationResponse(tracks, tracks.map(_.metaData).reduceLeft[GuiTrackMetaData]((total: GuiTrackMetaData, cur: GuiTrackMetaData) => (total + cur)))
+    (tracks, tracks.map(_.metaData).reduceLeft[GuiTrackMetaData]((total: GuiTrackMetaData, cur: GuiTrackMetaData) => (total + cur)))
   }
 
-  private def getTrackMetaDataForTrackId(trackId: UUID): TrackMetaData= dbTrackStorageService.getMetaDataForTrackId(trackId)
+  private def getTrackMetaDataForTrackId(trackId: UUID): TrackMetaData = dbTrackStorageService.getMetaDataForTrackId(trackId)
 
   private def getTrackPointsForTrackId(trackId: UUID): Seq[TrackPoint] = dbTrackStorageService.getAllTrackPointsForTrackId(trackId)
 

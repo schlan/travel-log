@@ -13,15 +13,18 @@ object Global extends GlobalSettings {
   lazy val tripService = new TripService(dbStorageService)
   lazy val userService = new UserService(dbStorageService)
   lazy val adminService = new AdminService(dbStorageService)
-  lazy val imageService = new ImageService
+  lazy val timeToLocationService = new TimeToLocationService(gpxTrackService)
+  lazy val imageService = new ImageService(fileStorageService,dbStorageService, timeToLocationService)
+
 
   lazy val controllerSingletons = Map[Class[_], AnyRef](
     (classOf[Application] -> new Application(gpxTrackService)),
     (classOf[TracksController] -> new TracksController(gpxTrackService)),
-    (classOf[TripController] -> new TripController(tripService)),
+    (classOf[TripController] -> new TripController(tripService,imageService)),
     (classOf[AuthController] -> new AuthController(userService)),
     (classOf[AdminController] -> new AdminController(userService,adminService)),
-    (classOf[ImageController] -> new ImageController(imageService))
+    (classOf[ImageController] -> new ImageController(imageService)),
+    (classOf[JsonController] -> new JsonController(gpxTrackService, imageService))
   )
 
   override def getControllerInstance[A](controllerClass: Class[A]): A = {

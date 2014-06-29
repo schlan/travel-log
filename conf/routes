@@ -7,9 +7,17 @@
 GET         /assets/*file                  controllers.Assets.at(path="/public", file)
 
 # api
-PUT         /api/putTrack/:activity        @controllers.TracksController.uploadTracks(activity)
-GET         /api/getTrack/:date            @controllers.TracksController.getTrackForLocalDate(date)
-GET         /api/demoData                  @controllers.TripController.insertDemoTrip
+# track specific
+PUT         /api/putTrack/:timezone/:activity   @controllers.TracksController.uploadTracks(timezone: Int, activity)
+#trip specific
+GET         /api/demoData                       @controllers.TripController.insertDemoTrip
+# dayTour specific - json stuff
+GET         /api/getDayTourInformation/:date    @controllers.JsonController.getDayTourInformation(date)
+
+# Image upload
+PUT         /api/images/uploadImage/:date/:name        @controllers.ImageController.uploadImage(date, name)
+GET         /api/images/getImage/:name                 @controllers.ImageController.getImage(name)
+
 
 # admin
 GET         /admin                          @controllers.AdminController.index
@@ -22,12 +30,9 @@ GET         /admin/login                   @controllers.AuthController.login
 GET         /admin/logout                  @controllers.AuthController.logout
 POST        /admin/auth                    @controllers.AuthController.authenticate
 
-
 # Home page
 GET         /                              @controllers.Application.index
 GET         /:trip                         @controllers.TripController.getTripById(trip)
 GET         /:trip/:daytour                @controllers.TripController.getDayTour(trip, daytour)
 
-# Image upload
-PUT         /api/images/uploadImage/:date/:name        @controllers.ImageController.uploadImage(date, name)
 

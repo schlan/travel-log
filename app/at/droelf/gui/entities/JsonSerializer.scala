@@ -31,7 +31,7 @@ trait JsonSerializer {
 
   implicit val guiTrackPoint = new Writes[GuiTrackPoint] {
     override def writes(o: GuiTrackPoint): JsValue = Json.obj(
-      "datetime" -> o.dateTime.toString(),
+      "datetime" -> o.dateTime.toLocalDateTime.toString,
       "elevation" -> o.elevation,
       "longitude" -> o.longitude,
       "latitude" -> o.latitude
@@ -48,10 +48,29 @@ trait JsonSerializer {
     )
   }
 
-  implicit val guiTrackInformationResponseWriter = new Writes[TrackInformationResponse] {
-    override def writes(o: TrackInformationResponse): JsValue = Json.obj(
+  implicit val guiImageLocationResponseWriter = new Writes[GuiImageLocation] {
+    override def writes(o: GuiImageLocation): JsValue = Json.obj(
+      "longitude" -> o.longitude,
+      "latitude" -> o.latitude
+    )
+  }
+
+
+  implicit val guiImageResponeWriter = new Writes[GuiImage] {
+    override def writes(o: GuiImage): JsValue = Json.obj(
+      "name" -> o.name,
+      "path" -> o.path,
+      "datetime" -> o.dateTime.toLocalDateTime.toString,
+      "location" -> o.location
+    )
+  }
+
+
+  implicit val guiTrackInformationResponseWriter = new Writes[DayTourInformationResponse] {
+    override def writes(o: DayTourInformationResponse): JsValue = Json.obj(
       "tracks" -> o.tracks,
-      "summarizedMetadata" -> o.summarizedMetaData
+      "summarizedMetadata" -> o.summarizedMetaData,
+      "images" -> o.images
     )
   }
 

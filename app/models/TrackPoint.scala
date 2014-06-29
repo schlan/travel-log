@@ -1,11 +1,11 @@
 package models
 
-import org.joda.time.{LocalDate, DateTime}
+import org.joda.time.{DateTimeZone, LocalDateTime, LocalDate, DateTime}
 import scala.slick.driver.H2Driver.simple._
 import com.github.tototoshi.slick.H2JodaSupport._
 import java.util.UUID
 
-case class TrackPoint(trackId: UUID, latitude: Float, longitude: Float, elevation: Float, dateTime: DateTime)
+case class TrackPoint(trackId: UUID, latitude: Float, longitude: Float, elevation: Float, dateTime: LocalDateTime, dateTimeZone: DateTimeZone)
 
 class TrackPointTable(tag: Tag) extends Table[TrackPoint](tag, "TRACK_POINTS") {
 
@@ -13,9 +13,10 @@ class TrackPointTable(tag: Tag) extends Table[TrackPoint](tag, "TRACK_POINTS") {
   def latitude = column[Float]("LATITUDE", O.NotNull)
   def longitude = column[Float]("LONGITUDE", O.NotNull)
   def elevation = column[Float]("ELEVATION")
-  def dateTime = column[DateTime]("DATE", O.PrimaryKey)
+  def dateTime = column[LocalDateTime]("DATE", O.PrimaryKey)
+  def dateTimeZone = column[DateTimeZone]("TIME_ZONE", O.NotNull)
 
-  def * = (trackId, latitude, longitude, elevation, dateTime) <>(TrackPoint.tupled, TrackPoint.unapply)
+  def * = (trackId, latitude, longitude, elevation, dateTime, dateTimeZone) <>(TrackPoint.tupled, TrackPoint.unapply)
 
   def track = foreignKey("TRACK_POINT_FK", trackId, TableQuery[TrackTable])(_.trackId)
 
