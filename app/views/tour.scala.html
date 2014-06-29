@@ -2,11 +2,11 @@
 
 
     @metadata = {
-        <div class="nav nav-list" id="metadata">
-            <div class="panel-group" id="accordion">
 
-            </div>
+        <div id="images"  class="row">
+
         </div>
+
     }
 
 @main(message, nav)(sidebar(guiTrip, dayTour.dayTourId))(metadata) {
@@ -53,19 +53,25 @@
             <h3 class="panel-title">Metadata</h3>
         </div>
         <div class="panel-body">
+            <div class="nav nav-list" id="metadata">
+                <div class="panel-group" id="accordion">
 
+                </div>
+            </div>
         </div>
     </div>
 
+    <script src="@routes.Assets.at("javascripts/myjs/color.js")" type="text/javascript"></script>
     <script src="@routes.Assets.at("javascripts/myjs/map.js")" type="text/javascript"></script>
     <script src="@routes.Assets.at("javascripts/myjs/chart.js")" type="text/javascript"></script>
     <script src="@routes.Assets.at("javascripts/myjs/metadata.js")" type="text/javascript"></script>
     <script src="@routes.Assets.at("javascripts/myjs/datastore.js")" type="text/javascript"></script>
-    <script src="@routes.Assets.at("javascripts/myjs/color.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/myjs/images.js")" type="text/javascript"></script>
 
     <script type="text/javascript">
-        loadTracks ( '@dayTour.date', Array(initColors,initMap, initFlot, initMetadata))
+        loadTracks ( '@dayTour.date', Array(initColors,initMap, initFlot, initMetadata, initImages))
     </script>
+
 
 }
 

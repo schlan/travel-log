@@ -107,7 +107,7 @@ function getImageMarkerGroup(images){
         var path = "/api/images/getImage/" + image["path"]
         marker.bindPopup(
             "<a href='"+ path +"'>" +
-                "<img src='"+ path + "' class='img-responsive' width='250px'/>" +
+                "<img src='"+ path + "' class='img-responsive' width='250px' />" +
             "</a>"
         )
         markers.push(marker)
