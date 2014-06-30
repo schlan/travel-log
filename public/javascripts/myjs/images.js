@@ -9,7 +9,7 @@ function initImages(data) {
         $("#images").append(
                 "<div class='col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10 '>" +
                     "<a title='" + img["name"] + "' href='" + path + "'>" +
-                        "<img class='thumbnail img-responsive' src='" + path + "'/>" +
+                        "<img class='img-thumbnail' src='" + path + "'/>" +
                     "</a>" +
                 "</div>"
         )

@@ -18,12 +18,15 @@ function initMetadata(data){
         nm["Acivity"] = track["activity"]
         niceMetaData[track["trackId"]] = nm
     }
-
-    var sum = Array()
-    sum["Name"] = "Sum"
-    var formatted = makeMetaDataLookNice(data["summarizedMetadata"])
-    for (attr in formatted) { sum[attr] = formatted[attr]; }
-    niceMetaData["1565165ad"] = sum
+    if(Object.keys(niceMetaData).length > 1) {
+        var sum = Array()
+        sum["Name"] = "Sum"
+        var formatted = makeMetaDataLookNice(data["summarizedMetadata"])
+        for (attr in formatted) {
+            sum[attr] = formatted[attr];
+        }
+        niceMetaData["1565165ad"] = sum
+    }
 
     // Get All Keys
     var keys = Array()
@@ -36,28 +39,30 @@ function initMetadata(data){
         }
     }
 
-    var table = "<thead>" + getMetaDataTableRow("Name", niceMetaData,"<th>","</th>") + "</thead>"
+    var table = "<thead>" + getMetaDataTableRow("Name", niceMetaData,"th") + "</thead>"
 
     keys.splice(keys.indexOf("Name"),1)
 
     for(key in keys){
-       table += getMetaDataTableRow(keys[key],niceMetaData, "<td>", "</td>")
+       table += getMetaDataTableRow(keys[key],niceMetaData, "td")
     }
 
     $('#accordion').append($(
-        "<table class='table table-responsive table-condensed table-hover'>" +
-            table +
-        "</table>"
+        "<div class='table-responsive'>" +
+            "<table class='table table-condensed table-hover'>" +
+                table +
+            "</table>"+
+        "</div>"
     ));
 
 }
 
-function getMetaDataTableRow(key,niceMetaData, celltypeStart,celltypeEnd){
-    var row = "<tr>" + celltypeStart + key + celltypeEnd + "</th>"
+function getMetaDataTableRow(key,niceMetaData, celltype){
+    var row = "<tr><" + celltype +">" + key +"</"+ celltype + "></th>"
 
     for(x in niceMetaData){
         var value = niceMetaData[x][key]
-        row += celltypeStart + value + celltypeEnd
+        row += "<" + celltype +" class='text-right'>" + value +"</"+ celltype + ">"
     }
 
     return row + "</tr>"

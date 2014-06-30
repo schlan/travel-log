@@ -32,7 +32,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Trips <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Trips<b class="caret"></b></a>
 
                             <ul class="dropdown-menu">
 
@@ -51,30 +51,34 @@
         </div>
 
 
-        <div class="navbar navbar-inverse toggleDaysMobile">
+        <div class="navbar navbar-inverse navbar-fixed-top toggleDaysMobile">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Toggle Days</a>
+            <a class="navbar-brand" href="#">Days</a>
         </div>
 
         <div class="container-fluid">
             <div class="row-fluid">
 
-                <div class="col-sm-2 col-md-2 col-xs-10 sidebar collapse">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-10 sidebar collapse">
                     @sidebar
                 </div>
 
 
-                <div class="col-sm-7 col-sm-offset-2 col-md-7 col-md-offset-2 col-xs-12 main">
-                    @content
-                </div>
+                <div class="row-fluid">
+                    <div class="col-lg-7 col-lg-offset-2 col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 col-xs-12 main">
 
-                <div id="sidebar-right" class="col-sm-3 col-sm-offset-9 col-md-3 col-md-offset-9 col-xs-12 sidebar-right">
-                    @metadata
+                        @content
+
+                        <div class="col-lg-3 col-lg-offset-9 col-md-10 col-md-offset-2 col-sm-12 col-xs-12 sidebar-right">
+                            @metadata
+                        </div>
+
+                    </div>
                 </div>
 
             </div>
