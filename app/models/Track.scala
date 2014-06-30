@@ -1,6 +1,7 @@
 package models
 
 import org.joda.time.{LocalTime, LocalDate}
+import play.api.Logger
 import play.api.db.slick.Config.driver.simple._
 import com.github.tototoshi.slick.H2JodaSupport._
 import java.util.UUID

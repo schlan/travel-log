@@ -39,12 +39,14 @@ function initMetadata(data){
         }
     }
 
-    var table = "<thead>" + getMetaDataTableRow("Name", niceMetaData,"th") + "</thead>"
+    var colWidth = 100 / ((data["tracks"].length > 1) ? data["tracks"].length  + 2 : data["tracks"].length + 1);
+
+    var table = "<thead>" + getMetaDataTableRow("Name", niceMetaData,"th", colWidth) + "</thead>"
 
     keys.splice(keys.indexOf("Name"),1)
 
     for(key in keys){
-       table += getMetaDataTableRow(keys[key],niceMetaData, "td")
+       table += getMetaDataTableRow(keys[key],niceMetaData, "td", colWidth)
     }
 
     $('#accordion').append($(
@@ -57,12 +59,12 @@ function initMetadata(data){
 
 }
 
-function getMetaDataTableRow(key,niceMetaData, celltype){
-    var row = "<tr><" + celltype +">" + key +"</"+ celltype + "></th>"
+function getMetaDataTableRow(key,niceMetaData, celltype, colWidth){
+    var row = "<tr><" + celltype +" style='width:" +colWidth + "%'>" + key +"</"+ celltype + "></th>"
 
     for(x in niceMetaData){
         var value = niceMetaData[x][key]
-        row += "<" + celltype +" class='text-right'>" + value +"</"+ celltype + ">"
+        row += "<" + celltype +" class='text-right' style='width:" +colWidth + "%'>" + value +"</"+ celltype + ">"
     }
 
     return row + "</tr>"

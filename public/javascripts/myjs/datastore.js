@@ -7,9 +7,9 @@ function loadTracks(date, callbacks){
     $.getJSON("/api/getDayTourInformation/" + date,
         function (data) {
             console.log(data)
-            for(i in callbacks){
-                callbacks[i](data);
-            }
+            $.each( callbacks, function( key, val ) {
+                callbacks[key](data);
+            });
         });
 }
 

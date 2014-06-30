@@ -2,7 +2,6 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                  controllers.Assets.at(path="/public", file)
 
@@ -17,7 +16,6 @@ GET         /api/getDayTourInformation/:date    @controllers.JsonController.getD
 # Image upload
 PUT         /api/images/uploadImage/:date/:name        @controllers.ImageController.uploadImage(date, name)
 GET         /api/images/getImage/:name                 @controllers.ImageController.getImage(name)
-
 
 # admin
 GET         /admin                          @controllers.AdminController.index
@@ -34,5 +32,3 @@ POST        /admin/auth                    @controllers.AuthController.authentic
 GET         /                              @controllers.Application.index
 GET         /:trip                         @controllers.TripController.getTripById(trip)
 GET         /:trip/:daytour                @controllers.TripController.getDayTour(trip, daytour)
-
-
