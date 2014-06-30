@@ -1,8 +1,8 @@
 package models
 
 import play.api.db.slick.Config.driver.simple._
-import java.util.UUID
-import com.github.tototoshi.slick.H2JodaSupport._
+import play.api.db.slick.joda.PlayJodaSupport
+import play.api.db.slick.joda.PlayJodaSupport._
 import org.joda.time.LocalDate
 
 

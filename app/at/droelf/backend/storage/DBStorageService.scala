@@ -35,28 +35,28 @@ class DBStorageService {
     }
   }
 
-  def getAllTracks(): Seq[Track] = DB.withSession{implicit session => Tracks.getAllTracks()}
+  def getAllTracks(): Seq[Track] = DB.withTransaction{implicit session => Tracks.getAllTracks()}
 
-  def getTrackById(trackId: UUID): Option[Track] = DB.withSession{implicit session => Tracks.getTrackById(trackId)}
+  def getTrackById(trackId: UUID): Option[Track] = DB.withTransaction{implicit session => Tracks.getTrackById(trackId)}
 
   def getTrackByDate(date: LocalDate): Seq[Track] = DB.withTransaction{implicit session => Tracks.getTracksByDate(date)}
 
-  def getAllTrackPointsForTrackId(trackId: UUID) =  DB.withSession{implicit session => TrackPoints.getTrackPointsForTrack(trackId)}
+  def getAllTrackPointsForTrackId(trackId: UUID) =  DB.withTransaction{implicit session => TrackPoints.getTrackPointsForTrack(trackId)}
 
-  def getMetaDataForTrackId(trackId: UUID) = DB.withSession{implicit  session => TrackMetaDatas.getTrackMetaDataForTrackId(trackId)}
-
-
-
-  def getAllTrips(): Seq[Trip] = DB.withSession{implicit session => Trips.getAllTrips()}
-
-  def getTripById(tripId: String): Option[Trip] = DB.withSession{implicit session => Trips.getTripById(tripId)}
-
-  def insertTrip(trip: Trip) = DB.withSession{implicit session => Trips.insertTrip(trip)}
+  def getMetaDataForTrackId(trackId: UUID) = DB.withTransaction{implicit  session => TrackMetaDatas.getTrackMetaDataForTrackId(trackId)}
 
 
-  def getDayTourByTripId(tripId: String): Seq[DayTour] =  DB.withSession{implicit session => DayTours.getDayToursByTripId(tripId)}
 
-  def getDayTour(tripId: String, dayTourId: UUID): Option[DayTour] = DB.withSession{implicit session => DayTours.getDayToursd(tripId, dayTourId)}
+  def getAllTrips(): Seq[Trip] = DB.withTransaction{implicit session => Trips.getAllTrips()}
+
+  def getTripById(tripId: String): Option[Trip] = DB.withTransaction{implicit session => Trips.getTripById(tripId)}
+
+  def insertTrip(trip: Trip) = DB.withTransaction{implicit session => Trips.insertTrip(trip)}
+
+
+  def getDayTourByTripId(tripId: String): Seq[DayTour] =  DB.withTransaction{implicit session => DayTours.getDayToursByTripId(tripId)}
+
+  def getDayTour(tripId: String, dayTourId: UUID): Option[DayTour] = DB.withTransaction{implicit session => DayTours.getDayToursd(tripId, dayTourId)}
 
   def getDayTourMetaDataForId(dayTourId: UUID): DayTourMetaData = DB.withTransaction{implicit  session => DayTourMetaDatas.getDayTourMetaDataById(dayTourId)}
 
@@ -65,9 +65,9 @@ class DBStorageService {
     DayTourMetaDatas.insert(dayTourMetaData)
   }
 
-  def insertImage(image: Image) = DB.withSession{implicit session => Images.insertImage(image)}
+  def insertImage(image: Image) = DB.withTransaction{implicit session => Images.insertImage(image)}
 
-  def getImagesForLocalDate(date: LocalDate) = DB.withSession{implicit session => Images.getImagesByLocalDate(date)}
+  def getImagesForLocalDate(date: LocalDate) = DB.withTransaction{implicit session => Images.getImagesByLocalDate(date)}
 
 
 

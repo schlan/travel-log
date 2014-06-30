@@ -1,8 +1,9 @@
 package models
 
 import org.joda.time.{DateTimeZone, LocalDateTime, LocalDate, DateTime}
-import scala.slick.driver.H2Driver.simple._
-import com.github.tototoshi.slick.H2JodaSupport._
+import play.api.db.slick.Config.driver.simple._
+import play.api.db.slick.joda.PlayJodaSupport
+import play.api.db.slick.joda.PlayJodaSupport._
 import java.util.UUID
 
 case class TrackPoint(trackId: UUID, latitude: Float, longitude: Float, elevation: Float, dateTime: LocalDateTime, dateTimeZone: DateTimeZone)
