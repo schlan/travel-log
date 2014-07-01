@@ -1,6 +1,6 @@
 package at.droelf.backend.service
 
-import at.droelf.backend.storage.DBStorageService
+import at.droelf.backend.storage.database.DBStorageService
 import models.User
 
 class UserService(dbStorage: DBStorageService) {

@@ -3,7 +3,8 @@ package at.droelf.backend.service
 import java.io.File
 import java.util.UUID
 
-import at.droelf.backend.storage.{DBStorageService, FileStorageService}
+import at.droelf.backend.storage.FileStorageService
+import at.droelf.backend.storage.database.DBStorageService
 import at.droelf.gui.entities.{GuiTrack, GuiTrackMetaData}
 import models.{TrackMetaData, TrackPoint}
 import org.joda.time.{DateTimeZone, LocalDate}

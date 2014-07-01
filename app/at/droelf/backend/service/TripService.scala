@@ -1,6 +1,7 @@
 package at.droelf.backend.service
+
+import at.droelf.backend.storage.database.DBStorageService
 import at.droelf.gui.entities.{GuiDayTourMetaData, GuiDayTour, GuiTrip}
-import at.droelf.backend.storage.DBStorageService
 import java.util.UUID
 
 import models.Trip

@@ -1,8 +1,9 @@
 package at.droelf
 
+import at.droelf.backend.storage.database.DBStorageService
 import controllers._
 import play.api.GlobalSettings
-import at.droelf.backend.storage.{FileStorageService, DBStorageService}
+import at.droelf.backend.storage.FileStorageService
 import at.droelf.backend.service._
 
 object Global extends GlobalSettings {

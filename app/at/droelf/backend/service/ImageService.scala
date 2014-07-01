@@ -1,7 +1,8 @@
 package at.droelf.backend.service
 
 import java.io.File
-import at.droelf.backend.storage.{DBStorageService, FileStorageService}
+import at.droelf.backend.storage.FileStorageService
+import at.droelf.backend.storage.database.DBStorageService
 import at.droelf.gui.entities.{GuiImageLocation, GuiImage}
 import models.Image
 import org.joda.time.{DateTimeZone, LocalDate, DateTime}

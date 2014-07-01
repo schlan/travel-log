@@ -3,7 +3,6 @@ package models
 import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.joda.PlayJodaSupport
 import play.api.db.slick.joda.PlayJodaSupport._
-import play.api.db.slick.Config.driver.simple._
 import org.joda.time.LocalDate
 import java.util.UUID
 
@@ -27,8 +26,6 @@ class DayTourTable(tag: Tag) extends Table[DayTour](tag, "DAY_TOUR"){
 }
 
 object DayTours{
-
-
 
   var dayTourTable = TableQuery[DayTourTable]
 
