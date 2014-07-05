@@ -11,7 +11,8 @@
 @main(title, assets,navbar){
     <div>
         http://localhost:9000/api/demoData<br />
-        wget http://v1.makubi.at/~makubi/requestBody150001711469858415asRaw -O /tmp/tmp.gpx && curl -X PUT http://localhost:9000/api/putTrack/2/fooBar -d @@/tmp/tmp.gpx
+        wget http://v1.makubi.at/~makubi/requestBody150001711469858415asRaw -O /tmp/tmp.gpx && curl -X PUT http://localhost:9000/api/putTrack/2/fooBar -d @@/tmp/tmp.gpx<br>
+        curl -X PUT  http://localhost:9000/api/images/uploadImage/2014-05-23T07:00:00+0200/testFoto2 --data-binary @@foto.png
     </div>
     <div class="container">
         @content

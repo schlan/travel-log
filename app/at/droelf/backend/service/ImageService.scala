@@ -14,7 +14,7 @@ class ImageService(fileStorageService: FileStorageService, dbStorage: DBStorageS
 
 
   def saveImage(image: File, date: DateTime, name: String){
-      val path = fileStorageService.saveImageToDisk(image, date.toString, name)
+    val path = fileStorageService.saveImageToDisk(image, date.toString, name)
 
     val localdatetime = date.toLocalDateTime
     val timezone = date.getChronology.getZone

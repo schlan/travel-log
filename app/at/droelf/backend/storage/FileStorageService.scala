@@ -6,6 +6,8 @@ import java.util.UUID
 
 import play.api.Play
 
+import scalax.io.support.FileUtils
+
 class FileStorageService {
 
   val tracksDir = Play.current.configuration.getString("at.droelf.travel-log.tracks.rootDir").get

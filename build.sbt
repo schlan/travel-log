@@ -21,4 +21,5 @@ libraryDependencies ++= Seq(
   "org.webjars" % "flot" % "0.8.3"
 )
 
+
 play.Project.playScalaSettings
