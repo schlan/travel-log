@@ -3,32 +3,33 @@
 # ~~~~
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                  controllers.Assets.at(path="/public", file)
+GET         /assets/*file                              controllers.Assets.at(path="/public", file)
+GET         /webjars/*file                             controllers.WebJarAssets.at(file)
 
 # api
 # track specific
-PUT         /api/putTrack/:timezone/:activity   @controllers.TracksController.uploadTracks(timezone: Int, activity)
+PUT         /api/putTrack/:timezone/:activity          @controllers.TracksController.uploadTracks(timezone: Int, activity)
 #trip specific
-GET         /api/demoData                       @controllers.TripController.insertDemoTrip
+GET         /api/demoData                              @controllers.TripController.insertDemoTrip
 # dayTour specific - json stuff
-GET         /api/getDayTourInformation/:date    @controllers.JsonController.getDayTourInformation(date)
+GET         /api/getDayTourInformation/:date           @controllers.JsonController.getDayTourInformation(date)
 
 # Image upload
 PUT         /api/images/uploadImage/:date/:name        @controllers.ImageController.uploadImage(date, name)
 GET         /api/images/getImage/:name                 @controllers.ImageController.getImage(name)
 
 # admin
-GET         /admin                          @controllers.AdminController.index
-GET         /admin/edit/:trip               @controllers.AdminController.tripDetails(trip)
-POST        /admin/trip/addTrip             @controllers.AdminController.addTrip
-POST        /admin/dayTour/addDayTour/:trip @controllers.AdminController.addDayTour(trip)
+GET         /admin                                     @controllers.AdminController.index
+GET         /admin/edit/:trip                          @controllers.AdminController.tripDetails(trip)
+POST        /admin/trip/addTrip                        @controllers.AdminController.addTrip
+POST        /admin/dayTour/addDayTour/:trip            @controllers.AdminController.addDayTour(trip)
 
 # auth
-GET         /admin/login                   @controllers.AuthController.login
-GET         /admin/logout                  @controllers.AuthController.logout
-POST        /admin/auth                    @controllers.AuthController.authenticate
+GET         /admin/login                               @controllers.AuthController.login
+GET         /admin/logout                              @controllers.AuthController.logout
+POST        /admin/auth                                @controllers.AuthController.authenticate
 
 # Home page
-GET         /                              @controllers.Application.index
-GET         /:trip                         @controllers.TripController.getTripById(trip)
-GET         /:trip/:daytour                @controllers.TripController.getDayTour(trip, daytour)
+GET         /                                          @controllers.Application.index
+GET         /:trip                                     @controllers.TripController.getTripById(trip)
+GET         /:trip/:daytour                            @controllers.TripController.getDayTour(trip, daytour)
