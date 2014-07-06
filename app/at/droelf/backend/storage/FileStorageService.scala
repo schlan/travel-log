@@ -5,8 +5,7 @@ import java.io.File
 import java.util.UUID
 
 import play.api.Play
-
-import scalax.io.support.FileUtils
+import play.api.libs.Files.TemporaryFile
 
 class FileStorageService {
 
@@ -31,8 +30,11 @@ class FileStorageService {
   }
 
 
-  def saveImageToDisk(file: File, date: String, name: String): Path = {
-    Files.write(Paths.get(imageRootDir, date + "_" + name + "_" + UUID.randomUUID().toString), Files.readAllBytes(file.toPath))
+  def saveImageToDisk(file: TemporaryFile, date: String, name: String): Path = {
+    val finalPath = Paths.get(imageRootDir, date + "_" + name + "_" + UUID.randomUUID().toString)
+    file.moveTo(finalPath.toFile)
+
+    finalPath
   }
 
 

@@ -1,7 +1,9 @@
 package controllers
 
+import java.io.File
 import java.nio.file.Files
 
+import play.api.Logger
 import play.api.mvc.{Result, Results, Action, Controller}
 import java.util.UUID
 import at.droelf.backend.service.{UserService, ImageService}
@@ -12,7 +14,7 @@ import scala.util.{Failure, Success, Try}
 class ImageController(imageService: ImageService, userService: UserService) extends Controller {
 
 
-  def uploadImage(date: String, name: String) = Action(parse.raw) { implicit request =>
+  def uploadImage(date: String, name: String) = Action(parse.multipartFormData) { implicit request =>
 
     def decodeBasicAuth(auth: String) = {
       val baStr = auth.replaceFirst("Basic ", "")
@@ -25,20 +27,20 @@ class ImageController(imageService: ImageService, userService: UserService) exte
         val (user, pass) = decodeBasicAuth(basicAuth)
         if(userService.checkUserPassword(user,pass)){
 
-          val problem = Try(ISODateTimeFormat.dateTimeNoMillis().parseDateTime(date))
+          val parsedDateTimeTry = Try(ISODateTimeFormat.dateTimeNoMillis().parseDateTime(date))
 
-          problem match {
-            case Success(v) => {
-              val file = request.body.asFile
-              imageService.saveImage(file, v, name)
-              Ok
+          parsedDateTimeTry match {
+            case Success(parsedDateTime) => {
+              request.body.file("file").map( tmpFile => {
+                imageService.saveImage(tmpFile.ref, parsedDateTime, name)
+                Ok
+              })
             }
             case Failure(e) => BadRequest
           }
 
         }else{
           Unauthorized
-
         }
 
         Ok(s"Hello $user identified by $pass")
