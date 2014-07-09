@@ -2,7 +2,7 @@ package at.droelf.backend.storage.database
 
 import play.api.Play
 
-import scala.slick.driver.{H2Driver, JdbcProfile, MySQLDriver, PostgresDriver}
+import scala.slick.driver.{H2Driver, JdbcProfile, PostgresDriver}
 
 object SlickDBDriver {
 

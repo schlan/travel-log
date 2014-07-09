@@ -1,7 +1,12 @@
 @(guiTrip: at.droelf.gui.entities.GuiTrip, recentId: java.util.UUID)
 
     <ul class="nav nav-sidebar" >
-        <li><a href="/@guiTrip.shortName"><h5>Overview</h5></a></li>
+        <li>
+            <a href="/@guiTrip.shortName">
+                <h5>Overview</h5>
+            </a>
+        </li>
+
         @for((dT, index) <- guiTrip.guiDayTours.zipWithIndex) {
 
             @if(dT.dayTourId == recentId) {
@@ -14,7 +19,8 @@
                         Day @(index + 1) <br />
                     <small>(@dT.date.toString("dd. MMMM YYYY"))</small>
                     </h4>
-            </a></li>
+            </a>
+        </li>
 
         }
     </ul>
