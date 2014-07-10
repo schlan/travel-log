@@ -93,25 +93,73 @@ function getImageMarkerGroup(images){
         markerColor: 'darkred'
     })
 
+    var sortedImages = Array()
+
     for(x in images){
         var image = images[x]
-        var location = image["location"]
+        var key = image["location"]["latitude"]  + "\&" + image["location"]["longitude"]
+        if (typeof sortedImages[key] === "undefined") {
+            sortedImages[key] = [image]
+        }else{
+            sortedImages[key].push(image)
+        }
+    }
+
+    console.log(sortedImages)
+
+    for(x in sortedImages){
+
+        var location = sortedImages[x]
 
 
 
+        var indicator = ""
+        var slides = ""
+        var i = 0
 
-        var marker = L.marker([location["latitude"], location["longitude"]],{
+        for(y in location){
+            var image = location[y]
+            var path = "/api/images/getImage/" + image["path"]
+
+            if(i == 0){
+                indicator +=  "<li data-target='#carousel-example-generic' class='active' data-slide-to='"+ i + "'></li>"
+                slides +=   "<div class='item active'>"
+            }else{
+                indicator +=  "<li data-target='#carousel-example-generic' data-slide-to='"+ i + "'></li>"
+                slides +=   "<div class='item'>"
+            }
+
+            slides +=       "<img src='"+ path + "' style='height:200px;' ></img>" +
+                            "<div class='carousel-caption'></div>" +
+                        "</div>"
+            i++
+
+        }
+        var popupMarkUp = "<div id='carousel-example-generic' class='carousel slide' data-ride='carousel' style='width:300px;'>"
+
+        popupMarkUp += "<ol class='carousel-indicators'>" + indicator + "</ol>"
+
+        popupMarkUp += "<div class='carousel-inner'>" + slides + "</div>"
+
+        popupMarkUp += "<a class='left carousel-control' href='#carousel-example-generic' role='button' data-slide='prev'>" +
+                            "<span class='glyphicon glyphicon-chevron-left'></span>" +
+                       "</a>" +
+                       "<a class='right carousel-control' href='#carousel-example-generic' role='button' data-slide='next'>" +
+                            "<span class='glyphicon glyphicon-chevron-right'></span>" +
+                       "</a>"
+
+        popupMarkUp += "</div>"
+
+        var marker = L.marker(x.split("\&"),{
             'icon' : icon,
             'riseOnHover':true
         })
-        var path = "/api/images/getImage/" + image["path"]
-        marker.bindPopup(
-            "<a href='"+ path +"'>" +
-                "<img src='"+ path + "' class='img-responsive' width='250px' />" +
-            "</a>"
-        )
+
+        marker.bindPopup(popupMarkUp)
         markers.push(marker)
+
     }
+
     return L.layerGroup(markers)
 }
 
