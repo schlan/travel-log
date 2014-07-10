@@ -3,13 +3,14 @@ package at.droelf.backend.storage.database
 import java.awt.Color
 import java.util.UUID
 
+import at.droelf.backend.DateTimeUtil
 import models._
-import org.joda.time.{DateTimeZone, LocalDate, LocalDateTime}
+import org.joda.time.{DateTime, DateTimeZone, LocalDate, LocalDateTime}
 import parser.gpxtype.GPXTrack
 
 import scala.slick.driver.JdbcProfile
 
-class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver){
+class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) extends DateTimeUtil{
 
   val db = new DBConnection(profile).dbObject()
 
@@ -24,11 +25,9 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver){
         track.trackSegments.foreach{ trkSeg =>
           trkSeg.trackPoints.foreach{ wpt =>
 
-            val time = wpt.time.get
-            (time.charAt(time.length -1)) match{
-              case 'Z' => TrackPoints.insertIfNotExists(TrackPoint(id, wpt.latitude, wpt.longitude, wpt.ele.getOrElse(0), LocalDateTime.parse(time.substring(0,time.length-2)),dateTimeZone))
-              case _ => TrackPoints.insertIfNotExists(TrackPoint(id, wpt.latitude, wpt.longitude, wpt.ele.getOrElse(0), LocalDateTime.parse(time),dateTimeZone))
-            }
+            val time = dateTimeToUtcLocalTime(DateTime.parse(wpt.time.get))
+            TrackPoints.insertIfNotExists(TrackPoint(id, wpt.latitude, wpt.longitude, wpt.ele.getOrElse(0), time, dateTimeZone))
+
           }
         }
       }

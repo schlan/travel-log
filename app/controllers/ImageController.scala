@@ -27,7 +27,7 @@ class ImageController(imageService: ImageService, userService: UserService) exte
         val (user, pass) = decodeBasicAuth(basicAuth)
         if(userService.checkUserPassword(user,pass)){
 
-          val parsedDateTimeTry = Try(ISODateTimeFormat.dateTimeNoMillis().parseDateTime(date))
+          val parsedDateTimeTry = Try(ISODateTimeFormat.dateTimeNoMillis().withOffsetParsed().parseDateTime(date))
 
           parsedDateTimeTry match {
             case Success(parsedDateTime) => {

@@ -1,11 +1,13 @@
 package at.droelf.gui.entities
 
 import java.util.UUID
-import org.joda.time.DateTime
+import at.droelf.backend.DateTimeUtil
+import org.joda.time.{DateTimeZone, DateTime}
 import models.{Track, TrackMetaData, TrackPoint}
+import play.api.Logger
 
 
-  case class GuiTrack(trackId: UUID, name: Option[String], activity: String, metaData: GuiTrackMetaData, trackPoints: Seq[GuiTrackPoint])
+case class GuiTrack(trackId: UUID, name: Option[String], activity: String, metaData: GuiTrackMetaData, trackPoints: Seq[GuiTrackPoint])
 
   object GuiTrack {
     def apply(track: Track, metaData: TrackMetaData, trkPt: Seq[TrackPoint]): GuiTrack = {
@@ -76,7 +78,7 @@ import models.{Track, TrackMetaData, TrackPoint}
 
   case class GuiTrackPoint(latitude: Float, longitude: Float, elevation: Float, dateTime: DateTime)
 
-  object GuiTrackPoint {
-    def apply(trkPt: TrackPoint): GuiTrackPoint = GuiTrackPoint(trkPt.latitude, trkPt.longitude, trkPt.elevation, trkPt.dateTime.toDateTime(trkPt.dateTimeZone))
+  object GuiTrackPoint extends DateTimeUtil{
+    def apply(trkPt: TrackPoint): GuiTrackPoint = GuiTrackPoint(trkPt.latitude, trkPt.longitude, trkPt.elevation, utcWithTimeZoneToDateTime(trkPt.dateTime, trkPt.dateTimeZone))
   }
 

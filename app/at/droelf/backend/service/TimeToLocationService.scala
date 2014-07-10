@@ -12,6 +12,8 @@ class TimeToLocationService(gpxTrackService: GpxTrackService) {
     GuiImageLocation(wpts.head.latitude, wpts.head.longitude)
   }
 
-  private def compare(dateTime: DateTime, w1: GuiTrackPoint, w2: GuiTrackPoint): Boolean = (Math.abs(Seconds.secondsBetween(w1.dateTime,dateTime).getSeconds) < Math.abs(Seconds.secondsBetween(w2.dateTime,dateTime).getSeconds))
+  private def compare(dateTime: DateTime, w1: GuiTrackPoint, w2: GuiTrackPoint): Boolean = {
+    (Math.abs(Seconds.secondsBetween(w1.dateTime,dateTime).getSeconds) < Math.abs(Seconds.secondsBetween(w2.dateTime,dateTime).getSeconds))
+  }
 
 }
