@@ -1,5 +1,5 @@
 package at.droelf.gui.entities
 
 
-case class DayTourInformationResponse(tracks: Seq[GuiTrack], summarizedMetaData: GuiTrackMetaData, images: Seq[GuiImage])
+case class DayTourInformationResponse(tracks: Seq[GuiTrack], summarizedMetaData: Option[GuiTrackMetaData], images: Seq[GuiImage])
 

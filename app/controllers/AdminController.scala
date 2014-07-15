@@ -44,7 +44,7 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
     val trip = adminService.getTripById(id)
 
     trip match {
-      case Some(x) => Ok(views.html.admin.admintripdetails(addDayTourForm)(username, x, adminService.getAllDayTours(x.shortName)))
+      case Some(x) => Ok(views.html.admin.admintripdetails(addDayTourForm)(username, x, adminService.getAllDayTours(x.startDate,x.endDate)))
       case None => BadRequest
     }
 
@@ -66,7 +66,7 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
     formWithErrors => BadRequest("Nope"), {
       case (date: LocalDate, startPoint: Int, endPoint: Int, description: String, weatherCond: String, roadCond: String) => {
         val id = UUID.randomUUID()
-        adminService.insertDayTour(DayTour(date, id, tripId, startPoint, endPoint), DayTourMetaData(id, description, weatherCond, roadCond))
+        adminService.insertDayTour(DayTour(date, id, startPoint, endPoint), DayTourMetaData(id, description, weatherCond, roadCond))
         Redirect(routes.AdminController.tripDetails(tripId))
       }
     }

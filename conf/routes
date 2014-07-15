@@ -18,7 +18,7 @@ GET         /api/getDayTourInformation/:date           @controllers.JsonControll
 PUT         /api/images/uploadImage/:date/:name        @controllers.ImageController.uploadImage(date, name)
 GET         /api/images/getImage/:name                 @controllers.ImageController.getImage(name)
 
-# admin
+# admin 2
 GET         /admin                                     @controllers.AdminController.index
 GET         /admin/edit/:trip                          @controllers.AdminController.tripDetails(trip)
 POST        /admin/trip/addTrip                        @controllers.AdminController.addTrip

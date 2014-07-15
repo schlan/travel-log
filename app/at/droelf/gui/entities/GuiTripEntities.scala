@@ -10,10 +10,10 @@ object GuiTrip{
   def apply(trip: Trip, guiDayTours: Seq[GuiDayTour]): GuiTrip = GuiTrip(trip.title, trip.description, trip.shortName, trip.startDate, trip.endDate, guiDayTours)
 }
 
-case class GuiDayTour(date: LocalDate, dayTourId: UUID, tripId: String, startPoint: Long, endPoint: Long, metData: GuiDayTourMetaData)
+case class GuiDayTour(date: LocalDate, dayTourId: UUID, startPoint: Long, endPoint: Long, metData: GuiDayTourMetaData)
 
 object GuiDayTour{
-  def apply(dayTour: DayTour, metData: DayTourMetaData): GuiDayTour = GuiDayTour(dayTour.date,dayTour.dayTourId,dayTour.tripId,dayTour.startPoint,dayTour.endPoint, GuiDayTourMetaData(metData))
+  def apply(dayTour: DayTour, metData: DayTourMetaData): GuiDayTour = GuiDayTour(dayTour.date,dayTour.dayTourId,dayTour.startPoint,dayTour.endPoint, GuiDayTourMetaData(metData))
 }
 
 case class GuiDayTourMetaData(dayTourId: UUID, description: String, weatherCond: String, roadCond: String)

@@ -31,11 +31,11 @@ class GpxTrackService(fileStorageService: FileStorageService, dbTrackStorageServ
 
   def getTracksForLocalDate(date: LocalDate): Seq[GuiTrack] = dbTrackStorageService.getTrackByDate(date).map(trk => GuiTrack(trk, getTrackMetaDataForTrackId(trk.trackId), getTrackPointsForTrackId(trk.trackId)))
 
-  def getTrackInformationForLocalDate(date: LocalDate): Option[(Seq[GuiTrack], GuiTrackMetaData)] = {
+  def getTrackInformationForLocalDate(date: LocalDate): (Seq[GuiTrack], Option[GuiTrackMetaData]) = {
     val tracks = getTracksForLocalDate(date)
     tracks.size match{
-      case 0 => None
-      case _ => Some((tracks, tracks.map(_.metaData).reduceLeft[GuiTrackMetaData]((total: GuiTrackMetaData, cur: GuiTrackMetaData) => (total + cur))))
+      case 0 => (tracks, None)
+      case _ => (tracks, Some(tracks.map(_.metaData).reduceLeft[GuiTrackMetaData]((total: GuiTrackMetaData, cur: GuiTrackMetaData) => (total + cur))))
     }
   }
 

@@ -24,7 +24,7 @@ class TripController(tripService: TripService, imageService: ImageService) exten
 
       uuid match {
         case Success(dId) =>{
-          (tripService.getTripById(tripId), tripService.getDayTour(tripId, dId)) match {
+          (tripService.getTripById(tripId), tripService.getDayTourById(dId)) match {
             case (Some(trip), Some(dayTour)) => {
               Ok(views.html.tour.tour("DayTour:", tripService.getAllTripsForNavBar(),trip, dayTour))
             }

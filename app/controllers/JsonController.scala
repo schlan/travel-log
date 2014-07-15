@@ -20,10 +20,8 @@ class JsonController(gpxTrackService: GpxTrackService, imageService: ImageServic
         val trackInformation = gpxTrackService.getTrackInformationForLocalDate(date)
         val images = imageService.getImagesForDate(date)
 
-        trackInformation match{
-          case Some(data) => Ok(Json.toJson(DayTourInformationResponse(data._1,data._2,images)))
-          case None => NotFound
-        }
+        Ok(Json.toJson(DayTourInformationResponse(trackInformation._1,trackInformation._2,images)))
+
       }
       case Failure(e) => NotFound
     }

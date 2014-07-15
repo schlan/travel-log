@@ -12,3 +12,7 @@ object GuiImage extends DateTimeUtil{
 }
 
 case class GuiImageLocation(latitude: Float, longitude: Float)
+
+object GuiImageLocation{
+  def apply(): GuiImageLocation = GuiImageLocation(-1,-1)
+}

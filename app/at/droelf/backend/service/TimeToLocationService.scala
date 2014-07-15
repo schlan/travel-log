@@ -9,7 +9,12 @@ class TimeToLocationService(gpxTrackService: GpxTrackService) {
   def getLocationForDateTime(dateTime: DateTime): GuiImageLocation = {
     val track = gpxTrackService.getTracksForLocalDate(dateTime.toLocalDate)
     val wpts = track.map(t => t.trackPoints).flatten.sortWith((w1,w2) => compare(dateTime,w1,w2))
-    GuiImageLocation(wpts.head.latitude, wpts.head.longitude)
+
+    wpts.nonEmpty match{
+       case true => GuiImageLocation(wpts.head.latitude, wpts.head.longitude)
+       case false => GuiImageLocation()
+    }
+
   }
 
   private def compare(dateTime: DateTime, w1: GuiTrackPoint, w2: GuiTrackPoint): Boolean = {

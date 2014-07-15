@@ -53,9 +53,9 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
   def insertTrip(trip: Trip) = db.withTransaction{implicit session => Trips.insertTrip(trip)}
 
 
-  def getDayTourByTripId(tripId: String): Seq[DayTour] =  db.withTransaction{implicit session => DayTours.getDayToursByTripId(tripId)}
+  def getDayTourByLocalDate(startDate: LocalDate, endDate: LocalDate): Seq[DayTour] =  db.withTransaction{implicit session => DayTours.getDayToursByDate(startDate, endDate)}
 
-  def getDayTour(tripId: String, dayTourId: UUID): Option[DayTour] = db.withTransaction{implicit session => DayTours.getDayToursd(tripId, dayTourId)}
+  def getDayTour(dayTourId: UUID): Option[DayTour] = db.withTransaction{implicit session => DayTours.getDayTourById(dayTourId)}
 
   def getDayTourMetaDataForId(dayTourId: UUID): DayTourMetaData = db.withTransaction{implicit  session => DayTourMetaDatas.getDayTourMetaDataById(dayTourId)}
 
@@ -72,13 +72,13 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
 
   def insertDemoTrips() {
     db.withTransaction{ implicit session =>
-        Trips.insertTrip(Trip("Pacific Coast Tour", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.", "pacific", new LocalDate(2014,5,20),new LocalDate(2014,5,30)))
+        Trips.insertTrip(Trip("Pacific Coast Tour", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.", "pacific", new LocalDate(2014,5,20),new LocalDate(2014,6,30)))
 
         val date = new LocalDate(2014,5,20)
 
         for(i <- 0 to 50){
           val id = UUID.randomUUID()
-          DayTours.insertDayTour(DayTour(date.plusDays(i),id,"pacific",231321,123123))
+          DayTours.insertDayTour(DayTour(date.plusDays(i),id,231321,123123))
           DayTourMetaDatas.insert(DayTourMetaData(id,"<p><b>test</b></p>asdf bl asbasd <u>asdfasdf</u>","Sunny, rainy", "Asphalt"))
         }
 

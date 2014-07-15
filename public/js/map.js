@@ -5,10 +5,10 @@ var map, marker;
 
 function initMap(data) {
 
-    var googleLayerRoad = new L.Google('ROADMAP', {featureType: 'all'});
-    var googleLayerSat = new L.Google('SATELLITE', {featureType: 'all'});
-    var googleLayerHybrid = new L.Google('HYBRID', {featureType: 'all'});
-    var googleLayerTerrain = new L.Google('TERRAIN', {featureType: 'all'});
+    //var googleLayerRoad = new L.Google('ROADMAP', {featureType: 'all'});
+    //var googleLayerSat = new L.Google('SATELLITE', {featureType: 'all'});
+    //var googleLayerHybrid = new L.Google('HYBRID', {featureType: 'all'});
+    //var googleLayerTerrain = new L.Google('TERRAIN', {featureType: 'all'});
 
     var cloudmadeLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -22,13 +22,15 @@ function initMap(data) {
 
     var mapsLayer = {
         'OSM':cloudmadeLayer,
-        'Open Cycle Map':cycleMap,
+        'Open Cycle Map':cycleMap
+    }
+
+        /*,
         'Google Satellite': googleLayerSat,
         'Google Road': googleLayerRoad,
         'Google Hybrid': googleLayerHybrid,
         'Google Terrain': googleLayerTerrain
-    }
-
+*/
     marker = L.marker([0, 0],{
         clickable: true
     })
