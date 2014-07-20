@@ -4,12 +4,19 @@
 
 var initialRange;
 
-function initFlot(data) {
-    var tracks = data["tracks"]
+function initFlotForSummary(data){
+    initGeneralChart(data["condensedTracks"], false)
+}
 
+function initFlot(data){
+    initGeneralChart(data["tracks"], true)
+}
+
+function initGeneralChart(data, legend) {
     var dataSet = []
-    for (x in tracks) {
-        var track = tracks[x];
+
+    for (x in data) {
+        var track = data[x];
         dataSet.push(getDataSet(track))
     }
 
@@ -31,7 +38,7 @@ function initFlot(data) {
         },
         grid: {
             hoverable: true,
-            autoHighlight: false
+            autoHighlight: true
         }
     }
 
@@ -43,7 +50,6 @@ function initFlot(data) {
 
     $('<div class="button" style="right:20px;bottom:30px">zoom out</div>').appendTo($("#chart")).click(function (e) {
         plot.setSelection({ xaxis: { from: range[0], to: range[1]}});
-
     });
 
     $("#chart").bind("plotselected", function (event, ranges) {
@@ -66,14 +72,14 @@ function initFlot(data) {
         var bestTrkPt;
         var bestDiff = Number.MAX_VALUE;
 
-        for(x in tracks){
-            var track = tracks[x];
+        for(x in data){
+            var track = data[x];
             for(y in track["trackPoints"]){
                var trackPt = track["trackPoints"][y];
                if(Math.abs(new Date(Date.parse(trackPt["datetime"])).getTime() - selectedDate) < bestDiff){
                     bestDiff = Math.abs(new Date(Date.parse(trackPt["datetime"])).getTime() - selectedDate);
                     bestTrkPt = trackPt;
-                }
+               }
             }
         }
         moveMarkerTo(bestTrkPt["longitude"], bestTrkPt["latitude"], bestTrkPt["elevation"], bestTrkPt["datetime"])

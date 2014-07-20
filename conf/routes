@@ -13,6 +13,7 @@ PUT         /api/putTrack/:timezone/:activity          @controllers.TracksContro
 GET         /api/demoData                              @controllers.TripController.insertDemoTrip
 # dayTour specific - json stuff
 GET         /api/getDayTourInformation/:date           @controllers.JsonController.getDayTourInformation(date)
+GET         /api/getTripInformation/:tour              @controllers.JsonController.getTripInformation(tour)
 
 # Image upload
 PUT         /api/images/uploadImage/:date/:name        @controllers.ImageController.uploadImage(date, name)

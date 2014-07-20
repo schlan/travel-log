@@ -5,10 +5,17 @@
 var availableColors = Array("#00008B","#FF0000", "#008000","#000000", "#8B0000", "#006400", "#A9A9A9")
 var usedColors = Array()
 
-function initColors(data) {
+function initColorsForSummary(data){
+    init(data["condensedTracks"])
+}
 
-    for (x in data["tracks"]) {
-        var trackId = data["tracks"][x]["trackId"];
+function initColors(data) {
+    init(data["tracks"])
+}
+
+function init(data){
+    for (x in data) {
+        var trackId = data[x]["trackId"];
         var color = availableColors[(x % availableColors.length)]
         usedColors[trackId] = color;
     }

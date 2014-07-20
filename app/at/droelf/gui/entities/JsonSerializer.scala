@@ -74,4 +74,13 @@ trait JsonSerializer {
     )
   }
 
+  implicit val TripSummaryResponseWriter = new Writes[TripSummaryResponse] {
+    override def writes(o: TripSummaryResponse): JsValue = Json.obj(
+      "lastKnownPosition" -> o.lastKnownPosition,
+      "summarizedMetaDataByActivity" -> o.summarizedMetaDataByActivity,
+      "condensedTracks" -> o.condensedTracks,
+      "newestImages" -> o.newestImages
+    )
+  }
+
 }

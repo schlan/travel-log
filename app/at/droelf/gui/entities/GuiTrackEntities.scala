@@ -65,11 +65,17 @@ case class GuiTrack(trackId: UUID, name: Option[String], activity: String, metaD
         averageOptionFloat(this.avgCadence, other.avgCadence),
         this.displayColor
       )
-    def averageOptionFloat(o1: Option[Float], o2: Option[Float]): Option[Float] = for(d1 <- o1; d2 <- o2) yield ((d1 + d2)/2)
-    def minOptionFloat(o1: Option[Float], o2: Option[Float]): Option[Float] = for(d1 <- o1; d2 <- o2) yield (Math.min(d1, d2))
-    def maxOptionFloat(o1: Option[Float], o2: Option[Float]): Option[Float] = for(d1 <- o1; d2 <- o2) yield (Math.max(d1, d2))
-    def addOptionFloat(o1: Option[Float], o2: Option[Float]): Option[Float] = for(d1 <- o1; d2 <- o2) yield (d1 + d2)
+    def averageOptionFloat(o1: Option[Float], o2: Option[Float]): Option[Float] = unpackValues(o1,o2, (d1,d2) => ((d1 + d2)/2) )
+    def minOptionFloat(o1: Option[Float], o2: Option[Float]): Option[Float] = unpackValues(o1,o2, (d1,d2) => (Math.min(d1, d2)) )
+    def maxOptionFloat(o1: Option[Float], o2: Option[Float]): Option[Float] = unpackValues(o1,o2, (d1,d2) => (Math.max(d1, d2)))
+    def addOptionFloat(o1: Option[Float], o2: Option[Float]): Option[Float] = unpackValues(o1,o2, (d1,d2) =>  (d1 + d2))
 
+    def unpackValues(o1: Option[Float], o2: Option[Float], calc: (Float,Float) => Float): Option[Float] = (o1, o2) match {
+        case (Some(f1), Some(f2)) => Some(calc(f1,f2))
+        case (Some(f1), None) => Some(f1)
+        case (None,Some(f2)) => Some(f2)
+        case _ => None
+    }
   }
 
   object GuiTrackMetaData {

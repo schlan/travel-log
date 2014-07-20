@@ -1,41 +1,53 @@
 /**
  * Created by basti on 6/14/14.
  */
-var map, marker;
+var map, marker, mapslayer,cloudmadeLayer;
 
-function initMap(data) {
+function initMapForSummary(data) {
+    initLeaflet()
 
-    //var googleLayerRoad = new L.Google('ROADMAP', {featureType: 'all'});
-    //var googleLayerSat = new L.Google('SATELLITE', {featureType: 'all'});
-    //var googleLayerHybrid = new L.Google('HYBRID', {featureType: 'all'});
-    //var googleLayerTerrain = new L.Google('TERRAIN', {featureType: 'all'});
+    var tracks = data["condensedTracks"]
+    var linesLayer = {}
 
-    var cloudmadeLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    })
+    for (x in tracks) {
+        var track = tracks[x]
 
-    var cycleMap = L.tileLayer('http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png', {
-        attribution: 'Tiles courtesy of <a href="http://www.opencyclemap.org/"" target="_blank">Andy Allan</a>'
-    });
+        var polyline = getPolyLine(track)
 
-    map = L.map('map', {});
+        polyline.addTo(map)
+        map.fitBounds(polyline.getBounds());
 
-    var mapsLayer = {
-        'OSM':cloudmadeLayer,
-        'Open Cycle Map':cycleMap
+        linesLayer[track['trackId']] = polyline
     }
 
-        /*,
-        'Google Satellite': googleLayerSat,
-        'Google Road': googleLayerRoad,
-        'Google Hybrid': googleLayerHybrid,
-        'Google Terrain': googleLayerTerrain
-*/
-    marker = L.marker([0, 0],{
-        clickable: true
+    var lastKnownPos = data["lastKnownPosition"]
+
+    var icon =  L.AwesomeMarkers.icon({
+        icon: 'glyphicon glyphicon-picture',
+        markerColor: 'darkred'
     })
 
+    var marker = L.marker([lastKnownPos["latitude"], lastKnownPos["longitude"]],{
+        'icon' : icon,
+        'riseOnHover':true
+
+    })
+
+
     marker.addTo(map)
+
+    linesLayer["Last known Position"] = marker
+
+    //map.setView([lastKnownPos["latitude"], lastKnownPos["longitude"]])
+
+    L.control.layers(mapslayer, linesLayer).addTo(map)
+    L.control.scale().addTo(map)
+    cloudmadeLayer.addTo(map)
+}
+
+function initMap(data) {
+    console.log("asdf")
+    initLeaflet()
 
     var linesLayer = {}
 
@@ -53,12 +65,48 @@ function initMap(data) {
     imageLayer.addTo(map)
     linesLayer["Images"] = imageLayer
 
+
     L.control.layers(mapsLayer, linesLayer).addTo(map)
     L.control.scale().addTo(map)
     cloudmadeLayer.addTo(map)
 
 }
+function initLeaflet(){
+    map = L.map('map', {});
 
+    //var googleLayerRoad = new L.Google('ROADMAP', {featureType: 'all'});
+    //var googleLayerSat = new L.Google('SATELLITE', {featureType: 'all'});
+    //var googleLayerHybrid = new L.Google('HYBRID', {featureType: 'all'});
+    //var googleLayerTerrain = new L.Google('TERRAIN', {featureType: 'all'});
+
+    cloudmadeLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    })
+
+    var cycleMap = L.tileLayer('http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png', {
+        attribution: 'Tiles courtesy of <a href="http://www.opencyclemap.org/"" target="_blank">Andy Allan</a>'
+    });
+
+
+    mapsLayer = {
+        'OSM':cloudmadeLayer,
+        'Open Cycle Map':cycleMap
+    }
+
+    marker = L.marker([0, 0],{
+        clickable: true
+    })
+
+    marker.addTo(map)
+
+    /*,
+     'Google Satellite': googleLayerSat,
+     'Google Road': googleLayerRoad,
+     'Google Hybrid': googleLayerHybrid,
+     'Google Terrain': googleLayerTerrain
+     */
+
+}
 
 function moveMarkerTo(lon, lat, elevation, datetime) {
     marker.closePopup()
@@ -107,13 +155,9 @@ function getImageMarkerGroup(images){
         }
     }
 
-    console.log(sortedImages)
-
     for(x in sortedImages){
 
         var location = sortedImages[x]
-
-
 
         var indicator = ""
         var slides = ""

@@ -31,7 +31,7 @@ object DayTours{
   }
 
   def getDayToursByDate(startDate: LocalDate, endDate: LocalDate)(implicit session: Session): Seq[DayTour] = {
-    dayTourTable.filter(_.date >= startDate).filter(_.date < endDate).list
+    dayTourTable.filter(_.date >= startDate).filter(_.date <= endDate).list
   }
 
   def getDayTourById(dayTourId: UUID)(implicit session: Session): Option[DayTour] = {

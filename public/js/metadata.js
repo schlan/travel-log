@@ -3,6 +3,26 @@
  */
 
 
+function initMetadataForSummary(data){
+    var metadata = data["summarizedMetaDataByActivity"]
+    var niceMetaData = Array()
+
+    // Merge Data
+    for(x in metadata){
+        var at = x
+        var m = metadata[x]
+
+        var nm = Array()
+        nm["Name"] = at
+
+        var formatted = makeMetaDataLookNice(m)
+        for (attr in formatted) { nm[attr] = formatted[attr]; }
+
+        niceMetaData[at] = nm
+    }
+    renderMetaDataToTable(niceMetaData)
+}
+
 function initMetadata(data){
     var niceMetaData = Array()
 
@@ -27,6 +47,12 @@ function initMetadata(data){
         }
         niceMetaData["1565165ad"] = sum
     }
+    var cols = ((data["tracks"].length > 1) ? data["tracks"].length  + 2 : data["tracks"].length + 1)
+    renderMetaDataToTable(niceMetaData, cols)
+
+}
+
+function renderMetaDataToTable(niceMetaData, cols){
 
     // Get All Keys
     var keys = Array()
@@ -39,24 +65,23 @@ function initMetadata(data){
         }
     }
 
-    var colWidth = 100 / ((data["tracks"].length > 1) ? data["tracks"].length  + 2 : data["tracks"].length + 1);
+    var colWidth = 100 / cols
 
     var table = "<thead>" + getMetaDataTableRow("Name", niceMetaData,"th", colWidth) + "</thead>"
 
     keys.splice(keys.indexOf("Name"),1)
 
     for(key in keys){
-       table += getMetaDataTableRow(keys[key],niceMetaData, "td", colWidth)
+        table += getMetaDataTableRow(keys[key],niceMetaData, "td", colWidth)
     }
 
     $('#accordion').append($(
-        "<div class='table-responsive'>" +
+            "<div class='table-responsive'>" +
             "<table class='table table-condensed table-hover'>" +
-                table +
+            table +
             "</table>"+
-        "</div>"
+            "</div>"
     ));
-
 }
 
 function getMetaDataTableRow(key,niceMetaData, celltype, colWidth){
@@ -202,6 +227,5 @@ function numberToTwoDigits(number){
 }
 
 function round(x, n){
-    var a = Math.pow(10, n);
-    return (Math.round(x / a) * a);
+    return Math.round(x * 100) / 100
 }

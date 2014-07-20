@@ -5,7 +5,7 @@ import java.util.UUID
 
 import at.droelf.backend.DateTimeUtil
 import models._
-import org.joda.time.{DateTime, DateTimeZone, LocalDate, LocalDateTime}
+import org.joda.time._
 import parser.gpxtype.GPXTrack
 
 import scala.slick.driver.JdbcProfile
@@ -74,11 +74,12 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
     db.withTransaction{ implicit session =>
         Trips.insertTrip(Trip("Pacific Coast Tour", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.", "pacific", new LocalDate(2014,5,20),new LocalDate(2014,6,30)))
 
-        val date = new LocalDate(2014,5,20)
+        val st = new LocalDate(2014,5,20)
+        val en = new LocalDate(2014,6,30)
 
-        for(i <- 0 to 50){
+        for(i <- (0 to Days.daysBetween(st,en).getDays)){
           val id = UUID.randomUUID()
-          DayTours.insertDayTour(DayTour(date.plusDays(i),id,231321,123123))
+          DayTours.insertDayTour(DayTour(st.plusDays(i),id,231321,123123))
           DayTourMetaDatas.insert(DayTourMetaData(id,"<p><b>test</b></p>asdf bl asbasd <u>asdfasdf</u>","Sunny, rainy", "Asphalt"))
         }
 

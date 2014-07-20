@@ -25,7 +25,7 @@ object Global extends GlobalSettings {
     (classOf[AuthController] -> new AuthController(userService)),
     (classOf[AdminController] -> new AdminController(userService,adminService)),
     (classOf[ImageController] -> new ImageController(imageService, userService)),
-    (classOf[JsonController] -> new JsonController(gpxTrackService, imageService))
+    (classOf[JsonController] -> new JsonController(gpxTrackService, imageService, tripService))
   )
 
   override def getControllerInstance[A](controllerClass: Class[A]): A = {
