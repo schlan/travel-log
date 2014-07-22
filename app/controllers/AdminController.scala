@@ -4,7 +4,7 @@ import java.util.UUID
 
 import at.droelf.backend.Secured
 import at.droelf.backend.service.{AdminService, UserService}
-import models.{DayTour, DayTourMetaData, Trip}
+import models.{DayTour, Trip}
 import org.joda.time.LocalDate
 import play.api.Logger
 import play.api.data.Forms._
@@ -68,7 +68,7 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
     formWithErrors => BadRequest("Nope"), {
       case (date: LocalDate, startPoint: Int, endPoint: Int, description: String, weatherCond: String, roadCond: String) => {
         val id = UUID.randomUUID()
-        adminService.insertDayTour(DayTour(date, id, startPoint, endPoint), DayTourMetaData(id, description, weatherCond, roadCond))
+        adminService.insertDayTour(DayTour(date, id, startPoint, endPoint, description, weatherCond, roadCond))
         Redirect(routes.AdminController.tripDetails(tripId))
       }
     }

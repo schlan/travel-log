@@ -61,12 +61,7 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
 
   def getDayTour(dayTourId: UUID): Option[DayTour] = db.withTransaction{implicit session => DayTours.getDayTourById(dayTourId)}
 
-  def getDayTourMetaDataForId(dayTourId: UUID): DayTourMetaData = db.withTransaction{implicit  session => DayTourMetaDatas.getDayTourMetaDataById(dayTourId)}
-
-  def insertDayTourWithMetadata(dayTour: DayTour, dayTourMetaData: DayTourMetaData) = db.withTransaction{implicit session =>
-    DayTours.insertDayTour(dayTour)
-    DayTourMetaDatas.insert(dayTourMetaData)
-  }
+  def insertDayTour(dayTour: DayTour) = db.withTransaction{implicit session => DayTours.insertDayTour(dayTour)}
 
 
   def insertImage(image: Image) = db.withTransaction{implicit session => Images.insertImage(image)}
@@ -84,8 +79,7 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
 
         for(i <- (0 to Days.daysBetween(st,en).getDays)){
           val id = UUID.randomUUID()
-          DayTours.insertDayTour(DayTour(st.plusDays(i),id,231321,123123))
-          DayTourMetaDatas.insert(DayTourMetaData(id,"<p><b>test</b></p>asdf bl asbasd <u>asdfasdf</u>","Sunny, rainy", "Asphalt"))
+          DayTours.insertDayTour(DayTour(st.plusDays(i),id,231321,123123,"<p><b>test</b></p>asdf bl asbasd <u>asdfasdf</u>","Sunny, rainy", "Asphalt"))
         }
 
       }

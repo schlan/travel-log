@@ -6,8 +6,7 @@ import play.api.db.slick.joda.PlayJodaSupport._
 import org.joda.time.{LocalTime, LocalDate}
 import java.util.UUID
 
-case class DayTour(date: LocalDate, dayTourId: UUID, startPoint: Long, endPoint: Long)
-
+case class DayTour(date: LocalDate, dayTourId: UUID, startPoint: Long, endPoint: Long, description: String, weatherCond: String, roadCond: String)
 
 class DayTourTable(tag: Tag) extends Table[DayTour](tag, "DAY_TOUR"){
 
@@ -17,7 +16,11 @@ class DayTourTable(tag: Tag) extends Table[DayTour](tag, "DAY_TOUR"){
   def startPoint = column[Long]("DAYTOUR_START")
   def endPoint = column[Long]("DAYTOUR_END")
 
-  def * = (date, dayTourId, startPoint, endPoint) <> (DayTour.tupled, DayTour.unapply)
+  def description = column[String]("DESCRIPTION")
+  def weatherCond = column[String]("WEATHER_COND")
+  def roadCond = column[String]("ROAD_COND")
+
+  def * = (date, dayTourId, startPoint, endPoint, description, weatherCond, roadCond) <> (DayTour.tupled, DayTour.unapply)
 
   def idx = index("INDEX_DATE", date, unique = true)
 }

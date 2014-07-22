@@ -1,10 +1,9 @@
 package at.droelf.backend.service
 
 import at.droelf.backend.storage.database.DBStorageService
-import at.droelf.gui.entities.{GuiDayTourMetaData, GuiDayTour, GuiTrip}
+import at.droelf.gui.entities.{ GuiDayTour, GuiTrip}
 import java.util.UUID
 
-import models.Trip
 import org.joda.time.LocalDate
 
 class TripService(dbStorage: DBStorageService) {
@@ -17,9 +16,9 @@ class TripService(dbStorage: DBStorageService) {
   def getAllTripsForNavBar(): Seq[(String, String)] = dbStorage.getAllTrips().map(trip => (trip.shortName, trip.title))
 
 
-  def getDayToursByLocalDate(startDate: LocalDate, endDate: LocalDate): Seq[GuiDayTour] = dbStorage.getDayTourByLocalDate(startDate,endDate).map(e => GuiDayTour(e, dbStorage.getDayTourMetaDataForId(e.dayTourId)))
+  def getDayToursByLocalDate(startDate: LocalDate, endDate: LocalDate): Seq[GuiDayTour] = dbStorage.getDayTourByLocalDate(startDate,endDate).map(GuiDayTour(_))
 
-  def getDayTourById(dayTourId: UUID): Option[GuiDayTour] = dbStorage.getDayTour(dayTourId).map(e => GuiDayTour(e, dbStorage.getDayTourMetaDataForId(e.dayTourId)))
+  def getDayTourById(dayTourId: UUID): Option[GuiDayTour] = dbStorage.getDayTour(dayTourId).map(GuiDayTour(_))
 
   def insertDemoContent() = dbStorage.insertDemoTrips()
 

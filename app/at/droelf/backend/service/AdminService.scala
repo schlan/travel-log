@@ -3,7 +3,7 @@ package at.droelf.backend.service
 import java.util.UUID
 
 import at.droelf.backend.storage.database.DBStorageService
-import models.{DayTourMetaData, DayTour, Trip}
+import models.{DayTour, Trip}
 import org.joda.time.{Interval, Period, LocalDate}
 
 
@@ -41,9 +41,8 @@ class AdminService(dbStorage: DBStorageService) {
 
   def getAllDayTours(startDate: LocalDate, endDate: LocalDate) = dbStorage.getDayTourByLocalDate(startDate, endDate)
 
-  def insertDayTour(tour: DayTour, data: DayTourMetaData) = {
-    dbStorage.insertDayTourWithMetadata(tour, data)
-  }
+  def insertDayTour(dayTour: DayTour) = dbStorage.insertDayTour(dayTour)
+
 
 
   def getTrackById(trackId: UUID) = dbStorage.getTrackById(trackId)
