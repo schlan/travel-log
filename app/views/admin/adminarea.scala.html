@@ -1,4 +1,4 @@
-@(form: Form[models.Trip])(title: String, trips: Seq[models.Trip], tracks: Seq[models.Track], dayTours: Map[String, Seq[models.DayTour]])(implicit session: play.api.mvc.Session)
+@(formTrip: Form[models.Trip], formDayTour: Form[at.droelf.gui.entities.AdminDayTour])(title: String, trips: Seq[models.Trip], tracks: Seq[models.Track], dayTours: Map[String, Seq[models.DayTour]])(implicit session: play.api.mvc.Session)
 @import helper.twitterBootstrap._
 
 @tripsHtml = {
@@ -51,11 +51,11 @@
                 </div>
                 <div class="modal-body">
                 @helper.form(action = routes.AdminController.addTrip) {
-                    @helper.inputText(form("title"))
-                    @helper.inputText(form("description"))
-                    @helper.inputText(form("shortName"))
-                    @helper.inputDate(form("startDate"))
-                    @helper.inputDate(form("endDate"))
+                    @helper.inputText(formDayTour("title"))
+                    @helper.inputText(formDayTour("description"))
+                    @helper.inputText(formDayTour("shortName"))
+                    @helper.inputDate(formDayTour("startDate"))
+                    @helper.inputDate(formDayTour("endDate"))
                 </div>
 
                 <div class="modal-footer">
@@ -104,7 +104,7 @@
         <div class="panel-heading">
             <span class="panel-title">
                 DayTours
-                @*<button class="btn pull-right" data-toggle="modal" data-target="#myModal">Add Track</button>*@
+                <button class="btn pull-right" data-toggle="modal" data-target="#addDayTour">Add DayTour</button>
             </span>
 
         </div>
@@ -113,7 +113,7 @@
                 <tr>
                     <th>Trip Name</th>
                     <th>Date</th>
-                    <th>Start Point</th>
+                    <th>Start/End Point</th>
                     <th>Start End</th>
                     <th>ID</th>
                 </tr>
@@ -134,6 +134,35 @@
 
         </div>
     </div>
+
+
+
+    <div class="modal fade" id="addDayTour" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Add Tour</h4>
+                </div>
+                <div class="modal-body">
+                @helper.form(action = routes.AdminController.addDayTour) {
+                    @helper.inputDate(formDayTour("date"))
+                    @helper.inputText(formDayTour("startPoint"))
+                    @helper.inputText(formDayTour("endPoint"))
+                    @helper.inputText(formDayTour("description"))
+                    @helper.inputText(formDayTour("weatherCond"))
+                    @helper.inputText(formDayTour("roadCond"))
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-default" type="submit">Submit</button>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+
 }
 
 @images = {

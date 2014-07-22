@@ -3,14 +3,18 @@ package at.droelf.backend.service
 import java.util.UUID
 
 import at.droelf.backend.storage.database.DBStorageService
+import at.droelf.gui.entities.AdminDayTour
 import models.{DayTour, Trip}
 import org.joda.time.{Interval, Period, LocalDate}
 
 
 class AdminService(dbStorage: DBStorageService) {
 
-
   def getAllTrips = dbStorage.getAllTrips()
+  def updateTrip(trip: Trip) = dbStorage.updateTrip(trip)
+  def insertTrip(trip: Trip) = dbStorage.insertTrip(trip)
+
+
 
   def getAllTracks = dbStorage.getAllTracks()
 
@@ -35,13 +39,23 @@ class AdminService(dbStorage: DBStorageService) {
 
 
 
-  def insertTrip(trip: Trip) = dbStorage.insertTrip(trip)
+
 
   def getTripById(id: String) = dbStorage.getTripById(id)
 
   def getAllDayTours(startDate: LocalDate, endDate: LocalDate) = dbStorage.getDayTourByLocalDate(startDate, endDate)
 
-  def insertDayTour(dayTour: DayTour) = dbStorage.insertDayTour(dayTour)
+  def insertDayTour(dayTour: AdminDayTour) = dbStorage.insertDayTour(
+    DayTour(
+      dayTour.date,
+      dbStorage.getRandomId,
+      dayTour.startPoint,
+      dayTour.endPoint,
+      dayTour.description,
+      dayTour.weatherCond,
+      dayTour.roadCond)
+  )
+
 
 
 

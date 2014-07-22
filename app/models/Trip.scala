@@ -31,6 +31,7 @@ class TripTable(tag: Tag) extends Table[Trip](tag, "TRIP") {
 
 object Trips{
 
+
   val tripTable = TableQuery[TripTable]
 
   def insertTrip(trip: Trip)(implicit session: Session) = {
@@ -39,6 +40,10 @@ object Trips{
 
   def getAllTrips()(implicit session: Session): Seq[Trip] = {
     tripTable.list
+  }
+
+  def updateTrip(trip: Trip)(implicit session: Session) = {
+    tripTable.filter(_.shortName === trip.shortName).update(trip)
   }
 
   def getTripById(tripId: String)(implicit session: Session): Option[Trip] = {

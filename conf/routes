@@ -25,8 +25,9 @@ GET         /admin/trip/:trip                          @controllers.AdminControl
 GET         /admin/track/:track                        @controllers.AdminController.trackDetails(track)
 
 POST        /admin/api/trip/addTrip                    @controllers.AdminController.addTrip
-POST        /admin/api/daytour/addDayTour              @controllers.AdminController.addDayTour(trip)
-#TODO fix it
+POST        /admin/api/trip/updateTrip                 @controllers.AdminController.updateTrip
+POST        /admin/api/daytour/addDayTour              @controllers.AdminController.addDayTour
+
 POST        /admin/api/track/deleteTrack/:track        @controllers.AdminController.deleteTrack(track)
 
 # auth

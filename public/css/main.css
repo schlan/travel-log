@@ -30,7 +30,11 @@ body {
 
     .toggleDaysMobile {
         top:50px;
-        z-index: 1;
+        z-index: 10000;
+    }
+
+    .toggleMenu{
+        z-index: 20000;
     }
 
     body{

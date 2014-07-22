@@ -54,6 +54,8 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
 
   def insertTrip(trip: Trip) = db.withTransaction{implicit session => Trips.insertTrip(trip)}
 
+  def updateTrip(trip: Trip) = db.withTransaction{implicit session => Trips.updateTrip(trip)}
+
 
   def getAllDayTours(): Seq[DayTour] = db.withTransaction{implicit session => DayTours.getAllDayTours }
 
@@ -86,7 +88,7 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
   }
 
   // TODO auslagern!
-  private def getRandomId = UUID.randomUUID()
+  def getRandomId = UUID.randomUUID()
 
   private def gpxTrackToTrackMetaData(id: UUID, track: GPXTrack): TrackMetaData = (track.trackStatsExtension, track.trackExtension) match{
       case (Some(trackStats), Some(trackExt)) => TrackMetaData(id,track.desc,trackStats.distance,trackStats.timerTime,trackStats.totalElapsedTime,trackStats.movingTime,trackStats.stoppedTime,trackStats.movingSpeed,trackStats.maxSpeed,trackStats.maxElevation,trackStats.minElevation,trackStats.ascent,trackStats.descent,trackStats.avgAscentRate,trackStats.maxAscentRate,trackStats.avgDescentRate,trackStats.maxDescentRate,trackStats.calories,trackStats.avgHeartRate,trackStats.avgCadence,displayColorConverter(trackExt.displayColor))

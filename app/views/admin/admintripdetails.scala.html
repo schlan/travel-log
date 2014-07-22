@@ -1,11 +1,14 @@
-@(form: Form[(org.joda.time.LocalDate, Int, Int, String, String, String)])(title: String, trip: Trip, dayTours: Seq[DayTour])(implicit session: play.api.mvc.Session)
+@(formEditTrip: Form[models.Trip])(title: String, trip: Trip)(implicit session: play.api.mvc.Session)
 @import helper.twitterBootstrap._
 
 @admin("Adminarea")  {
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Trip: @trip.title</h3>
+            <h3 class="panel-title">
+                Trip: @trip.title
+                <button class="btn pull-right" data-toggle="modal" data-target="#editTrip">Edit</button>
+            </h3>
         </div>
         <div class="panel-body">
             <dl>
@@ -24,48 +27,29 @@
         </div>
     </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Add DayTour</h3>
-        </div>
-        <div class="panel-body">
-            @helper.form(action = routes.AdminController.addDayTour(trip.shortName)) {
-                @helper.inputDate(form("date"))
-                @helper.inputText(form("startPoint"))
-                @helper.inputText(form("endPoint"))
-                @helper.inputText(form("description"))
-                @helper.inputText(form("weatherCond"))
-                @helper.inputText(form("roadCond"))
-                <input type="submit" value="Submit">
-            }
 
-        </div>
-    </div>
+    <div class="modal fade" id="editTrip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Add Tour</h4>
+                </div>
+                <div class="modal-body">
+                @helper.form(action = routes.AdminController.updateTrip) {
+                    @helper.inputText(formEditTrip("title"))
+                    @helper.inputText(formEditTrip("description"))
+                    @helper.inputText(formEditTrip("shortName"))
+                    @helper.inputDate(formEditTrip("startDarte"))
+                    @helper.inputDate(formEditTrip("endDate"))
+                </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Daytours</h3>
-        </div>
-        <div class="panel-body">
-
-            <table class="table table-hover">
-                    <tr>
-                        <th>Date</th>
-                        <th>Tourd ID</th>
-                        <th>Start Point</th>
-                        <th>End Point</th>
-
-                    </tr>
-                @for(dayTour <- dayTours){
-                    <tr class="clickableRow" href="#">
-                        <td>@dayTour.date.toString</td>
-                        <td>@dayTour.dayTourId</td>
-                        <td>@dayTour.startPoint</td>
-                        <td>@dayTour.endPoint</td>
-                    </tr>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-default" type="submit">Submit</button>
+                </div>
                 }
-            </table>
-
+            </div>
         </div>
     </div>
 

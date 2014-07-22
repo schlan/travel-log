@@ -45,3 +45,11 @@ object DayTours{
 
   def getAllDayTours(implicit session: Session): Seq[DayTour] = dayTourTable.list
 }
+
+//
+//object DayTour{
+//  def apply(date: LocalDate, startPoint: Long, endPoint: Long, description: String, weatherCond: String, roadCond: String) {
+//    DayTour(date, UUID.randomUUID(), startPoint, endPoint, description, weatherCond, roadCond)
+//  }
+//  def unapply()
+//}
