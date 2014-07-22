@@ -39,4 +39,6 @@ object DayTours{
     if(dayTours.isEmpty) None
     else Some(dayTours.head)
   }
+
+  def getAllDayTours(implicit session: Session): Seq[DayTour] = dayTourTable.list
 }

@@ -9,17 +9,6 @@ function initMapForSummary(data) {
     var tracks = data["condensedTracks"]
     var linesLayer = {}
 
-    for (x in tracks) {
-        var track = tracks[x]
-
-        var polyline = getPolyLine(track)
-
-        polyline.addTo(map)
-        map.fitBounds(polyline.getBounds());
-
-        linesLayer[track['trackId']] = polyline
-    }
-
     var lastKnownPos = data["lastKnownPosition"]
 
     var icon =  L.AwesomeMarkers.icon({
@@ -33,12 +22,22 @@ function initMapForSummary(data) {
 
     })
 
-
     marker.addTo(map)
 
-    linesLayer["Last known Position"] = marker
 
-    //map.setView([lastKnownPos["latitude"], lastKnownPos["longitude"]])
+    for (x in tracks) {
+        var track = tracks[x]
+
+        var polyline = getPolyLine(track)
+
+        polyline.addTo(map)
+        map.fitBounds(polyline.getBounds());
+
+        linesLayer[track['trackId']] = polyline
+    }
+
+
+    linesLayer["Last known Position"] = marker
 
     L.control.layers(mapslayer, linesLayer).addTo(map)
     L.control.scale().addTo(map)

@@ -15,7 +15,6 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
   val db = new DBConnection(profile).dbObject()
 
   def saveTracks(tracks: List[GPXTrack], dateTimeZone: DateTimeZone, activity: String) = {
-
     db.withTransaction{ implicit session =>
       tracks.foreach { track =>
         val id = getRandomId
@@ -24,10 +23,8 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
 
         track.trackSegments.foreach{ trkSeg =>
           trkSeg.trackPoints.foreach{ wpt =>
-
             val time = dateTimeToUtcLocalTime(DateTime.parse(wpt.time.get))
             TrackPoints.insertIfNotExists(TrackPoint(id, wpt.latitude, wpt.longitude, wpt.ele.getOrElse(0), time, dateTimeZone))
-
           }
         }
       }
@@ -44,6 +41,11 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
 
   def getMetaDataForTrackId(trackId: UUID) = db.withTransaction{implicit  session => TrackMetaDatas.getTrackMetaDataForTrackId(trackId)}
 
+  def deleteTrack(trackId: UUID) = db.withTransaction{implicit  session =>
+    TrackPoints.deleteTrackPoints(trackId)
+    TrackMetaDatas.deleteTrackMetaData(trackId)
+    Tracks.deleteTrack(trackId)
+  }
 
 
   def getAllTrips(): Seq[Trip] = db.withTransaction{implicit session => Trips.getAllTrips()}
@@ -52,6 +54,8 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
 
   def insertTrip(trip: Trip) = db.withTransaction{implicit session => Trips.insertTrip(trip)}
 
+
+  def getAllDayTours(): Seq[DayTour] = db.withTransaction{implicit session => DayTours.getAllDayTours }
 
   def getDayTourByLocalDate(startDate: LocalDate, endDate: LocalDate): Seq[DayTour] =  db.withTransaction{implicit session => DayTours.getDayToursByDate(startDate, endDate)}
 
@@ -63,6 +67,7 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
     DayTours.insertDayTour(dayTour)
     DayTourMetaDatas.insert(dayTourMetaData)
   }
+
 
   def insertImage(image: Image) = db.withTransaction{implicit session => Images.insertImage(image)}
 

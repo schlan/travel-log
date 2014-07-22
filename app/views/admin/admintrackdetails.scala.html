@@ -1,0 +1,61 @@
+@(track: models.Track, metdata: models.TrackMetaData, trackPoints: Seq[models.TrackPoint])(implicit session: play.api.mvc.Session)
+@import helper.twitterBootstrap._
+
+@admin("Adminarea")  {
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Track: @track.name</h3>
+        </div>
+        <div class="panel-body">
+            <dl>
+                <dt>Name</dt>
+                <dd>@track.name</dd>
+                <dt>TrackId</dt>
+                <dd>@track.trackId</dd>
+                <dt>Activity</dt>
+                <dd>@track.activity</dd>
+            </dl>
+
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Metdata</h3>
+        </div>
+        <div class="panel-body">
+            @metdata.toString
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">TrackPoints</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>TrackId</th>
+                    <th>Lon</th>
+                    <th>Lat</th>
+                    <th>Elevation</th>
+                    <th>DateTime</th>
+                    <th>Timezone</th>
+                </tr>
+                @for(trackPt <- trackPoints){
+                    <tr class="clickableRow" href="#">
+                        <td>@trackPt.trackId</td>
+                        <td>@trackPt.longitude</td>
+                        <td>@trackPt.latitude</td>
+                        <td>@trackPt.elevation</td>
+                        <td>@trackPt.dateTime</td>
+                        <td>@trackPt.dateTimeZone</td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+
+}

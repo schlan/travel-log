@@ -38,7 +38,7 @@ object Trips{
   }
 
   def getAllTrips()(implicit session: Session): Seq[Trip] = {
-    return tripTable.list
+    tripTable.list
   }
 
   def getTripById(tripId: String)(implicit session: Session): Option[Trip] = {

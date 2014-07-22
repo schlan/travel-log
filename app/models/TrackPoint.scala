@@ -38,4 +38,8 @@ object TrackPoints {
 
   def getTrackPointsForTrack(trackId: UUID)(implicit session: Session): Seq[TrackPoint] = return trackPointTable.filter(_.trackId === trackId).list
 
+  def deleteTrackPoints(trackId: UUID)(implicit session: Session) = {
+    trackPointTable.filter(_.trackId === trackId).delete
+  }
+
 }

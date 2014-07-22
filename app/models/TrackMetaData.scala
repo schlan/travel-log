@@ -66,4 +66,8 @@ object TrackMetaDatas{
     trackMetDataTable.filter(_.trackId === trackId).list.head
   }
 
+  def deleteTrackMetaData(trackId: UUID)(implicit session: Session) = {
+    trackMetDataTable.filter(_.trackId === trackId).delete
+  }
+
 }

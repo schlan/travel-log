@@ -57,4 +57,8 @@ object Tracks{
     return q.distinct
   }
 
+  def deleteTrack(trackId: UUID)(implicit session: Session) = {
+    trackTable.filter(_.trackId === trackId).delete
+  }
+
 }

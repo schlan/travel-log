@@ -21,9 +21,13 @@ GET         /api/images/getImage/:name                 @controllers.ImageControl
 
 # admin 2
 GET         /admin                                     @controllers.AdminController.index
-GET         /admin/edit/:trip                          @controllers.AdminController.tripDetails(trip)
-POST        /admin/trip/addTrip                        @controllers.AdminController.addTrip
-POST        /admin/dayTour/addDayTour/:trip            @controllers.AdminController.addDayTour(trip)
+GET         /admin/trip/:trip                          @controllers.AdminController.tripDetails(trip)
+GET         /admin/track/:track                        @controllers.AdminController.trackDetails(track)
+
+POST        /admin/api/trip/addTrip                    @controllers.AdminController.addTrip
+POST        /admin/api/daytour/addDayTour              @controllers.AdminController.addDayTour(trip)
+#TODO fix it
+POST        /admin/api/track/deleteTrack/:track        @controllers.AdminController.deleteTrack(track)
 
 # auth
 GET         /admin/login                               @controllers.AuthController.login

@@ -6,16 +6,19 @@ import at.droelf.backend.Secured
 import at.droelf.backend.service.{AdminService, UserService}
 import models.{DayTour, DayTourMetaData, Trip}
 import org.joda.time.LocalDate
+import play.api.Logger
 import play.api.data.Forms._
 import play.api.data._
 import play.api.mvc.Controller
+
+import scala.util.{Success, Failure, Try}
 
 class AdminController(userSer: UserService, adminService: AdminService) extends Controller with Secured {
 
   override val userService: UserService = userSer
 
   def index = withAuth { username => implicit request =>
-    Ok(views.html.admin.adminarea(addTripForm)(username, adminService.getAllTrips))
+    Ok(views.html.admin.adminarea(addTripForm)(username, adminService.getAllTrips, adminService.getAllTracks, adminService.getAllDayTours))
   }
 
 
@@ -29,7 +32,6 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
     )(Trip.apply)(Trip.unapply)
   )
 
-
   def addTrip = withAuth { username => implicit request =>
     addTripForm.bindFromRequest.fold(
       formWithErrors => BadRequest("Nope"),
@@ -42,13 +44,13 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
 
   def tripDetails(id: String) = withAuth { username => implicit request =>
     val trip = adminService.getTripById(id)
-
     trip match {
       case Some(x) => Ok(views.html.admin.admintripdetails(addDayTourForm)(username, x, adminService.getAllDayTours(x.startDate,x.endDate)))
       case None => BadRequest
     }
-
   }
+
+
 
   val addDayTourForm = Form(
     tuple(
@@ -71,6 +73,35 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
       }
     }
     )
+  }
+
+  /* tracks */
+
+  def trackDetails(id: String) = withAuth{ username => implicit request =>
+    val trackId = Try(UUID.fromString(id))
+    trackId match {
+      case Success(tId) => {
+        adminService.getTrackById(tId) match {
+          case Some(track) => Ok(views.html.admin.admintrackdetails(track,adminService.getTrackMetadata(track.trackId),adminService.getTrackPoints(track.trackId)))
+          case None => NotFound
+        }
+
+      }
+      case Failure(e) => NotFound
+    }
+  }
+
+  def deleteTrack(id: String) = withAuth { username => implicit request =>
+    val trackId = Try(UUID.fromString(id))
+    trackId match {
+      case Success(tID) => {
+        Logger.info("delete track: " + trackId)
+        adminService.deleteCompleteTrack(tID)
+        Redirect(routes.AdminController.index())
+      }
+      case Failure(e) => NotFound
+    }
+
   }
 
 }

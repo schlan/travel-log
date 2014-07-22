@@ -1,5 +1,145 @@
-@(form: Form[models.Trip])(title: String, trips: Seq[models.Trip])(implicit session: play.api.mvc.Session)
+@(form: Form[models.Trip])(title: String, trips: Seq[models.Trip], tracks: Seq[models.Track], dayTours: Map[String, Seq[models.DayTour]])(implicit session: play.api.mvc.Session)
 @import helper.twitterBootstrap._
+
+@tripsHtml = {
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="panel-title">
+                Trips
+                <button class="btn pull-right" data-toggle="modal" data-target="#myModal">Add Trip</button>
+            </span>
+
+        </div>
+        <div class="panel-body">
+
+
+            <table class="table table-hover">
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Short Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                </tr>
+                @for(trip <- trips){
+                    <tr class="clickableRow" href="/admin/trip/@trip.shortName">
+                        <td nowrap>@trip.title</td>
+                        <td>
+                        @if(trip.description.length > 100) {
+                            @trip.description.substring(0, 100) ...
+                        }else{
+                            @trip.description
+                        }
+                        </td>
+                        <td>@trip.shortName</td>
+                        <td style="min-width: 100px">@trip.startDate.toString</td>
+                        <td style="min-width: 100px">@trip.endDate.toString</td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Add Tour</h4>
+                </div>
+                <div class="modal-body">
+                @helper.form(action = routes.AdminController.addTrip) {
+                    @helper.inputText(form("title"))
+                    @helper.inputText(form("description"))
+                    @helper.inputText(form("shortName"))
+                    @helper.inputDate(form("startDate"))
+                    @helper.inputDate(form("endDate"))
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-default" type="submit">Submit</button>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@tracksHtml = {
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="panel-title">
+                Tracks
+                @*<button class="btn pull-right" data-toggle="modal" data-target="#myModal">Add Track</button>*@
+            </span>
+
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Name</th>
+                    <th>Id</th>
+                    <th>Activity</th>
+                </tr>
+                @for(track <- tracks){
+                    <tr class="clickableRow" href="/admin/track/@track.trackId">
+                        <td nowrap>@track.name</td>
+                        <td>@track.trackId</td>
+                        <td>@track.activity</td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+    </div>
+
+}
+
+@dayToursHtml = {
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="panel-title">
+                DayTours
+                @*<button class="btn pull-right" data-toggle="modal" data-target="#myModal">Add Track</button>*@
+            </span>
+
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Trip Name</th>
+                    <th>Date</th>
+                    <th>Start Point</th>
+                    <th>Start End</th>
+                    <th>ID</th>
+                </tr>
+
+                @for((tripName, listOfDayTours) <- dayTours) {
+                    @for(dayTour <- listOfDayTours){
+                        <tr class="clickableRow" href="#">
+                            <td nowrap>@tripName</td>
+                            <td>@dayTour.date.toString</td>
+                            <td>@dayTour.startPoint</td>
+                            <td>@dayTour.endPoint</td>
+                            <td>@dayTour.dayTourId</td>
+                        </tr>
+                    }
+                }
+
+            </table>
+
+        </div>
+    </div>
+}
+
+@images = {
+
+}
+
 
 @admin("Adminarea")  {
 
@@ -15,72 +155,10 @@
     <p>Hallo @session.get("username")!</p>
     <br />
 
+    @tripsHtml
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <span class="panel-title">
-                Trips
-                <button class="btn pull-right" data-toggle="modal" data-target="#myModal">Add Trip</button>
-            </span>
+    @dayToursHtml
 
-        </div>
-        <div class="panel-body">
-
-
-            <table class="table table-hover">
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Short Name</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                    </tr>
-                @for(trip <- trips){
-                    <tr class="clickableRow" href="/admin/edit/@trip.shortName">
-                        <td nowrap>@trip.title</td>
-                        <td>
-                            @if(trip.description.length > 100) {
-                                @trip.description.substring(0, 100) ...
-                            }else{
-                                @trip.description
-                            }
-                        </td>
-                        <td>@trip.shortName</td>
-                        <td style="min-width: 100px">@trip.startDate.toString</td>
-                        <td style="min-width: 100px">@trip.endDate.toString</td>
-                    </tr>
-                }
-            </table>
-
-
-
-        </div>
-    </div>
-
-
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Add Tour</h4>
-                </div>
-                <div class="modal-body">
-                    @helper.form(action = routes.AdminController.addTrip) {
-                        @helper.inputText(form("title"))
-                        @helper.inputText(form("description"))
-                        @helper.inputText(form("shortName"))
-                        @helper.inputDate(form("startDate"))
-                        @helper.inputDate(form("endDate"))
-                        <input type="submit" value="Submit">
-                    }
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-
-
+    @tracksHtml
 
 }

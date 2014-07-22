@@ -61,6 +61,8 @@ class JsonController(gpxTrackService: GpxTrackService, imageService: ImageServic
         val latestTrkPt = getLatestTrackPoint(sortedDate)
         val metadata = getSummarizedMetaData(tracks)
 
+
+
         Ok(Json.toJson(TripSummaryResponse(latestTrkPt, metadata, tracks, Seq())))
       }
       case None => NotFound
