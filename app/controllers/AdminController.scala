@@ -2,7 +2,7 @@ package controllers
 
 import java.util.UUID
 
-import at.droelf.backend.Secured
+import at.droelf.backend.{ControllerUtils, Secured}
 import at.droelf.backend.service.{AdminService, UserService}
 import at.droelf.gui.entities.AdminDayTour
 import models.{DayTour, Trip}
@@ -10,16 +10,16 @@ import org.joda.time.LocalDate
 import play.api.Logger
 import play.api.data.Forms._
 import play.api.data._
-import play.api.mvc.Controller
+import play.api.mvc.{SimpleResult, Controller}
 
 import scala.util.{Success, Failure, Try}
 
-class AdminController(userSer: UserService, adminService: AdminService) extends Controller with Secured {
+class AdminController(userSer: UserService, adminService: AdminService) extends Controller with Secured with ControllerUtils {
 
   override val userService: UserService = userSer
 
   def index = withAuth { username => implicit request =>
-    Ok(views.html.admin.adminarea(addTripForm, addDayTourForm)(username, adminService.getAllTrips, adminService.getAllTracks, adminService.getAllDayTours))
+    Ok(views.html.admin.adminarea(addTripForm, dayTourForm)(username, adminService.getAllTrips, adminService.getAllTracks, adminService.getAllDayTours))
   }
 
 
@@ -47,8 +47,7 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
     val trip = adminService.getTripById(id)
     trip match {
       case Some(x) => {
-        val form = addTripForm.fill(x)
-        Ok(views.html.admin.admintripdetails(form)(username, x))
+        Ok(views.html.admin.details.admintripdetails(addTripForm.fill(x))(username, x))
       }
       case None => BadRequest
     }
@@ -58,19 +57,27 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
     addTripForm.bindFromRequest.fold(
       formWithErrors => BadRequest("Nope"),{
         trip => {
-          Logger.info(trip.toString)
           adminService.updateTrip(trip)
           Redirect(routes.AdminController.tripDetails(trip.shortName))
         }
      })
   }
 
+  def deleteTrip(tripId: String) = withAuth { username => implicit request =>
+    adminService.deleteTrip(tripId)
+    Redirect(routes.AdminController.index)
+  }
 
-  val addDayTourForm = Form(
+  /* DayTour */
+
+  import play.api.data.format.Formats._
+  val dayTourForm = Form(
     mapping(
       "date" -> jodaLocalDate,
-      "startPoint" -> longNumber,
-      "endPoint" -> longNumber,
+      "startPointLat" -> Forms.of[Float],
+      "startPointLon" -> Forms.of[Float],
+      "endPointLat" -> Forms.of[Float],
+      "endPointLon" -> Forms.of[Float],
       "description" -> text,
       "weatherCond" -> text,
       "roadCond" -> text
@@ -78,7 +85,7 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
   )
 
   def addDayTour = withAuth { username => implicit request =>
-    addDayTourForm.bindFromRequest.fold(
+    dayTourForm.bindFromRequest.fold(
     formWithErrors => BadRequest("Nope"), {
       adminDayTour => {
         adminService.insertDayTour(adminDayTour)
@@ -87,32 +94,60 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
     })
   }
 
+  def dayTourDetails(dayTourId: String) = withAuth { username => implicit request =>
+    parseUUID(dayTourId, uuid => {
+      adminService.getDayTourById(uuid) match{
+        case Some(dayTour) => Ok(views.html.admin.details.admindaytourdetails(dayTourForm.fill(AdminDayTour(dayTour)))(dayTour))
+        case None => NotFound
+      }
+    })
+  }
+
+  def deleteDayTour(dayTourId: String) = withAuth { username => implicit request =>
+    parseUUID(dayTourId, uuid => {
+      adminService.deleteDayTour(uuid)
+      Redirect(routes.AdminController.index)
+    })
+  }
+
+  def updateDayTour(dayTourId: String) = withAuth { username => implicit request =>
+    def parseForm(uuid: UUID) = dayTourForm.bindFromRequest.fold(
+      formWithErrors => BadRequest("Nope"),
+      dayTour => {
+        adminService.updateDayTour(dayTour, uuid)
+        Redirect(routes.AdminController.dayTourDetails(uuid.toString))
+      }
+    )
+    parseUUID(dayTourId, parseForm(_))
+  }
+
   /* tracks */
 
   def trackDetails(id: String) = withAuth{ username => implicit request =>
-    val trackId = Try(UUID.fromString(id))
-    trackId match {
-      case Success(tId) => {
-        adminService.getTrackById(tId) match {
-          case Some(track) => Ok(views.html.admin.admintrackdetails(track,adminService.getTrackMetadata(track.trackId),adminService.getTrackPoints(track.trackId)))
+    parseUUID(id,
+      uuid => {
+        adminService.getTrackById(uuid) match {
+          case Some(track) => Ok(views.html.admin.details.admintrackdetails(track,adminService.getTrackMetadata(track.trackId),adminService.getTrackPoints(track.trackId)))
           case None => NotFound
         }
-      }
-      case Failure(e) => NotFound
-    }
+      })
   }
 
   def deleteTrack(id: String) = withAuth { username => implicit request =>
-    val trackId = Try(UUID.fromString(id))
-    trackId match {
-      case Success(tID) => {
-        Logger.info("delete track: " + trackId)
-        adminService.deleteCompleteTrack(tID)
+    parseUUID(id,
+      uuid => {
+        Logger.info("delete track: " + uuid)
+        adminService.deleteCompleteTrack(uuid)
         Redirect(routes.AdminController.index())
-      }
-      case Failure(e) => NotFound
-    }
-
+     })
   }
+
+  def insertDemoData = withAuth { username => implicit request =>
+    adminService.insertDemoData
+    Redirect(routes.AdminController.index())
+  }
+
+
+
 
 }

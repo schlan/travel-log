@@ -24,7 +24,7 @@
        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Trips<b class="caret"></b></a>
        <ul class="dropdown-menu">
             @for((id, name) <- trips){
-                <li><a href="/@id">@name</a></li>
+                <li><a href="@routes.TripController.getTripById(id)">@name</a></li>
             }
         </ul>
     </li>
@@ -55,7 +55,7 @@
                     @content
 
                     <div class="col-lg-3 col-lg-offset-9 col-md-10 col-md-offset-2 col-sm-12 col-xs-12 sidebar-right">
-                    @metadata
+                        @metadata
                     </div>
 
                 </div>

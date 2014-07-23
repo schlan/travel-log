@@ -1,0 +1,65 @@
+@(formDayTour: Form[at.droelf.gui.entities.AdminDayTour])(dayTour: models.DayTour)(implicit session: play.api.mvc.Session)
+@import helper.twitterBootstrap._
+
+@admin.admin("Adminarea") {
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                DayTour: @dayTour.date
+                <button class="btn pull-right" data-toggle="modal" data-target="#editDayTour">Edit</button>
+                <form class="pull-right" action="@routes.AdminController.deleteDayTour(dayTour.dayTourId.toString)" method="POST">
+                    <button class="btn" type="submit">Delete</button>
+                </form>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <dl>
+                <dt>Date</dt>
+                <dd>@dayTour.date.toString</dd>
+                <dt>Id</dt>
+                <dd>@dayTour.dayTourId</dd>
+                <dt>Description</dt>
+                <dd>@dayTour.description</dd>
+                <dt>Fallback Startpoint</dt>
+                <dd>@dayTour.startPointLat @dayTour.startPointLon</dd>
+                <dt>Fallback Endpoint</dt>
+                <dd>@dayTour.endPointLat @dayTour.endPointLon</dd>
+                <dt>Road Cond</dt>
+                <dd>@dayTour.roadCond</dd>
+                <dt>Weather Cond</dt>
+                <dd>@dayTour.weatherCond</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editDayTour" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Add Tour</h4>
+                </div>
+                <div class="modal-body">
+                @helper.form(action = routes.AdminController.updateDayTour(dayTour.dayTourId.toString)) {
+                    @helper.inputDate(formDayTour("date"))
+                    @helper.inputText(formDayTour("startPointLat"))
+                    @helper.inputText(formDayTour("startPointLon"))
+                    @helper.inputText(formDayTour("endPointLat"))
+                    @helper.inputText(formDayTour("endPointLon"))
+                    @helper.inputText(formDayTour("description"))
+                    @helper.inputText(formDayTour("weatherCond"))
+                    @helper.inputText(formDayTour("roadCond"))
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-default" type="submit">Submit</button>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+}

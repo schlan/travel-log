@@ -2,7 +2,7 @@
 
     <ul class="nav nav-sidebar" >
         <li>
-            <a href="/@guiTrip.shortName">
+            <a href="@routes.TripController.getTripById(guiTrip.shortName)">
                 <h5>Overview</h5>
             </a>
         </li>
@@ -14,11 +14,12 @@
                 } else {
                 <li>
                 }
-            <a href="/@guiTrip.shortName/@dT.dayTourId">
+            <a href="@routes.TripController.getDayTour(guiTrip.shortName,dT.dayTourId.toString)">
                 <h4>
-                        Day @(index + 1) <br />
+                    Day @(index + 1)
+                    <br />
                     <small>(@dT.date.toString("dd. MMMM YYYY"))</small>
-                    </h4>
+                </h4>
             </a>
         </li>
 

@@ -1,5 +1,7 @@
 package models
 
+import java.util.UUID
+
 import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.joda.PlayJodaSupport
 import play.api.db.slick.joda.PlayJodaSupport._
@@ -31,7 +33,6 @@ class TripTable(tag: Tag) extends Table[Trip](tag, "TRIP") {
 
 object Trips{
 
-
   val tripTable = TableQuery[TripTable]
 
   def insertTrip(trip: Trip)(implicit session: Session) = {
@@ -52,5 +53,8 @@ object Trips{
     else Some(trips.head)
   }
 
+  def deleteTrip(tripId: String)(implicit session: Session) = {
+    tripTable.filter(_.shortName === tripId).delete
+  }
 
 }

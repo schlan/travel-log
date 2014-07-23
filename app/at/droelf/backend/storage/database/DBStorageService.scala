@@ -12,6 +12,8 @@ import scala.slick.driver.JdbcProfile
 
 class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) extends DateTimeUtil{
 
+
+
   val db = new DBConnection(profile).dbObject()
 
   def saveTracks(tracks: List[GPXTrack], dateTimeZone: DateTimeZone, activity: String) = {
@@ -56,6 +58,8 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
 
   def updateTrip(trip: Trip) = db.withTransaction{implicit session => Trips.updateTrip(trip)}
 
+  def deleteTrip(tripId: String) = db.withTransaction{implicit session => Trips.deleteTrip(tripId)}
+
 
   def getAllDayTours(): Seq[DayTour] = db.withTransaction{implicit session => DayTours.getAllDayTours }
 
@@ -64,6 +68,11 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
   def getDayTour(dayTourId: UUID): Option[DayTour] = db.withTransaction{implicit session => DayTours.getDayTourById(dayTourId)}
 
   def insertDayTour(dayTour: DayTour) = db.withTransaction{implicit session => DayTours.insertDayTour(dayTour)}
+
+  def updateDayTour(dayTour: DayTour) = db.withTransaction{implicit session => DayTours.updateDayTour(dayTour)}
+
+  def deleteDayTour(dayTourId: UUID) = db.withTransaction{implicit session => DayTours.deleteDayTour(dayTourId)}
+
 
 
   def insertImage(image: Image) = db.withTransaction{implicit session => Images.insertImage(image)}
@@ -81,7 +90,7 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
 
         for(i <- (0 to Days.daysBetween(st,en).getDays)){
           val id = UUID.randomUUID()
-          DayTours.insertDayTour(DayTour(st.plusDays(i),id,231321,123123,"<p><b>test</b></p>asdf bl asbasd <u>asdfasdf</u>","Sunny, rainy", "Asphalt"))
+          DayTours.insertDayTour(DayTour(st.plusDays(i),id,123.1F,321.1F,456.7F,657.4F,"<p><b>test</b></p>asdf bl asbasd <u>asdfasdf</u>","Sunny, rainy", "Asphalt"))
         }
 
       }

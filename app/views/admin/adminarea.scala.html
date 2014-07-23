@@ -26,7 +26,7 @@
                         <td nowrap>@trip.title</td>
                         <td>
                         @if(trip.description.length > 100) {
-                            @trip.description.substring(0, 100) ...
+                            @trip.description.substring(0, 99) ...
                         }else{
                             @trip.description
                         }
@@ -74,7 +74,6 @@
         <div class="panel-heading">
             <span class="panel-title">
                 Tracks
-                @*<button class="btn pull-right" data-toggle="modal" data-target="#myModal">Add Track</button>*@
             </span>
 
         </div>
@@ -113,19 +112,29 @@
                 <tr>
                     <th>Trip Name</th>
                     <th>Date</th>
-                    <th>Start/End Point</th>
-                    <th>Start End</th>
-                    <th>ID</th>
+                    <th>Fallback Start Point</th>
+                    <th>Fallback End Point</th>
+                    <th>Description</th>
+                    <th>Weather Cond</th>
+                    <th>Road Cond</th>
                 </tr>
 
                 @for((tripName, listOfDayTours) <- dayTours) {
                     @for(dayTour <- listOfDayTours){
-                        <tr class="clickableRow" href="#">
+                        <tr class="clickableRow" href="@routes.AdminController.dayTourDetails(dayTour.dayTourId.toString)">
                             <td nowrap>@tripName</td>
-                            <td>@dayTour.date.toString</td>
-                            <td>@dayTour.startPoint</td>
-                            <td>@dayTour.endPoint</td>
-                            <td>@dayTour.dayTourId</td>
+                            <td nowrap>@dayTour.date.toString</td>
+                            <td>@dayTour.startPointLat/@dayTour.startPointLon</td>
+                            <td>@dayTour.endPointLat/@dayTour.endPointLon</td>
+                            <td>
+                            @if(dayTour.description.length > 20) {
+                                @dayTour.description.substring(0, 19) ...
+                            }else{
+                                @dayTour.description
+                            }
+                            </td>
+                            <td>@dayTour.weatherCond</td>
+                            <td>@dayTour.roadCond</td>
                         </tr>
                     }
                 }
@@ -147,8 +156,10 @@
                 <div class="modal-body">
                 @helper.form(action = routes.AdminController.addDayTour) {
                     @helper.inputDate(formDayTour("date"))
-                    @helper.inputText(formDayTour("startPoint"))
-                    @helper.inputText(formDayTour("endPoint"))
+                    @helper.inputText(formDayTour("startPointLat"))
+                    @helper.inputText(formDayTour("startPointLon"))
+                    @helper.inputText(formDayTour("endPointLat"))
+                    @helper.inputText(formDayTour("endPointLon"))
                     @helper.inputText(formDayTour("description"))
                     @helper.inputText(formDayTour("weatherCond"))
                     @helper.inputText(formDayTour("roadCond"))
@@ -165,7 +176,7 @@
 
 }
 
-@images = {
+@imagesHtml = {
 
 }
 
@@ -189,5 +200,9 @@
     @dayToursHtml
 
     @tracksHtml
+
+    <form action="@routes.AdminController.insertDemoData" method="POST">
+        <button type="submit" class="btn">Insert Demo Data</button>
+    </form>
 
 }

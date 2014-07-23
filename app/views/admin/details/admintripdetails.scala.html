@@ -1,13 +1,16 @@
 @(formEditTrip: Form[models.Trip])(title: String, trip: Trip)(implicit session: play.api.mvc.Session)
 @import helper.twitterBootstrap._
 
-@admin("Adminarea")  {
+@admin.admin("Adminarea")  {
 
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
                 Trip: @trip.title
                 <button class="btn pull-right" data-toggle="modal" data-target="#editTrip">Edit</button>
+                <form class="pull-right" action="@routes.AdminController.deleteTrip(trip.shortName)" method="POST">
+                    <button class="btn" type="submit">Delete</button>
+                </form>
             </h3>
         </div>
         <div class="panel-body">
@@ -23,7 +26,6 @@
                 <dt>End Date</dt>
                 <dd>@trip.endDate</dd>
             </dl>
-
         </div>
     </div>
 
@@ -40,10 +42,9 @@
                     @helper.inputText(formEditTrip("title"))
                     @helper.inputText(formEditTrip("description"))
                     @helper.inputText(formEditTrip("shortName"))
-                    @helper.inputDate(formEditTrip("startDarte"))
+                    @helper.inputDate(formEditTrip("startDate"))
                     @helper.inputDate(formEditTrip("endDate"))
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button class="btn btn-default" type="submit">Submit</button>

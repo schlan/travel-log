@@ -2,7 +2,7 @@ function initImages(data) {
 
     var images = data["images"]
 
-    var markup = "<div class='row'>"
+    var markup = ""
 
     for (x in images) {
 
@@ -30,7 +30,7 @@ function initImages(data) {
 //        )
     }
 
-    markup += "</div>"
+
     $("#images").append(markup)
 
 }

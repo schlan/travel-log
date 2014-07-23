@@ -1,7 +1,7 @@
 @(track: models.Track, metdata: models.TrackMetaData, trackPoints: Seq[models.TrackPoint])(implicit session: play.api.mvc.Session)
 @import helper.twitterBootstrap._
 
-@admin("Adminarea")  {
+@admin.admin("Adminarea")  {
 
     <div class="panel panel-default">
         <div class="panel-heading">

@@ -1,45 +1,29 @@
 package controllers
 
-import java.util.UUID
-
+import at.droelf.backend.ControllerUtils
 import at.droelf.backend.service.{ImageService, TripService}
 import play.api.mvc.{Action, Controller}
 
 import scala.util.{Failure, Success, Try}
 
-class TripController(tripService: TripService, imageService: ImageService) extends Controller  {
+class TripController(tripService: TripService, imageService: ImageService) extends Controller with ControllerUtils {
 
 
   def getTripById(tripId: String) = Action {
     tripService.getTripById(tripId) match {
-      case Some(trip) => Ok(views.html.tour.touroverview("Tracks:", tripService.getAllTripsForNavBar, trip))
+      case Some(trip) => Ok(views.html.tour.touroverview(trip.title, tripService.getAllTripsForNavBar, trip))
       case None => NotFound("getTripById: Err0r: Not found :(")
     }
 
   }
 
   def getDayTour(tripId: String, dayTourId: String) = Action {
-
-      val uuid = Try(UUID.fromString(dayTourId))
-
-      uuid match {
-        case Success(dId) =>{
-          (tripService.getTripById(tripId), tripService.getDayTourById(dId)) match {
-            case (Some(trip), Some(dayTour)) => {
-              Ok(views.html.tour.tour("DayTour:", tripService.getAllTripsForNavBar(),trip, dayTour))
-            }
-            case (_, _) => NotFound("getDayTour: Err0r: Not found :(")
-          }
+    parseUUID(dayTourId,
+      uuid => {
+        (tripService.getTripById(tripId), tripService.getDayTourById(uuid)) match {
+          case (Some(trip), Some(dayTour)) => Ok(views.html.tour.tour(trip.title + ": " +dayTour.date.toString, tripService.getAllTripsForNavBar(),trip, dayTour))
+          case (_, _) => NotFound("getDayTour: Err0r: Not found :(")
         }
-        case Failure(e) => NotFound
-      }
+    })
   }
-
-
-
-  def insertDemoTrip() = Action{
-    tripService.insertDemoContent()
-    Ok("Demo Trips Added")
-  }
-
 }

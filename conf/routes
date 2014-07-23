@@ -9,8 +9,7 @@ GET         /webjars/*file                             controllers.WebJarAssets.
 # api
 # track specific
 PUT         /api/putTrack/:timezone/:activity          @controllers.TracksController.uploadTracks(timezone: Int, activity)
-#trip specific
-GET         /api/demoData                              @controllers.TripController.insertDemoTrip
+
 # dayTour specific - json stuff
 GET         /api/getDayTourInformation/:date           @controllers.JsonController.getDayTourInformation(date)
 GET         /api/getTripInformation/:tour              @controllers.JsonController.getTripInformation(tour)
@@ -19,14 +18,22 @@ GET         /api/getTripInformation/:tour              @controllers.JsonControll
 PUT         /api/images/uploadImage/:date/:name        @controllers.ImageController.uploadImage(date, name)
 GET         /api/images/getImage/:name                 @controllers.ImageController.getImage(name)
 
-# admin 2
+# Admin
 GET         /admin                                     @controllers.AdminController.index
 GET         /admin/trip/:trip                          @controllers.AdminController.tripDetails(trip)
 GET         /admin/track/:track                        @controllers.AdminController.trackDetails(track)
+GET         /admin/daytour/:daytour                    @controllers.AdminController.dayTourDetails(daytour)
 
 POST        /admin/api/trip/addTrip                    @controllers.AdminController.addTrip
 POST        /admin/api/trip/updateTrip                 @controllers.AdminController.updateTrip
+POST        /admin/api/trip/deleteTrip                 @controllers.AdminController.deleteTrip(tripId)
+
 POST        /admin/api/daytour/addDayTour              @controllers.AdminController.addDayTour
+POST        /admin/api/daytour/updateDayTour           @controllers.AdminController.updateDayTour(dayTourId)
+POST        /admin/api/daytour/deleteDayTour           @controllers.AdminController.deleteDayTour(dayTourId)
+
+
+POST        /admin/api/demoData/insert                 @controllers.AdminController.insertDemoData
 
 POST        /admin/api/track/deleteTrack/:track        @controllers.AdminController.deleteTrack(track)
 
