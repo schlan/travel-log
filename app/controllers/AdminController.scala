@@ -4,8 +4,8 @@ import java.util.UUID
 
 import at.droelf.backend.{ControllerUtils, Secured}
 import at.droelf.backend.service.{AdminService, UserService}
-import at.droelf.gui.entities.AdminDayTour
-import models.{DayTour, Trip}
+import at.droelf.gui.entities.{AdminTrack, AdminDayTour}
+import models.{Track, DayTour, Trip}
 import org.joda.time.LocalDate
 import play.api.Logger
 import play.api.data.Forms._
@@ -123,11 +123,18 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
 
   /* tracks */
 
+  val trackForm = Form(
+    mapping(
+      "name" -> optional(text),
+      "activity" -> text
+    )(AdminTrack.apply)(AdminTrack.unapply)
+  )
+
   def trackDetails(id: String) = withAuth{ username => implicit request =>
     parseUUID(id,
       uuid => {
         adminService.getTrackById(uuid) match {
-          case Some(track) => Ok(views.html.admin.details.admintrackdetails(track,adminService.getTrackMetadata(track.trackId),adminService.getTrackPoints(track.trackId)))
+          case Some(track) => Ok(views.html.admin.details.admintrackdetails(trackForm.fill(AdminTrack(track)))(track,adminService.getTrackMetadata(track.trackId),adminService.getNoOfTrackPoints(track.trackId),adminService.getDatesForTrack(track.trackId)))
           case None => NotFound
         }
       })
@@ -136,7 +143,6 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
   def deleteTrack(id: String) = withAuth { username => implicit request =>
     parseUUID(id,
       uuid => {
-        Logger.info("delete track: " + uuid)
         adminService.deleteCompleteTrack(uuid)
         Redirect(routes.AdminController.index())
      })
@@ -147,7 +153,16 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
     Redirect(routes.AdminController.index())
   }
 
-
+  def updateTrack(trackId: String) = withAuth { username => implicit request =>
+    def parseForm(uuid: UUID) = trackForm.bindFromRequest.fold(
+      formWithErrors => BadRequest("Nope"),
+      track => {
+        adminService.updateTrack(track, uuid)
+        Redirect(routes.AdminController.trackDetails(uuid.toString))
+      }
+    )
+   parseUUID(trackId, parseForm(_))
+  }
 
 
 }

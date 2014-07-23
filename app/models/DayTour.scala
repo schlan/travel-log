@@ -3,7 +3,7 @@ package models
 import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.joda.PlayJodaSupport
 import play.api.db.slick.joda.PlayJodaSupport._
-import org.joda.time.{LocalTime, LocalDate}
+import org.joda.time.LocalDate
 import java.util.UUID
 
 case class DayTour(date: LocalDate, dayTourId: UUID, startPointLat: Float, startPointLon: Float, endPointLat: Float, endPointLon: Float, description: String, weatherCond: String, roadCond: String)
@@ -55,11 +55,3 @@ object DayTours{
     dayTourTable.filter(_.dayTourId === dayTourId).delete
   }
 }
-
-//
-//object DayTour{
-//  def apply(date: LocalDate, startPoint: Long, endPoint: Long, description: String, weatherCond: String, roadCond: String) {
-//    DayTour(date, UUID.randomUUID(), startPoint, endPoint, description, weatherCond, roadCond)
-//  }
-//  def unapply()
-//}

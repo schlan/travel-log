@@ -1,5 +1,6 @@
 package models
 
+import at.droelf.gui.entities.AdminTrack
 import org.joda.time.{LocalTime, LocalDate}
 import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.joda.PlayJodaSupport
@@ -61,4 +62,7 @@ object Tracks{
     trackTable.filter(_.trackId === trackId).delete
   }
 
+  def update(track: Track)(implicit session: Session) = {
+    trackTable.filter(_.trackId === track.trackId).update(track)
+  }
 }

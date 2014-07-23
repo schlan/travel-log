@@ -19,6 +19,7 @@ PUT         /api/images/uploadImage/:date/:name        @controllers.ImageControl
 GET         /api/images/getImage/:name                 @controllers.ImageController.getImage(name)
 
 # Admin
+# TODO make it a bit more abstract --> /admin/api/:type/[add:update:delete] .... -_-
 GET         /admin                                     @controllers.AdminController.index
 GET         /admin/trip/:trip                          @controllers.AdminController.tripDetails(trip)
 GET         /admin/track/:track                        @controllers.AdminController.trackDetails(track)
@@ -31,6 +32,9 @@ POST        /admin/api/trip/deleteTrip                 @controllers.AdminControl
 POST        /admin/api/daytour/addDayTour              @controllers.AdminController.addDayTour
 POST        /admin/api/daytour/updateDayTour           @controllers.AdminController.updateDayTour(dayTourId)
 POST        /admin/api/daytour/deleteDayTour           @controllers.AdminController.deleteDayTour(dayTourId)
+
+POST        /admin/api/track/updateTrack               @controllers.AdminController.updateTrack(trackId)
+POST        /admin/api/track/deleteTrack               @controllers.AdminController.deleteTrack(trackId)
 
 
 POST        /admin/api/demoData/insert                 @controllers.AdminController.insertDemoData

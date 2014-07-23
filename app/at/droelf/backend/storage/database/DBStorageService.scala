@@ -12,8 +12,6 @@ import scala.slick.driver.JdbcProfile
 
 class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) extends DateTimeUtil{
 
-
-
   val db = new DBConnection(profile).dbObject()
 
   def saveTracks(tracks: List[GPXTrack], dateTimeZone: DateTimeZone, activity: String) = {
@@ -41,13 +39,19 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
 
   def getAllTrackPointsForTrackId(trackId: UUID) =  db.withTransaction{implicit session => TrackPoints.getTrackPointsForTrack(trackId)}
 
+  def getNoOfTrackPoints(trackId: UUID) = db.withTransaction{implicit session => TrackPoints.getNoOfTrackPoints(trackId)}
+
   def getMetaDataForTrackId(trackId: UUID) = db.withTransaction{implicit  session => TrackMetaDatas.getTrackMetaDataForTrackId(trackId)}
+
+  def updateTrack(track: Track) = db.withTransaction{implicit session => Tracks.update(track)}
 
   def deleteTrack(trackId: UUID) = db.withTransaction{implicit  session =>
     TrackPoints.deleteTrackPoints(trackId)
     TrackMetaDatas.deleteTrackMetaData(trackId)
     Tracks.deleteTrack(trackId)
   }
+
+  def getDatesForTrack(trackId: UUID) = db.withTransaction{implicit session => TrackPoints.getDatesForTrack(trackId)}
 
 
   def getAllTrips(): Seq[Trip] = db.withTransaction{implicit session => Trips.getAllTrips()}

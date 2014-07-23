@@ -7,7 +7,6 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 DayTour: @dayTour.date
-                <button class="btn pull-right" data-toggle="modal" data-target="#editDayTour">Edit</button>
                 <form class="pull-right" action="@routes.AdminController.deleteDayTour(dayTour.dayTourId.toString)" method="POST">
                     <button class="btn" type="submit">Delete</button>
                 </form>

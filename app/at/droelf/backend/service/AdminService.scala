@@ -3,20 +3,19 @@ package at.droelf.backend.service
 import java.util.UUID
 
 import at.droelf.backend.storage.database.DBStorageService
-import at.droelf.gui.entities.AdminDayTour
-import models.{DayTour, Trip}
+import at.droelf.gui.entities.{AdminTrack, AdminDayTour}
+import models.{Track, DayTour, Trip}
 import org.joda.time.{Interval, Period, LocalDate}
 
 
 class AdminService(dbStorage: DBStorageService) {
-
-
 
   /* Trips */
   def getAllTrips = dbStorage.getAllTrips()
   def updateTrip(trip: Trip) = dbStorage.updateTrip(trip)
   def insertTrip(trip: Trip) = dbStorage.insertTrip(trip)
   def deleteTrip(tripId: String) = dbStorage.deleteTrip(tripId)
+  def getTripById(id: String) = dbStorage.getTripById(id)
 
 
   /* DayTour */
@@ -40,31 +39,20 @@ class AdminService(dbStorage: DBStorageService) {
 
   def getAllDayTours(startDate: LocalDate, endDate: LocalDate) = dbStorage.getDayTourByLocalDate(startDate, endDate)
 
-  def insertDayTour(dayTour: AdminDayTour) = dbStorage.insertDayTour(convertDayTour(dayTour,dbStorage.getRandomId))
+  def insertDayTour(dayTour: AdminDayTour) = dbStorage.insertDayTour(convertAdminDayTour(dayTour,dbStorage.getRandomId))
 
   def getDayTourById(dayTourId: UUID): Option[DayTour] = dbStorage.getDayTour(dayTourId)
 
-  def updateDayTour(tour: AdminDayTour, uuid: UUID) = dbStorage.updateDayTour(convertDayTour(tour, uuid))
+  def updateDayTour(tour: AdminDayTour, uuid: UUID) = dbStorage.updateDayTour(convertAdminDayTour(tour, uuid))
 
   def deleteDayTour(dayTour: UUID) = dbStorage.deleteDayTour(dayTour)
 
-  private def convertDayTour(dayTour: AdminDayTour, uuid: UUID) = DayTour(
-      dayTour.date,
-      uuid,
-      dayTour.startPointLat,
-      dayTour.startPointLon,
-      dayTour.endPointLat,
-      dayTour.endPointLon,
-      dayTour.description,
-      dayTour.weatherCond,
-      dayTour.roadCond)
+  def convertAdminDayTour(dayTour: AdminDayTour, uuid: UUID):DayTour = DayTour(dayTour.date,uuid,dayTour.startPointLat,dayTour.startPointLon,dayTour.endPointLat,dayTour.endPointLon,dayTour.description,dayTour.weatherCond,dayTour.roadCond)
 
 
 
-  def getTripById(id: String) = dbStorage.getTripById(id)
-
-
-
+  /* Tracks */
+  def updateTrack(track: AdminTrack, trackId: UUID) = dbStorage.updateTrack(convertAdminTrack(track, trackId))
 
   def getAllTracks = dbStorage.getAllTracks()
 
@@ -76,6 +64,11 @@ class AdminService(dbStorage: DBStorageService) {
 
   def getTrackPoints(trackId: UUID) = dbStorage.getAllTrackPointsForTrackId(trackId)
 
+  def getNoOfTrackPoints(trackId: UUID) = dbStorage.getNoOfTrackPoints(trackId)
+
+  def getDatesForTrack(trackId: UUID) = dbStorage.getDatesForTrack(trackId)
+
+  def convertAdminTrack(track: AdminTrack, trackId: UUID): Track = Track(trackId, track.name, track.activity)
 
 
   def insertDemoData = dbStorage.insertDemoTrips
