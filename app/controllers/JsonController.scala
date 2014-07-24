@@ -45,12 +45,12 @@ class JsonController(gpxTrackService: GpxTrackService, imageService: ImageServic
             (for {
               track <- tracks
               if (typ == track.activity)
-            } yield (track.metaData)).reduce((m1, m2) => m1 + m2)
+            } yield (track.metaData)).foldLeft(GuiTrackMetaData.empty)((m1, m2) => m1 + m2)
           }
 
           val activityTypes = tracks.map(trk => trk.activity).distinct
           val sum = activityTypes.map(t => (t -> sumByType(t, tracks))).toMap
-          sum ++ Map("total" -> sum.values.reduce((m1, m2) => m1 + m2))
+          sum ++ Map("total" -> sum.values.foldLeft(GuiTrackMetaData.empty)((m1, m2) => m1 + m2))
         }
 
         val dayTours = trip.guiDayTours
@@ -60,7 +60,6 @@ class JsonController(gpxTrackService: GpxTrackService, imageService: ImageServic
         val tracks = dayTours.map(dt => gpxTrackService.getCondensedTrackForLocalDate(dt.date)).flatten
         val latestTrkPt = getLatestTrackPoint(sortedDate)
         val metadata = getSummarizedMetaData(tracks)
-
 
 
         Ok(Json.toJson(TripSummaryResponse(latestTrkPt, metadata, tracks, Seq())))

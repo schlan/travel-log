@@ -76,6 +76,8 @@ case class GuiTrack(trackId: UUID, name: Option[String], activity: String, metaD
 
   object GuiTrackMetaData {
     def apply(metaData: TrackMetaData): GuiTrackMetaData = GuiTrackMetaData(metaData.description, metaData.distance, metaData.timerTime, metaData.totalElapsedTime, metaData.movingTime, metaData.stoppedTime, metaData.movingSpeed, metaData.maxSpeed, metaData.maxElevation, metaData.minElevation, metaData.ascent, metaData.descent, metaData.avgAscentRate, metaData.maxAscentRate, metaData.avgDescentRate, metaData.maxDescentRate, metaData.calories, metaData.avgHeartRate)
+
+    val empty = GuiTrackMetaData(None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None)
   }
 
   case class GuiTrackPoint(latitude: Float, longitude: Float, elevation: Float, dateTime: DateTime)
