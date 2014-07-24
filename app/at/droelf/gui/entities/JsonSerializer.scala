@@ -23,9 +23,7 @@ trait JsonSerializer {
       "avgDescentRate" -> o.avgDescentRate,
       "maxDescentRate" -> o.maxDescentRate,
       "calories" -> o.calories,
-      "avgHeartRate" -> o.avgHeartRate,
-      "avgCadence" -> o.avgCadence,
-      "displayColor" -> o.displayColor
+      "avgHeartRate" -> o.avgHeartRate
     )
   }
 

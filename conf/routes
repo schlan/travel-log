@@ -36,10 +36,10 @@ POST        /admin/api/daytour/deleteDayTour           @controllers.AdminControl
 POST        /admin/api/track/updateTrack               @controllers.AdminController.updateTrack(trackId)
 POST        /admin/api/track/deleteTrack               @controllers.AdminController.deleteTrack(trackId)
 
+POST        /admin/api/trackMetadata/update            @controllers.AdminController.updateTrackMetadata(trackId)
 
 POST        /admin/api/demoData/insert                 @controllers.AdminController.insertDemoData
 
-POST        /admin/api/track/deleteTrack/:track        @controllers.AdminController.deleteTrack(track)
 
 # auth
 GET         /admin/login                               @controllers.AuthController.login

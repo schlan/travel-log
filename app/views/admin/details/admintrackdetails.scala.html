@@ -1,4 +1,4 @@
-@(formTrack: Form[at.droelf.gui.entities.AdminTrack])(track: models.Track, metdata: models.TrackMetaData, numberOfTrackPoints: Int, date: Seq[org.joda.time.LocalDate])(implicit session: play.api.mvc.Session)
+@(formTrack: Form[at.droelf.gui.entities.AdminTrack], formTrackMetadata: Form[at.droelf.gui.entities.AdminTrackMetaData])(track: models.Track, metadata: models.TrackMetaData, numberOfTrackPoints: Int, date: Seq[org.joda.time.LocalDate])(implicit session: play.api.mvc.Session)
 @import helper.twitterBootstrap._
 
 @trackHtml = {
@@ -56,73 +56,107 @@
 @trackMetadataHtml = {
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Metdata</h3>
+            <span class="panel-title">Metadata
+                <button class="btn pull-right" data-toggle="modal" data-target="#editTrackMetadata">Edit</button>
+            </span>
         </div>
         <div class="panel-body">
             <dl>
                 <dt>Ascent</dt>
-                <dd>@metdata.ascent.getOrElse("null")</dd>
+                <dd>@metadata.ascent.getOrElse("null")</dd>
 
                 <dt>Avg Ascent Rate</dt>
-                <dd>@metdata.avgAscentRate.getOrElse("null")</dd>
-
-                <dt>Avg Cadence</dt>
-                <dd>@metdata.avgCadence.getOrElse("null")</dd>
+                <dd>@metadata.avgAscentRate.getOrElse("null")</dd>
 
                 <dt>Avg Descent Rate</dt>
-                <dd>@metdata.avgDescentRate.getOrElse("null")</dd>
+                <dd>@metadata.avgDescentRate.getOrElse("null")</dd>
 
                 <dt>Avg Heart Rate</dt>
-                <dd>@metdata.avgHeartRate.getOrElse("null")</dd>
+                <dd>@metadata.avgHeartRate.getOrElse("null")</dd>
 
                 <dt>Calories</dt>
-                <dd>@metdata.calories.getOrElse("null")</dd>
+                <dd>@metadata.calories.getOrElse("null")</dd>
 
                 <dt>Descent</dt>
-                <dd>@metdata.descent.getOrElse("null")</dd>
+                <dd>@metadata.descent.getOrElse("null")</dd>
 
                 <dt>Description</dt>
-                <dd>@metdata.description.getOrElse("null")</dd>
-
-                <dt>Display Color</dt>
-                <dd>@metdata.displayColor.getOrElse("null")</dd>
+                <dd>@metadata.description.getOrElse("null")</dd>
 
                 <dt>Distance</dt>
-                <dd>@metdata.distance.getOrElse("null")</dd>
+                <dd>@metadata.distance.getOrElse("null")</dd>
 
                 <dt>Max Ascent Rate</dt>
-                <dd>@metdata.maxAscentRate.getOrElse("null")</dd>
+                <dd>@metadata.maxAscentRate.getOrElse("null")</dd>
 
                 <dt>Max Descent Rate</dt>
-                <dd>@metdata.maxDescentRate.getOrElse("null")</dd>
+                <dd>@metadata.maxDescentRate.getOrElse("null")</dd>
 
                 <dt>Max Elevation</dt>
-                <dd>@metdata.maxElevation.getOrElse("null")</dd>
+                <dd>@metadata.maxElevation.getOrElse("null")</dd>
 
                 <dt>Max Speed</dt>
-                <dd>@metdata.maxSpeed.getOrElse("null")</dd>
+                <dd>@metadata.maxSpeed.getOrElse("null")</dd>
 
                 <dt>Min Elevation</dt>
-                <dd>@metdata.minElevation.getOrElse("null")</dd>
+                <dd>@metadata.minElevation.getOrElse("null")</dd>
 
                 <dt>Moving Speed</dt>
-                <dd>@metdata.movingSpeed.getOrElse("null")</dd>
+                <dd>@metadata.movingSpeed.getOrElse("null")</dd>
 
                 <dt>Moving Time</dt>
-                <dd>@metdata.movingTime.getOrElse("null")</dd>
+                <dd>@metadata.movingTime.getOrElse("null")</dd>
 
                 <dt>Stopped Time</dt>
-                <dd>@metdata.stoppedTime.getOrElse("null")</dd>
+                <dd>@metadata.stoppedTime.getOrElse("null")</dd>
 
                 <dt>Timer Time</dt>
-                <dd>@metdata.timerTime.getOrElse("null")</dd>
+                <dd>@metadata.timerTime.getOrElse("null")</dd>
 
                 <dt>Total Elapsed Time</dt>
-                <dd>@metdata.totalElapsedTime.getOrElse("null")</dd>
+                <dd>@metadata.totalElapsedTime.getOrElse("null")</dd>
 
                 <dt>Track Id</dt>
-                <dd>@metdata.trackId</dd>
+                <dd>@metadata.trackId</dd>
             </dl>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editTrackMetadata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Add Tour</h4>
+                </div>
+                <div class="modal-body">
+                @helper.form(action = routes.AdminController.updateTrackMetadata(track.trackId.toString)) {
+                    @helper.inputText(formTrackMetadata("description"))
+                    @helper.inputText(formTrackMetadata("distance"))
+                    @helper.inputText(formTrackMetadata("timerTime"))
+                    @helper.inputText(formTrackMetadata("totalElapsedTime"))
+                    @helper.inputText(formTrackMetadata("movingTime"))
+                    @helper.inputText(formTrackMetadata("stoppedTime"))
+                    @helper.inputText(formTrackMetadata("movingSpeed"))
+                    @helper.inputText(formTrackMetadata("maxSpeed"))
+                    @helper.inputText(formTrackMetadata("maxElevation"))
+                    @helper.inputText(formTrackMetadata("minElevation"))
+                    @helper.inputText(formTrackMetadata("ascent"))
+                    @helper.inputText(formTrackMetadata("descent"))
+                    @helper.inputText(formTrackMetadata("avgAscentRate"))
+                    @helper.inputText(formTrackMetadata("maxAscentRate"))
+                    @helper.inputText(formTrackMetadata("avgDescentRate"))
+                    @helper.inputText(formTrackMetadata("maxDescentRate"))
+                    @helper.inputText(formTrackMetadata("calories"))
+                    @helper.inputText(formTrackMetadata("avgHeartRate"))
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-default" type="submit">Submit</button>
+                </div>
+                }
+            </div>
         </div>
     </div>
 }

@@ -39,9 +39,7 @@ case class GuiTrack(trackId: UUID, name: Option[String], activity: String, metaD
                               avgDescentRate: Option[Float],
                               maxDescentRate: Option[Float],
                               calories: Option[Float],
-                              avgHeartRate: Option[Float],
-                              avgCadence: Option[Float],
-                              displayColor: Option[Int]){
+                              avgHeartRate: Option[Float]){
 
     def +(other: GuiTrackMetaData): GuiTrackMetaData = GuiTrackMetaData(
         for(d1 <- this.description; d2 <- other.description) yield (d1 + ", " + d2),
@@ -61,9 +59,7 @@ case class GuiTrack(trackId: UUID, name: Option[String], activity: String, metaD
         averageOptionFloat(this.avgDescentRate, other.avgDescentRate),
         maxOptionFloat(this.maxDescentRate, other.maxDescentRate),
         addOptionFloat(this.calories, other.calories),
-        averageOptionFloat(this.avgHeartRate, other.avgHeartRate),
-        averageOptionFloat(this.avgCadence, other.avgCadence),
-        this.displayColor
+        averageOptionFloat(this.avgHeartRate, other.avgHeartRate)
       )
     def averageOptionFloat(o1: Option[Float], o2: Option[Float]): Option[Float] = unpackValues(o1,o2, (d1,d2) => ((d1 + d2)/2) )
     def minOptionFloat(o1: Option[Float], o2: Option[Float]): Option[Float] = unpackValues(o1,o2, (d1,d2) => (Math.min(d1, d2)) )
@@ -79,7 +75,7 @@ case class GuiTrack(trackId: UUID, name: Option[String], activity: String, metaD
   }
 
   object GuiTrackMetaData {
-    def apply(metaData: TrackMetaData): GuiTrackMetaData = GuiTrackMetaData(metaData.description, metaData.distance, metaData.timerTime, metaData.totalElapsedTime, metaData.movingTime, metaData.stoppedTime, metaData.movingSpeed, metaData.maxSpeed, metaData.maxElevation, metaData.minElevation, metaData.ascent, metaData.descent, metaData.avgAscentRate, metaData.maxAscentRate, metaData.avgDescentRate, metaData.maxDescentRate, metaData.calories, metaData.avgHeartRate, metaData.avgCadence, metaData.displayColor)
+    def apply(metaData: TrackMetaData): GuiTrackMetaData = GuiTrackMetaData(metaData.description, metaData.distance, metaData.timerTime, metaData.totalElapsedTime, metaData.movingTime, metaData.stoppedTime, metaData.movingSpeed, metaData.maxSpeed, metaData.maxElevation, metaData.minElevation, metaData.ascent, metaData.descent, metaData.avgAscentRate, metaData.maxAscentRate, metaData.avgDescentRate, metaData.maxDescentRate, metaData.calories, metaData.avgHeartRate)
   }
 
   case class GuiTrackPoint(latitude: Float, longitude: Float, elevation: Float, dateTime: DateTime)

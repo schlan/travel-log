@@ -12,6 +12,7 @@ import scala.slick.driver.JdbcProfile
 
 class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) extends DateTimeUtil{
 
+
   val db = new DBConnection(profile).dbObject()
 
   def saveTracks(tracks: List[GPXTrack], dateTimeZone: DateTimeZone, activity: String) = {
@@ -44,6 +45,9 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
   def getMetaDataForTrackId(trackId: UUID) = db.withTransaction{implicit  session => TrackMetaDatas.getTrackMetaDataForTrackId(trackId)}
 
   def updateTrack(track: Track) = db.withTransaction{implicit session => Tracks.update(track)}
+
+  def updateTrackMetadata(trackMetaData: TrackMetaData) = db.withTransaction{implicit sessoin => TrackMetaDatas.update(trackMetaData)}
+
 
   def deleteTrack(trackId: UUID) = db.withTransaction{implicit  session =>
     TrackPoints.deleteTrackPoints(trackId)
@@ -104,40 +108,10 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
   def getRandomId = UUID.randomUUID()
 
   private def gpxTrackToTrackMetaData(id: UUID, track: GPXTrack): TrackMetaData = (track.trackStatsExtension, track.trackExtension) match{
-      case (Some(trackStats), Some(trackExt)) => TrackMetaData(id,track.desc,trackStats.distance,trackStats.timerTime,trackStats.totalElapsedTime,trackStats.movingTime,trackStats.stoppedTime,trackStats.movingSpeed,trackStats.maxSpeed,trackStats.maxElevation,trackStats.minElevation,trackStats.ascent,trackStats.descent,trackStats.avgAscentRate,trackStats.maxAscentRate,trackStats.avgDescentRate,trackStats.maxDescentRate,trackStats.calories,trackStats.avgHeartRate,trackStats.avgCadence,displayColorConverter(trackExt.displayColor))
-      case (Some(trackStats), None) => TrackMetaData(id,track.desc,trackStats.distance,trackStats.timerTime,trackStats.totalElapsedTime,trackStats.movingTime,trackStats.stoppedTime,trackStats.movingSpeed,trackStats.maxSpeed,trackStats.maxElevation,trackStats.minElevation,trackStats.ascent,trackStats.descent,trackStats.avgAscentRate,trackStats.maxAscentRate,trackStats.avgDescentRate,trackStats.maxDescentRate,trackStats.calories,trackStats.avgHeartRate,trackStats.avgCadence,None)
-      case (None, Some(trackExt)) => TrackMetaData(id,track.desc,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,displayColorConverter(trackExt.displayColor))
-      case (None, None) => TrackMetaData(id,track.desc,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None)
+      case (Some(trackStats), Some(trackExt)) => TrackMetaData(id,track.desc,trackStats.distance,trackStats.timerTime,trackStats.totalElapsedTime,trackStats.movingTime,trackStats.stoppedTime,trackStats.movingSpeed,trackStats.maxSpeed,trackStats.maxElevation,trackStats.minElevation,trackStats.ascent,trackStats.descent,trackStats.avgAscentRate,trackStats.maxAscentRate,trackStats.avgDescentRate,trackStats.maxDescentRate,trackStats.calories,trackStats.avgHeartRate)
+      case (Some(trackStats), None) => TrackMetaData(id,track.desc,trackStats.distance,trackStats.timerTime,trackStats.totalElapsedTime,trackStats.movingTime,trackStats.stoppedTime,trackStats.movingSpeed,trackStats.maxSpeed,trackStats.maxElevation,trackStats.minElevation,trackStats.ascent,trackStats.descent,trackStats.avgAscentRate,trackStats.maxAscentRate,trackStats.avgDescentRate,trackStats.maxDescentRate,trackStats.calories,trackStats.avgHeartRate)
+      case (None, Some(trackExt)) => TrackMetaData(id,track.desc,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None)
+      case (None, None) => TrackMetaData(id,track.desc,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None)
   }
-
-  private def displayColorConverter(displayColor: Option[String]): Option[Int] = {
-    if(!displayColor.isEmpty){
-      var color = displayColor.get
-      color match{
-        case "Black" => Some(Color.BLACK.getRGB)
-        case "DarkRed" => Some(Color.getColor("#8B0000").getRGB)
-        case "DarkGreen" => Some(Color.getColor("#006400").getRGB)
-        case "DarkYellow" => Some(Color.getColor("#DAA520").getRGB)
-        case "DarkBlue" => Some(Color.getColor("#00008B").getRGB)
-        case "DarkMagenta" => Some(Color.getColor("#8B008B").getRGB)
-        case "DarkCyan" => Some(Color.getColor("#008B8B").getRGB)
-        case "LightGray" => Some(Color.LIGHT_GRAY.getRGB)
-        case "DarkGray" => Some(Color.DARK_GRAY.getRGB)
-        case "Red" => Some(Color.RED.getRGB)
-        case "Green" => Some(Color.GREEN.getRGB)
-        case "Yellow" => Some(Color.YELLOW.getRGB)
-        case "Blue" => Some(Color.BLUE.getRGB)
-        case "Magenta" => Some(Color.MAGENTA.getRGB)
-        case "Cyan" => Some(Color.CYAN.getRGB)
-        case "White" => Some(Color.WHITE.getRGB)
-        case "Transparent" => Some(Color.getColor("#ff000000").getRGB)
-        case _ => Some(Color.BLACK.getRGB)
-      }
-    }else{
-      None
-    }
-  }
-
-
 
 }

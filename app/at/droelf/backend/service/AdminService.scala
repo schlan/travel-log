@@ -3,12 +3,13 @@ package at.droelf.backend.service
 import java.util.UUID
 
 import at.droelf.backend.storage.database.DBStorageService
-import at.droelf.gui.entities.{AdminTrack, AdminDayTour}
-import models.{Track, DayTour, Trip}
+import at.droelf.gui.entities.{GuiTrackMetaData, AdminTrackMetaData, AdminTrack, AdminDayTour}
+import models.{TrackMetaData, Track, DayTour, Trip}
 import org.joda.time.{Interval, Period, LocalDate}
 
 
 class AdminService(dbStorage: DBStorageService) {
+
 
   /* Trips */
   def getAllTrips = dbStorage.getAllTrips()
@@ -68,7 +69,12 @@ class AdminService(dbStorage: DBStorageService) {
 
   def getDatesForTrack(trackId: UUID) = dbStorage.getDatesForTrack(trackId)
 
+  def updateTrackMetadata(trackMetadata: AdminTrackMetaData, trackId: UUID) = dbStorage.updateTrackMetadata(convertAdminTrackMetadata(trackMetadata, trackId))
+
   def convertAdminTrack(track: AdminTrack, trackId: UUID): Track = Track(trackId, track.name, track.activity)
+
+  def convertAdminTrackMetadata(metaData: AdminTrackMetaData, trackId: UUID): TrackMetaData = TrackMetaData(trackId, metaData.description, metaData.distance, metaData.timerTime, metaData.totalElapsedTime, metaData.movingTime, metaData.stoppedTime, metaData.movingSpeed, metaData.maxSpeed, metaData.maxElevation, metaData.minElevation, metaData.ascent, metaData.descent, metaData.avgAscentRate, metaData.maxAscentRate, metaData.avgDescentRate, metaData.maxDescentRate, metaData.calories, metaData.avgHeartRate)
+
 
 
   def insertDemoData = dbStorage.insertDemoTrips

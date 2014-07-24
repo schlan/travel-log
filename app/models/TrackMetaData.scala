@@ -22,9 +22,7 @@ case class TrackMetaData(
                           avgDescentRate: Option[Float],
                           maxDescentRate: Option[Float],
                           calories: Option[Float],
-                          avgHeartRate: Option[Float],
-                          avgCadence: Option[Float],
-                          displayColor: Option[Int])
+                          avgHeartRate: Option[Float])
 
 class TrackMetaDataTable(tag: Tag) extends Table[TrackMetaData](tag, "TRACK_METADATA") {
 
@@ -47,16 +45,16 @@ class TrackMetaDataTable(tag: Tag) extends Table[TrackMetaData](tag, "TRACK_META
   def maxDescentRate = column[Option[Float]]("MAXDESCENTRATE", O.Nullable)
   def calories = column[Option[Float]]("CALORIES", O.Nullable)
   def avgHeartRate = column[Option[Float]]("AVGHEARTREATE", O.Nullable)
-  def avgCadence = column[Option[Float]]("AVGCADENCE", O.Nullable)
-  def dispalyColor = column[Option[Int]]("DISPLAYCOLOR", O.Nullable)
 
   override def * = (trackId, description, distance, timerTime, totalElapsedTime, movingTime, stoppedTime, movingSpeed, maxSpeed, maxElevation,
-    minElevation, ascent, descent, avgAscentRate, maxAscentRate, avgDescentRate, maxDescentRate, calories, avgHeartRate, avgCadence, dispalyColor) <>(TrackMetaData.tupled, TrackMetaData.unapply)
+    minElevation, ascent, descent, avgAscentRate, maxAscentRate, avgDescentRate, maxDescentRate, calories, avgHeartRate) <>(TrackMetaData.tupled, TrackMetaData.unapply)
 
   def track = foreignKey("TRACK_FK", trackId, TableQuery[TrackTable])(_.trackId)
 }
 
 object TrackMetaDatas{
+
+
 
   val trackMetDataTable = TableQuery[TrackMetaDataTable]
 
@@ -70,4 +68,7 @@ object TrackMetaDatas{
     trackMetDataTable.filter(_.trackId === trackId).delete
   }
 
+  def update(trackMetaData: TrackMetaData)(implicit session: Session) = {
+    trackMetDataTable.filter(_.trackId === trackMetaData.trackId).update(trackMetaData)
+  }
 }
