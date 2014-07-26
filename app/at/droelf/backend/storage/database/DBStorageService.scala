@@ -17,6 +17,7 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
 
   def saveTracks(tracks: List[GPXTrack], dateTimeZone: DateTimeZone, activity: String) = {
     db.withTransaction{ implicit session =>
+
       tracks.foreach { track =>
         val id = getRandomId
         Tracks.insertTrack(Track(id, track.name, activity))

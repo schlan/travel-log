@@ -31,7 +31,7 @@ class FileStorageService {
 
 
   def saveImageToDisk(file: TemporaryFile, date: String, name: String): Path = {
-    val finalPath = Paths.get(imageRootDir, date + "_" + name + "_" + UUID.randomUUID().toString)
+    val finalPath = Paths.get(imageRootDir, date + "_" + UUID.randomUUID().toString)
     file.moveTo(finalPath.toFile)
 
     finalPath
@@ -40,10 +40,9 @@ class FileStorageService {
 
   def getImageFromDisk(name: String): Option[File] = {
     val path = Paths.get(imageRootDir,name)
-    if(Files.exists(path)){
-      Some(path.toFile)
-    } else {
-      None
+    Files.exists(path) match {
+      case true => Some(path.toFile)
+      case false => None
     }
   }
 
