@@ -15,7 +15,6 @@ class ImageController(imageService: ImageService, userService: UserService) exte
 
 
   def uploadImage(date: String, name: String) = Action(parse.multipartFormData) { implicit request =>
-
     def decodeBasicAuth(auth: String) = {
       val baStr = auth.replaceFirst("Basic ", "")
       val Array(user, pass) = new String(new sun.misc.BASE64Decoder().decodeBuffer(baStr), "UTF-8").split(":")
@@ -23,10 +22,10 @@ class ImageController(imageService: ImageService, userService: UserService) exte
     }
 
     request.headers.get("Authorization").map{
+
       basicAuth =>
         val (user, pass) = decodeBasicAuth(basicAuth)
         if(userService.checkUserPassword(user,pass)){
-
           val parsedDateTimeTry = Try(ISODateTimeFormat.dateTimeNoMillis().withOffsetParsed().parseDateTime(date))
 
           parsedDateTimeTry match {

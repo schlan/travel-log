@@ -34,4 +34,12 @@ object Images{
     imageTable.filter(e => ((e.dateTime >= start) && e.dateTime < end)).list
   }
 
+  def getNewestImagesForTimeRange(startDate: LocalDate, endDate: LocalDate, numberOfImages: Int)(implicit session: Session): Seq[Image] = {
+    val start = startDate.toLocalDateTime(LocalTime.MIDNIGHT)
+    val end = endDate.plusDays(1).toLocalDateTime(LocalTime.MIDNIGHT)
+
+    imageTable.filter(img => (img.dateTime >= start && img.dateTime < end)).sortBy(_.dateTime.desc).take(numberOfImages).list
+  }
+
+
 }

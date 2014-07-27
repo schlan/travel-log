@@ -1,6 +1,13 @@
-function initImages(data) {
+function initImages(data){
+    initImagesGeneral(data["images"])
+}
 
-    var images = data["images"]
+function initImagesForOverview(data){
+    initImagesGeneral(data["newestImages"])
+}
+
+
+function initImagesGeneral(images) {
 
     var markup = ""
 
@@ -17,8 +24,14 @@ function initImages(data) {
         markup += "</a>"
         markup += "<span class='caption'>"
 
-        markup += "<span><b>" + img["name"] + "</b></span>"
+        markup += "<span style='float:left;padding-left: 5px;'><b>" + img["name"] + "</b></span>"
 
+        var imgLat = img["location"]["latitude"]
+        var imgLon = img["location"]["longitude"]
+
+        if(imgLat != -1 && imgLon != -1){
+            markup += "<span style='float:right;padding-right: 5px;'><a class='glyphicon glyphicon-map-marker' onclick='zoomToPosition(" + imgLat + "," + imgLon + ")''></a></span>"
+        }
         markup += "</span></div></div>"
 //
 //        $("#images").append(

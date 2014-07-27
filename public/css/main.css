@@ -22,7 +22,7 @@ body {
 }
 
 /* Phones */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 
     .tourPanel{
         padding: 0px;
@@ -59,7 +59,6 @@ body {
         border-right: 1px solid #eee;
     }
 
-
     .toggleDaysMobile {
         display:none;
     }
@@ -83,7 +82,7 @@ body {
 }
 
 /* Desktop mit Foto Sidebar */
-@media (min-width: 1170px){
+@media (min-width: 1200px){
     .main{
         padding-left: 30px;
         padding-right: 40px;
@@ -92,7 +91,7 @@ body {
         position: fixed;
         top: 51px;
         bottom: 0;
-        right: 10px;
+        right: 0px;
         left: 15px;
         z-index: 10000;
         display: block;

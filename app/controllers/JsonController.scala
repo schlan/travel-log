@@ -60,8 +60,9 @@ class JsonController(gpxTrackService: GpxTrackService, imageService: ImageServic
         val tracks = dayTours.map(dt => gpxTrackService.getCondensedTrackForLocalDate(dt.date)).flatten
         val latestTrkPt = getLatestTrackPoint(sortedDate)
         val metadata = getSummarizedMetaData(tracks)
+        val images = imageService.getNewestImagesForTimeRange(trip.startDate, trip.endDate)
 
-        Ok(Json.toJson(TripSummaryResponse(latestTrkPt, metadata, tracks, Seq())))
+        Ok(Json.toJson(TripSummaryResponse(latestTrkPt, metadata, tracks, images)))
       }
       case None => NotFound
     }

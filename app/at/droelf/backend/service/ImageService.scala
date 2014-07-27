@@ -32,4 +32,8 @@ class ImageService(fileStorageService: FileStorageService, dbStorage: DBStorageS
     }
   }
 
+  def getNewestImagesForTimeRange(startDate: LocalDate, endDate: LocalDate, numberOfImages: Int = 20): Seq[GuiImage] = {
+    dbStorage.getNewestImagesForTimeRange(startDate, endDate, numberOfImages).map(img => GuiImage(img, timeToLocationService.getLocationForDateTime(utcWithTimeZoneToDateTime(img.dateTime,img.dateTimeZone))))
+  }
+
 }

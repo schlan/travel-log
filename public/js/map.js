@@ -39,6 +39,10 @@ function initMapForSummary(data) {
     linesLayer["Tracks"] = tracks
     linesLayer["Last known Position"] = lastPos
 
+    var imageLayer = getImageMarkerGroup(data["newestImages"])
+    imageLayer.addTo(map)
+    linesLayer["Images"] = imageLayer
+
     L.control.layers(mapslayer, linesLayer).addTo(map)
     L.control.scale().addTo(map)
     cloudmadeLayer.addTo(map)
@@ -114,6 +118,10 @@ function moveMarkerTo(lon, lat, elevation, datetime) {
     )
 }
 
+function zoomToPosition(lon, lat){
+    map.setView([lon,lat],16)
+}
+
 function getPolyLine(track) {
 
     var points = []
@@ -175,11 +183,11 @@ function getImageMarkerGroup(images){
             i++
 
         }
-        var popupMarkUp = "<div id='carousel-example-generic' class='carousel slide' data-ride='carousel' style='width:300px;'>"
+        var popupMarkUp =   "<div id='carousel-example-generic' class='carousel slide' data-ride='carousel' style='width:300px;'>"
 
-        popupMarkUp += "<ol class='carousel-indicators'>" + indicator + "</ol>"
+        popupMarkUp +=      "<ol class='carousel-indicators'>" + indicator + "</ol>"
 
-        popupMarkUp += "<div class='carousel-inner'>" + slides + "</div>"
+        popupMarkUp +=      "<div class='carousel-inner'>" + slides + "</div>"
 
         popupMarkUp += "<a class='left carousel-control' href='#carousel-example-generic' role='button' data-slide='prev'>" +
                             "<span class='glyphicon glyphicon-chevron-left'></span>" +

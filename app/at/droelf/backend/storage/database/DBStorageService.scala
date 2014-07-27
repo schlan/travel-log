@@ -106,6 +106,10 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
 
   def getImagesForLocalDate(date: LocalDate) = db.withTransaction{implicit session => Images.getImagesByLocalDate(date)}
 
+  def getNewestImagesForTimeRange(startDate: LocalDate, endDate: LocalDate, numberOfImg: Int) = db.withTransaction{implicit session =>
+    Images.getNewestImagesForTimeRange(startDate,endDate,numberOfImg)
+  }
+
 
 
   def insertDemoTrips() {
