@@ -20,9 +20,7 @@ class GpxTrackService(fileStorageService: FileStorageService, dbTrackStorageServ
     dbTrackStorageService.saveTracks(x.tracks, timeZoneOffset, activity)
   }
 
-
   // Get
-
   def getTrackById(trackId: UUID): Option[GuiTrack] = {
     dbTrackStorageService.getTrackById(trackId).map(trk => GuiTrack(trk, getTrackMetaDataForTrackId(trk.trackId), getTrackPointsForTrackId(trk.trackId)))
   }
@@ -30,11 +28,9 @@ class GpxTrackService(fileStorageService: FileStorageService, dbTrackStorageServ
   def getTracksForLocalDate(date: LocalDate): Seq[GuiTrack] = dbTrackStorageService.getTrackByDate(date).map(trk => GuiTrack(trk, getTrackMetaDataForTrackId(trk.trackId), getTrackPointsForTrackId(trk.trackId)))
 
   def getCondensedTrackForLocalDate(date: LocalDate): Seq[GuiTrack] = {
-    val time = System.currentTimeMillis()
     val lis = dbTrackStorageService.getTrackByDate(date).map{ trk =>
       GuiTrack(trk, getTrackMetaDataForTrackId(trk.trackId),getCondensedTrackPointsForTrackId(trk.trackId))
     }
-    Logger.info(s"Condensed Track: ${System.currentTimeMillis() - time}")
     lis
   }
 

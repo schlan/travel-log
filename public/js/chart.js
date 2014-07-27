@@ -38,8 +38,12 @@ function initGeneralChart(data, legend) {
         },
         grid: {
             hoverable: true,
-            autoHighlight: true
+            autoHighlight: false
+        },
+        legend: {
+            show: legend
         }
+
     }
 
     var plot = $.plot($("#chart"), dataSet, options);

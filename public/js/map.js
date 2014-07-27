@@ -12,32 +12,32 @@ function initMapForSummary(data) {
     var lastKnownPos = data["lastKnownPosition"]
 
     var icon =  L.AwesomeMarkers.icon({
-        icon: 'glyphicon glyphicon-picture',
-        markerColor: 'darkred'
+        icon: 'glyphicon glyphicon-asterisk',
+        markerColor: 'red'
     })
 
-    var marker = L.marker([lastKnownPos["latitude"], lastKnownPos["longitude"]],{
+    var lastPos = L.marker([lastKnownPos["latitude"], lastKnownPos["longitude"]],{
         'icon' : icon,
         'riseOnHover':true
-
     })
+    lastPos.addTo(map)
 
-    marker.addTo(map)
 
+    var trackOverview = Array()
 
     for (x in tracks) {
         var track = tracks[x]
-
-        var polyline = getPolyLine(track)
-
-        polyline.addTo(map)
-        map.fitBounds(polyline.getBounds());
-
-        linesLayer[track['trackId']] = polyline
+        var line = getPolyLine(track)
+        //line.on("click", function(){ window.location.href = "/pacific/"  + id; })
+        trackOverview.push(line)
     }
 
+    var tracks = L.featureGroup(trackOverview)
+    map.fitBounds(tracks.getBounds());
+    tracks.addTo(map)
 
-    linesLayer["Last known Position"] = marker
+    linesLayer["Tracks"] = tracks
+    linesLayer["Last known Position"] = lastPos
 
     L.control.layers(mapslayer, linesLayer).addTo(map)
     L.control.scale().addTo(map)
@@ -45,7 +45,6 @@ function initMapForSummary(data) {
 }
 
 function initMap(data) {
-    console.log("asdf")
     initLeaflet()
 
     var linesLayer = {}
@@ -64,19 +63,14 @@ function initMap(data) {
     imageLayer.addTo(map)
     linesLayer["Images"] = imageLayer
 
-
-    L.control.layers(mapsLayer, linesLayer).addTo(map)
+    L.control.layers(mapslayer, linesLayer).addTo(map)
     L.control.scale().addTo(map)
     cloudmadeLayer.addTo(map)
 
 }
+
 function initLeaflet(){
     map = L.map('map', {});
-
-    //var googleLayerRoad = new L.Google('ROADMAP', {featureType: 'all'});
-    //var googleLayerSat = new L.Google('SATELLITE', {featureType: 'all'});
-    //var googleLayerHybrid = new L.Google('HYBRID', {featureType: 'all'});
-    //var googleLayerTerrain = new L.Google('TERRAIN', {featureType: 'all'});
 
     cloudmadeLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -84,12 +78,20 @@ function initLeaflet(){
 
     var cycleMap = L.tileLayer('http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png', {
         attribution: 'Tiles courtesy of <a href="http://www.opencyclemap.org/"" target="_blank">Andy Allan</a>'
-    });
+    })
 
+    var googleLayerRoad = new L.Google('ROADMAP', {featureType: 'all'});
+    var googleLayerSat = new L.Google('SATELLITE', {featureType: 'all'});
+    var googleLayerHybrid = new L.Google('HYBRID', {featureType: 'all'});
+    var googleLayerTerrain = new L.Google('TERRAIN', {featureType: 'all'});
 
-    mapsLayer = {
+    mapslayer = {
         'OSM':cloudmadeLayer,
-        'Open Cycle Map':cycleMap
+        'Open Cycle Map':cycleMap,
+        'Google Satellite': googleLayerSat,
+        'Google Road': googleLayerRoad,
+        'Google Hybrid': googleLayerHybrid,
+        'Google Terrain': googleLayerTerrain
     }
 
     marker = L.marker([0, 0],{
@@ -97,13 +99,6 @@ function initLeaflet(){
     })
 
     marker.addTo(map)
-
-    /*,
-     'Google Satellite': googleLayerSat,
-     'Google Road': googleLayerRoad,
-     'Google Hybrid': googleLayerHybrid,
-     'Google Terrain': googleLayerTerrain
-     */
 
 }
 
