@@ -22,9 +22,6 @@ class GpxTrackService(fileStorageService: FileStorageService, dbTrackStorageServ
 
 
   // Get
-//  def getAllTracks(): Seq[GuiTrack] = {
-//    dbTrackStorageService.getAllTracks().map(trk => GuiTrack(trk, getTrackMetaDataForTrackId(trk.trackId), getTrackPointsForTrackId(trk.trackId)))
-//  }
 
   def getTrackById(trackId: UUID): Option[GuiTrack] = {
     dbTrackStorageService.getTrackById(trackId).map(trk => GuiTrack(trk, getTrackMetaDataForTrackId(trk.trackId), getTrackPointsForTrackId(trk.trackId)))
@@ -33,9 +30,12 @@ class GpxTrackService(fileStorageService: FileStorageService, dbTrackStorageServ
   def getTracksForLocalDate(date: LocalDate): Seq[GuiTrack] = dbTrackStorageService.getTrackByDate(date).map(trk => GuiTrack(trk, getTrackMetaDataForTrackId(trk.trackId), getTrackPointsForTrackId(trk.trackId)))
 
   def getCondensedTrackForLocalDate(date: LocalDate): Seq[GuiTrack] = {
-    dbTrackStorageService.getTrackByDate(date).map{ trk =>
-       GuiTrack(trk, getTrackMetaDataForTrackId(trk.trackId),getCondensedTrackPointsForTrackId(trk.trackId))
+    val time = System.currentTimeMillis()
+    val lis = dbTrackStorageService.getTrackByDate(date).map{ trk =>
+      GuiTrack(trk, getTrackMetaDataForTrackId(trk.trackId),getCondensedTrackPointsForTrackId(trk.trackId))
     }
+    Logger.info(s"Condensed Track: ${System.currentTimeMillis() - time}")
+    lis
   }
 
   def getTrackInformationForLocalDate(date: LocalDate): (Seq[GuiTrack], GuiTrackMetaData) = {
@@ -55,12 +55,8 @@ class GpxTrackService(fileStorageService: FileStorageService, dbTrackStorageServ
 
   private def getTrackPointsForTrackId(trackId: UUID): Seq[TrackPoint] = dbTrackStorageService.getAllTrackPointsForTrackId(trackId)
 
-  private def getCondensedTrackPointsForTrackId(trackId: UUID, lvl: Int = 100): Seq[TrackPoint] = {
-    val tracks = dbTrackStorageService.getAllTrackPointsForTrackId(trackId).zipWithIndex
-    for{
-      (pt, i) <- tracks
-      if((i % lvl == 0) || (i == 0) || (i == tracks.size-1))
-    } yield(pt)
+  private def getCondensedTrackPointsForTrackId(trackId: UUID): Seq[TrackPoint] = {
+    dbTrackStorageService.getTrackPointsForOverview(trackId)
   }
 
 }

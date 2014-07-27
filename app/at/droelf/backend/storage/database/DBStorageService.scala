@@ -6,40 +6,57 @@ import java.util.UUID
 import at.droelf.backend.DateTimeUtil
 import models._
 import org.joda.time._
-import parser.gpxtype.GPXTrack
+import parser.gpxtype.{GPXWayPoint, GPXTrack}
 
 import scala.slick.driver.JdbcProfile
 
 class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) extends DateTimeUtil{
 
 
+
   val db = new DBConnection(profile).dbObject()
 
   def saveTracks(tracks: List[GPXTrack], dateTimeZone: DateTimeZone, activity: String) = {
+
+    def isOverViewPt(index: Int, gap: Int, numOfPt: Int): Boolean = {
+      (index % gap == 0 || index == 0 || index == numOfPt-1)
+    }
+
+    def getLocalDates(track: GPXTrack): Seq[LocalDate] = {
+      track.trackSegments.map( trkSeg => trkSeg.trackPoints.map( wpt => dateTimeToUtcLocalDateTime(DateTime.parse(wpt.time.get)).toLocalDate)).flatten.distinct
+    }
+
     db.withTransaction{ implicit session =>
 
       tracks.foreach { track =>
         val id = getRandomId
         Tracks.insertTrack(Track(id, track.name, activity))
+        getLocalDates(track).foreach(date => TrackToLocalDates.insertTrackToLocalDate(TrackToLocalDate(id,date)))
+
         TrackMetaDatas.insertTrackMetaData(gpxTrackToTrackMetaData(id, track))
 
         track.trackSegments.foreach{ trkSeg =>
-          trkSeg.trackPoints.foreach{ wpt =>
-            val time = dateTimeToUtcLocalTime(DateTime.parse(wpt.time.get))
-            TrackPoints.insertIfNotExists(TrackPoint(id, wpt.latitude, wpt.longitude, wpt.ele.getOrElse(0), time, dateTimeZone))
+          trkSeg.trackPoints.zipWithIndex.foreach{ e =>
+            val wpt = e._1
+            val time = dateTimeToUtcLocalDateTime(DateTime.parse(wpt.time.get))
+            TrackPoints.insertIfNotExists(TrackPoint(id, wpt.latitude, wpt.longitude, wpt.ele.getOrElse(0), time, dateTimeZone, isOverViewPt(e._2,100,trkSeg.trackPoints.length)))
           }
         }
       }
     }
   }
 
-  def getAllTracks(): Seq[Track] = db.withTransaction{implicit session => Tracks.getAllTracks()}
+  def getAllTracks() = db.withTransaction{implicit session => Tracks.getAllTracks}
 
   def getTrackById(trackId: UUID): Option[Track] = db.withTransaction{implicit session => Tracks.getTrackById(trackId)}
 
-  def getTrackByDate(date: LocalDate): Seq[Track] = db.withTransaction{implicit session => Tracks.getTracksByDate(date)}
+  def getTrackByDate(date: LocalDate): Seq[Track] = db.withTransaction{implicit session =>
+    TrackToLocalDates.getTrackToLocalDateByDate(date).map(e => Tracks.getTracksById(e.trackId)).flatten
+  }
 
   def getAllTrackPointsForTrackId(trackId: UUID) =  db.withTransaction{implicit session => TrackPoints.getTrackPointsForTrack(trackId)}
+
+  def getTrackPointsForOverview(trackId: UUID): Seq[TrackPoint] = db.withTransaction{implicit session => TrackPoints.getTrackPointsForOverView(trackId)}
 
   def getNoOfTrackPoints(trackId: UUID) = db.withTransaction{implicit session => TrackPoints.getNoOfTrackPoints(trackId)}
 
@@ -53,6 +70,7 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
   def deleteTrack(trackId: UUID) = db.withTransaction{implicit  session =>
     TrackPoints.deleteTrackPoints(trackId)
     TrackMetaDatas.deleteTrackMetaData(trackId)
+    TrackToLocalDates.delete(trackId)
     Tracks.deleteTrack(trackId)
   }
 
@@ -95,10 +113,10 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
         Trips.insertTrip(Trip("Pacific Coast Tour", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.", "pacific", new LocalDate(2014,5,20),new LocalDate(2014,6,30)))
 
         val st = new LocalDate(2014,5,20)
-        val en = new LocalDate(2014,6,30)
+        val en = new LocalDate(2014,6,4)
 
         for(i <- (0 to Days.daysBetween(st,en).getDays)){
-          val id = UUID.randomUUID()
+          val id = getRandomId
           DayTours.insertDayTour(DayTour(st.plusDays(i),id,123.1F,321.1F,456.7F,657.4F,"<p><b>test</b></p>asdf bl asbasd <u>asdfasdf</u>","Sunny, rainy", "Asphalt"))
         }
 

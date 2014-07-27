@@ -56,11 +56,10 @@ class JsonController(gpxTrackService: GpxTrackService, imageService: ImageServic
         val dayTours = trip.guiDayTours
         val sortedDate = dayTours.map(_.date).sortWith((d1, d2) => d1.isAfter(d2))
 
-
+        val time = System.currentTimeMillis()
         val tracks = dayTours.map(dt => gpxTrackService.getCondensedTrackForLocalDate(dt.date)).flatten
         val latestTrkPt = getLatestTrackPoint(sortedDate)
         val metadata = getSummarizedMetaData(tracks)
-
 
         Ok(Json.toJson(TripSummaryResponse(latestTrkPt, metadata, tracks, Seq())))
       }
