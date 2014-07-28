@@ -21,14 +21,13 @@
                 <dd>@dayTour.dayTourId</dd>
                 <dt>Description</dt>
                 <dd>@dayTour.description</dd>
-                <dt>Fallback Startpoint</dt>
-                <dd>@dayTour.startPointLat @dayTour.startPointLon</dd>
-                <dt>Fallback Endpoint</dt>
-                <dd>@dayTour.endPointLat @dayTour.endPointLon</dd>
                 <dt>Road Cond</dt>
                 <dd>@dayTour.roadCond</dd>
                 <dt>Weather Cond</dt>
                 <dd>@dayTour.weatherCond</dd>
+                <dt>Category</dt>
+                <dd>@dayTour.category</dd>
+
             </dl>
         </div>
     </div>
@@ -43,13 +42,10 @@
                 <div class="modal-body">
                 @helper.form(action = routes.AdminController.updateDayTour(dayTour.dayTourId.toString)) {
                     @helper.inputDate(formDayTour("date"))
-                    @helper.inputText(formDayTour("startPointLat"))
-                    @helper.inputText(formDayTour("startPointLon"))
-                    @helper.inputText(formDayTour("endPointLat"))
-                    @helper.inputText(formDayTour("endPointLon"))
                     @helper.textarea(formDayTour("description"),args = 'rows -> 10, 'cols -> 70)
                     @helper.inputText(formDayTour("weatherCond"))
                     @helper.inputText(formDayTour("roadCond"))
+                    @helper.inputText(formDayTour("category"))
                 </div>
 
                 <div class="modal-footer">

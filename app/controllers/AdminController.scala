@@ -75,13 +75,10 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
   val dayTourForm = Form(
     mapping(
       "date" -> jodaLocalDate,
-      "startPointLat" -> Forms.of[Float],
-      "startPointLon" -> Forms.of[Float],
-      "endPointLat" -> Forms.of[Float],
-      "endPointLon" -> Forms.of[Float],
       "description" -> text,
       "weatherCond" -> text,
-      "roadCond" -> text
+      "roadCond" -> text,
+      "category" -> nonEmptyText
     )(AdminDayTour.apply)(AdminDayTour.unapply)
   )
 

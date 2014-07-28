@@ -1,4 +1,4 @@
-@(message: String, nav: Seq[(String,String)], guiTrip: at.droelf.gui.entities.GuiTrip, dayTour: at.droelf.gui.entities.GuiDayTour)
+@(message: String, nav: Seq[(String,String)], guiTrip: at.droelf.gui.entities.GuiTrip, dayTour: at.droelf.gui.entities.GuiDayTour, dayTours: Map[(String,org.joda.time.LocalDate), Seq[(at.droelf.gui.entities.GuiDayTour, Int)]])
 
 @metadata = {
     <div id="images"  class="row" />
@@ -17,12 +17,14 @@
 
     <script type="text/javascript">
         loadTracks ( '@dayTour.date', Array(initColors,initMap,initImages,initFlot, initMetadata))
+
+
     </script>
 }
 
-@tourtemplate(message, nav)(sidebar(guiTrip, dayTour.dayTourId))(metadata)(assets) {
+@tourtemplate(message, nav)(sidebar(guiTrip.shortName, dayTour.dayTourId,dayTours))(metadata)(assets) {
 
-    <h1 class="page-header">@guiTrip.title - @dayTour.date</h1>
+    <h1 class="page-header">@guiTrip.title - <wbr>@dayTour.date</h1>
 
     <div>
         @Html(dayTour.description)

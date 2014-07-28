@@ -112,11 +112,10 @@
                 <tr>
                     <th>Trip Name</th>
                     <th>Date</th>
-                    <th>Fallback Start Point</th>
-                    <th>Fallback End Point</th>
                     <th>Description</th>
                     <th>Weather Cond</th>
                     <th>Road Cond</th>
+                    <th>Category</th>
                 </tr>
 
                 @for((tripName, listOfDayTours) <- dayTours) {
@@ -124,8 +123,6 @@
                         <tr class="clickableRow" href="@routes.AdminController.dayTourDetails(dayTour.dayTourId.toString)">
                             <td nowrap>@tripName</td>
                             <td nowrap>@dayTour.date.toString</td>
-                            <td>@dayTour.startPointLat/@dayTour.startPointLon</td>
-                            <td>@dayTour.endPointLat/@dayTour.endPointLon</td>
                             <td>
                             @if(dayTour.description.length > 20) {
                                 @dayTour.description.substring(0, 19) ...
@@ -135,6 +132,7 @@
                             </td>
                             <td>@dayTour.weatherCond</td>
                             <td>@dayTour.roadCond</td>
+                            <td>@dayTour.category</td>
                         </tr>
                     }
                 }
@@ -156,13 +154,10 @@
                 <div class="modal-body">
                 @helper.form(action = routes.AdminController.addDayTour) {
                     @helper.inputDate(formDayTour("date"))
-                    @helper.inputText(formDayTour("startPointLat"))
-                    @helper.inputText(formDayTour("startPointLon"))
-                    @helper.inputText(formDayTour("endPointLat"))
-                    @helper.inputText(formDayTour("endPointLon"))
-                    @helper.inputText(formDayTour("description"))
+                    @helper.textarea(formDayTour("description"),args = 'rows -> 10, 'cols -> 70)
                     @helper.inputText(formDayTour("weatherCond"))
                     @helper.inputText(formDayTour("roadCond"))
+                    @helper.inputText(formDayTour("category"))
                 </div>
 
                 <div class="modal-footer">

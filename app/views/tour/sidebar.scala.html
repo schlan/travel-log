@@ -1,27 +1,43 @@
-@(guiTrip: at.droelf.gui.entities.GuiTrip, recentId: java.util.UUID)
+@(guiTripId: String, recentId: java.util.UUID, dayTours: Map[(String,org.joda.time.LocalDate), Seq[(at.droelf.gui.entities.GuiDayTour, Int)]])
 
-    <ul class="nav nav-sidebar" >
-        <li>
-            <a href="@routes.TripController.getTripById(guiTrip.shortName)">
-                <h5>Overview</h5>
-            </a>
-        </li>
+    <ul class="nav nav-sidebar" style="min-height: 100%;;margin-bottom: 0px;">
 
-        @for((dT, index) <- guiTrip.guiDayTours.zipWithIndex) {
-
-            @if(dT.dayTourId == recentId) {
-                <li class="active">
-                } else {
-                <li>
-                }
-            <a href="@routes.TripController.getDayTour(guiTrip.shortName,dT.dayTourId.toString)">
+        @if(recentId == java.util.UUID.fromString("804007f0-168c-11e4-8c21-0800200c9a66")){
+            <li class="active">
+        } else {
+            <li>
+        }
+            <a href="@routes.TripController.getTripById(guiTripId)">
                 <h4>
-                    Day @(index + 1)
-                    <br />
-                    <small>(@dT.date.toString("dd. MMMM YYYY"))</small>
+                    Overview
                 </h4>
             </a>
         </li>
 
+        @for(keys <- dayTours.keys.toList.sortWith((d1,d2) => d1._2.isAfter(d2._2))){
+            <li class="label category" style="background-color: #333;margin-left: 0px;margin-right: 1px;">
+                <div>
+                    @keys._1
+                </div>
+            </li>
+
+            @for(dT <- dayTours.get(keys).get){
+
+                @if(dT._1.dayTourId == recentId) {
+                    <li class="active">
+                    } else {
+                    <li>
+                    }
+                <a href="@routes.TripController.getDayTour(guiTripId,dT._1.dayTourId.toString)">
+                    <h4>
+                    Day @dT._2
+                        <br />
+                        <small>(@dT._1.date.toString("dd. MMMM YYYY"))</small>
+                </h4>
+                </a>
+            </li>
+            }
         }
+
+
     </ul>

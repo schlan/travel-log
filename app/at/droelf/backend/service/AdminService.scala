@@ -48,7 +48,7 @@ class AdminService(dbStorage: DBStorageService) {
 
   def deleteDayTour(dayTour: UUID) = dbStorage.deleteDayTour(dayTour)
 
-  def convertAdminDayTour(dayTour: AdminDayTour, uuid: UUID):DayTour = DayTour(dayTour.date,uuid,dayTour.startPointLat,dayTour.startPointLon,dayTour.endPointLat,dayTour.endPointLon,dayTour.description,dayTour.weatherCond,dayTour.roadCond)
+  def convertAdminDayTour(dayTour: AdminDayTour, uuid: UUID):DayTour = DayTour(dayTour.date,uuid,dayTour.description,dayTour.weatherCond,dayTour.roadCond, dayTour.category)
 
 
 
