@@ -7,6 +7,7 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 DayTour: @dayTour.date
+                <button class="btn pull-right" data-toggle="modal" data-target="#editDayTour">Edit</button>
                 <form class="pull-right" action="@routes.AdminController.deleteDayTour(dayTour.dayTourId.toString)" method="POST">
                     <button class="btn" type="submit">Delete</button>
                 </form>
@@ -46,7 +47,7 @@
                     @helper.inputText(formDayTour("startPointLon"))
                     @helper.inputText(formDayTour("endPointLat"))
                     @helper.inputText(formDayTour("endPointLon"))
-                    @helper.inputText(formDayTour("description"))
+                    @helper.textarea(formDayTour("description"),args = 'rows -> 10, 'cols -> 70)
                     @helper.inputText(formDayTour("weatherCond"))
                     @helper.inputText(formDayTour("roadCond"))
                 </div>

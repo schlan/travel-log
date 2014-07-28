@@ -1,6 +1,4 @@
 @(formEditTrip: Form[models.Trip])(title: String, trip: Trip)(implicit session: play.api.mvc.Session)
-@import helper.twitterBootstrap._
-
 @admin.admin("Adminarea")  {
 
     <div class="panel panel-default">
@@ -40,7 +38,7 @@
                 <div class="modal-body">
                 @helper.form(action = routes.AdminController.updateTrip) {
                     @helper.inputText(formEditTrip("title"))
-                    @helper.inputText(formEditTrip("description"))
+                    @helper.textarea(formEditTrip("description"),args = 'rows -> 10, 'cols -> 70)
                     @helper.inputText(formEditTrip("shortName"))
                     @helper.inputDate(formEditTrip("startDate"))
                     @helper.inputDate(formEditTrip("endDate"))

@@ -74,7 +74,7 @@ function initMap(data) {
 }
 
 function initLeaflet(){
-    map = L.map('map', {});
+    map = L.map('map', {fullscreenControl: true});
 
     cloudmadeLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

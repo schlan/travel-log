@@ -17,7 +17,7 @@ function initImagesGeneral(images) {
         var path = "/api/images/getImage/" + img["path"]
 
 
-        markup += "<div class='col-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8'>"
+        markup += "<div class='col-lg-offset-1 col-lg-10 col-md-4 col-sm-4 col-xs-6' style='padding-left: 5px;padding-right: 5px;'>"
         markup += "<div class='thumbnail'>"
         markup += "<a title='" + img["name"] + "' href='" + path + "'>"
         markup += "<img class='img-thumbnail' src='" + path + "'/>"
@@ -30,7 +30,7 @@ function initImagesGeneral(images) {
         var imgLon = img["location"]["longitude"]
 
         if(imgLat != -1 && imgLon != -1){
-            markup += "<span style='float:right;padding-right: 5px;'><a class='glyphicon glyphicon-map-marker' onclick='zoomToPosition(" + imgLat + "," + imgLon + ")''></a></span>"
+            markup += "<span style='float:right;padding-right: 5px;'><a class='glyphicon glyphicon-map-marker' href='#map' onclick='zoomToPosition(" + imgLat + "," + imgLon + ")''></a></span>"
         }
         markup += "</span></div></div>"
 //
