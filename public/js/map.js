@@ -1,13 +1,12 @@
 /**
  * Created by basti on 6/14/14.
  */
-var map, marker, mapslayer,cloudmadeLayer;
+var map, marker, mapslayer,cloudmadeLayer, linesLayer = {};
 
 function initMapForSummary(data) {
     initLeaflet()
 
     var tracks = data["condensedTracks"]
-    var linesLayer = {}
 
     var lastKnownPos = data["lastKnownPosition"]
 
@@ -51,8 +50,6 @@ function initMapForSummary(data) {
 function initMap(data) {
     initLeaflet()
 
-    var linesLayer = {}
-
     for (x in data["tracks"]) {
         var track = data["tracks"][x]
         var polyline = getPolyLine(track)
@@ -60,7 +57,7 @@ function initMap(data) {
         polyline.addTo(map)
         map.fitBounds(polyline.getBounds());
 
-        linesLayer[track['name']] = polyline
+        linesLayer[track['name'].substring(0,15) + "..."] = polyline
     }
 
     var imageLayer = getImageMarkerGroup(data["images"])
@@ -90,13 +87,38 @@ function initLeaflet(){
     var googleLayerTerrain = new L.Google('TERRAIN', {featureType: 'all'});
 
     mapslayer = {
-        'OSM':cloudmadeLayer,
-        'Open Cycle Map':cycleMap,
+        'OpenStreetMap':cloudmadeLayer,
+        'OpenCycleMap':cycleMap,
         'Google Satellite': googleLayerSat,
         'Google Road': googleLayerRoad,
         'Google Hybrid': googleLayerHybrid,
         'Google Terrain': googleLayerTerrain
     }
+
+    var OpenWeatherMap_CloudsClassic = L.tileLayer('http://{s}.tile.openweathermap.org/map/clouds_cls/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="http://openweathermap.org">OpenWeatherMap</a>',
+        opacity: 0.5
+    });
+    var OpenWeatherMap_PrecipitationClassic = L.tileLayer('http://{s}.tile.openweathermap.org/map/precipitation_cls/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="http://openweathermap.org">OpenWeatherMap</a>',
+        opacity: 0.5
+    });
+    var OpenWeatherMap_Wind = L.tileLayer('http://{s}.tile.openweathermap.org/map/wind/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="http://openweathermap.org">OpenWeatherMap</a>',
+        opacity: 0.5
+    });
+    var OpenWeatherMap_Temperature = L.tileLayer('http://{s}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="http://openweathermap.org">OpenWeatherMap</a>',
+        opacity: 0.5
+    });
+
+
+    linesLayer["Clouds"] = OpenWeatherMap_CloudsClassic
+    linesLayer["Precipitation"] = OpenWeatherMap_PrecipitationClassic
+    linesLayer["Wind"] = OpenWeatherMap_Wind
+    linesLayer["Temperature"] = OpenWeatherMap_Temperature
+
+
 
     marker = L.marker([0, 0],{
         clickable: true

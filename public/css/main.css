@@ -229,3 +229,36 @@ body {
     padding: 2px;
 }
 
+.leaflet-control-layers-list{
+    white-space: nowrap;
+}
+
+.leaflet-control-layers-overlays{
+    display: inline-block;
+
+    overflow-y: auto;
+    border-left: 1px solid #DDDDDD;
+    max-height: 290px;
+    padding-left: 8px;
+    margin-left: -1px;
+    vertical-align: top;
+
+
+}
+
+.leaflet-control-layers-base{
+    display: inline-block;
+
+    overflow-y: auto;
+    max-height: 290px;
+    border-right: 1px solid #DDDDDD;
+    padding-right: 8px;
+    vertical-align: top;
+
+
+
+}
+
+.leaflet-control-layers-separator{
+    display: none;
+}
