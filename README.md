@@ -1,2 +1,3 @@
 travel-log
 ==========
+sbt run
