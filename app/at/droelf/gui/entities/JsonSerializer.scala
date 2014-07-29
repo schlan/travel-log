@@ -1,9 +1,10 @@
 package at.droelf.gui.entities
 
+import at.droelf.backend.DateTimeUtil
 import play.api.libs.json.{JsValue, Json, Writes}
 
 
-trait JsonSerializer {
+trait JsonSerializer extends DateTimeUtil{
   implicit val guiTrackMetadataWrites = new Writes[GuiTrackMetaData] {
     override def writes(o: GuiTrackMetaData): JsValue = Json.obj(
       "description" -> o.description,
@@ -29,7 +30,7 @@ trait JsonSerializer {
 
   implicit val guiTrackPoint = new Writes[GuiTrackPoint] {
     override def writes(o: GuiTrackPoint): JsValue = Json.obj(
-      "datetime" -> o.dateTime.toLocalDateTime.toString,
+      "datetime" -> dateTimeToLocalDateTimeIsoStringWithoutMillis(o.dateTime),
       "elevation" -> o.elevation,
       "longitude" -> o.longitude,
       "latitude" -> o.latitude
