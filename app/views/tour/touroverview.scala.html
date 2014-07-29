@@ -14,7 +14,9 @@
 
 
         <script type="text/javascript">
-            loadTripSummary( '@guiTrip.shortName', Array(initColorsForSummary,initMetadataForSummary,initMapForSummary,initFlotForSummary,initImagesForOverview))
+            $(document).ready(function ($) {
+                loadTripSummary( '@guiTrip.shortName', Array(initColorsForSummary,initMetadataForSummary,initMapForSummary,initFlotForSummary,initImagesForOverview))
+            })
         </script>
     }
 

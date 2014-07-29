@@ -7,23 +7,29 @@ function initImagesForOverview(data){
 }
 
 
+$(document).ready(function ($) {
+    $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+        event.preventDefault();
+        $(this).ekkoLightbox();
+    });
+})
+
 function initImagesGeneral(images) {
 
-    var markup = ""
-
+    var markup = "<div class='tour-gallery'>"
     for (x in images) {
 
         var img = images[x]
         var path = "/api/images/getImage/" + img["path"]
 
-
         markup += "<div class='col-lg-offset-1 col-lg-10 col-md-4 col-sm-4 col-xs-6' style='padding-left: 5px;padding-right: 5px;'>"
         markup += "<div class='thumbnail'>"
-        markup += "<a title='" + img["name"] + "' href='" + path + "'>"
-        markup += "<img class='img-thumbnail' src='" + path + "'/>"
-        markup += "</a>"
-        markup += "<span class='caption'>"
 
+        markup += "<a data-title='" + img["name"] + "' href='"+path+"' data-parent='.tour-gallery' data-toggle='lightbox' data-gallery='multiimages' data-type='image' >"
+        markup += "<img class='img-responsive' src='" + path + "'/>"
+        markup += "</a>"
+
+        markup += "<span class='caption'>"
         markup += "<span style='float:left;padding-left: 5px;'><b>" + img["name"] + "</b></span>"
 
         var imgLat = img["location"]["latitude"]
@@ -33,18 +39,13 @@ function initImagesGeneral(images) {
             markup += "<span style='float:right;padding-right: 5px;'><a class='glyphicon glyphicon-map-marker' href='#map' onclick='zoomToPosition(" + imgLat + "," + imgLon + ")''></a></span>"
         }
         markup += "</span></div></div>"
-//
-//        $("#images").append(
-//                "<div class='col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10 '>" +
-//                    "<a title='" + img["name"] + "' href='" + path + "'>" +
-//                        "<img class='img-thumbnail' src='" + path + "'/>" +
-//                    "</a>" +
-//                "</div>"
-//        )
     }
+
+    markup += "</div>"
 
 
     $("#images").append(markup)
+
 
 }
 
