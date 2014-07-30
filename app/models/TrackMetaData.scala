@@ -27,7 +27,7 @@ case class TrackMetaData(
 class TrackMetaDataTable(tag: Tag) extends Table[TrackMetaData](tag, "TRACK_METADATA") {
 
   def trackId = column[UUID]("TRACK_ID", O.PrimaryKey)
-  def description = column[Option[String]]("DESCRIPTION", O.Nullable)
+  def description = column[Option[String]]("DESCRIPTION", O.Nullable, O.DBType("VARCHAR(20000)"))
   def distance = column[Option[Float]]("DISTANCE", O.Nullable)
   def timerTime = column[Option[Float]]("TIMERTIME", O.Nullable)
   def totalElapsedTime = column[Option[Float]]("TOTALELAPSEDTIME", O.Nullable)

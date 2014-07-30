@@ -24,11 +24,11 @@
             @for(dT <- dayTours.get(keys).get){
 
                 @if(dT._1.dayTourId == recentId) {
-                    <li class="active">
+                    <li class="active" id="@dT._1.dayTourId.toString">
                     } else {
                     <li>
                     }
-                <a href="@routes.TripController.getDayTour(guiTripId,dT._1.dayTourId.toString)">
+                <a href="@routes.TripController.getDayTour(guiTripId,dT._1.dayTourId.toString)#@dT._1.dayTourId.toString">
                     <h4>
                     Day @dT._2
                         <br />

@@ -13,7 +13,7 @@ class DayTourTable(tag: Tag) extends Table[DayTour](tag, "DAY_TOUR"){
   def date = column[LocalDate]("DATE")
   def dayTourId = column[UUID]("DAYTOUR_ID", O.PrimaryKey)
 
-  def description = column[String]("DESCRIPTION")
+  def description = column[String]("DESCRIPTION",O.DBType("VARCHAR(20000)"))
   def weatherCond = column[String]("WEATHER_COND")
   def roadCond = column[String]("ROAD_COND")
 

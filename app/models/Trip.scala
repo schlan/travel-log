@@ -20,7 +20,7 @@ class TripTable(tag: Tag) extends Table[Trip](tag, "TRIP") {
 
   def title = column[String]("TITLE", O.NotNull)
 
-  def description = column[String]("DESC", O.Default("No Description"))
+  def description = column[String]("DESC", O.Default("No Description"),O.DBType("VARCHAR(20000)"))
 
   def shortName = column[String]("SHORT_NAME", O.PrimaryKey)
 
