@@ -80,8 +80,8 @@ function initGeneralChart(data, legend) {
             var track = data[x];
             for(y in track["trackPoints"]){
                var trackPt = track["trackPoints"][y];
-               if(Math.abs(new Date(Date.fromISO(trackPt["datetime"])).getTime() - selectedDate) < bestDiff){
-                    bestDiff = Math.abs(new Date(Date.fromISO(trackPt["datetime"])).getTime() - selectedDate);
+               if(Math.abs(new Date(Date.fromISO(trackPt["datetime"] + "+0000" )).getTime() - selectedDate) < bestDiff){
+                    bestDiff = Math.abs(new Date(Date.fromISO(trackPt["datetime"] + "+0000" )).getTime() - selectedDate);
                     bestTrkPt = trackPt;
                }
             }
@@ -96,11 +96,13 @@ function getDataSet(track){
     for(i in track["trackPoints"]){
         var trkPt = track["trackPoints"][i]
 
-        var date = trkPt["datetime"]
+        var date = trkPt["datetime"] + "+0000"
         var elevation = trkPt["elevation"]
 
         var date = new Date(Date.fromISO(date))
+        
         points.push(Array(date.getTime(), elevation))
+
 
     }
 

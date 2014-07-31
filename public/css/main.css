@@ -26,13 +26,23 @@ body {
 
 .sidebar{
     -webkit-overflow-scrolling: touch;
-    /*-webkit-transform: translateZ(0);*/
 }
 
+.sidebar > * {
+    -webkit-transform: translateZ(0);
+}
 
 .sidebar-right{
     -webkit-overflow-scrolling: touch;
     /*-webkit-transform: translateZ(0);*/
+}
+
+.small-dev-img{
+    display: block;
+}
+
+.big-dev-img{
+    display: none;
 }
 
 
@@ -74,7 +84,7 @@ body {
 /* Tablets - ohne Fotos Sidebar */
 @media (min-width: 768px) {
     .sidebar {
-        position: fixed;
+        position: absolute;
         top: 51px;
         bottom: 0;
         left: 0;
@@ -95,7 +105,7 @@ body {
     .main {
         padding-right: 50px;
         padding-left: 30px;
-        position: fixed;
+        position: absolute;
         top: 51px;
         bottom: 0;
         z-index: 1010;
@@ -121,7 +131,7 @@ body {
         padding-right: 40px;
     }
     .sidebar-right {
-        position: fixed;
+        position: absolute;
         top: 51px;
         bottom: 0;
         left: -1px;
@@ -142,6 +152,14 @@ body {
 
     #map{
         height: 550px;
+    }
+
+    .small-dev-img{
+        display: none;
+    }
+
+    .big-dev-img{
+        display: block;
     }
 }
 

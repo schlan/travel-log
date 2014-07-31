@@ -44,7 +44,7 @@ function initImagesGeneral(images) {
     markup += "</div>"
 
 
-    $("#images").append(markup)
+    $(".tourimg").append(markup)
 
 
 }
