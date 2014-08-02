@@ -26,7 +26,7 @@ class FileStorageService {
 
 
   def saveGpxTrackFile(file: File): Path = {
-    Files.write(Paths.get(imageRootDir, UUID.randomUUID().toString), Files.readAllBytes(file.toPath))
+    Files.write(Paths.get(tracksDir, UUID.randomUUID().toString), Files.readAllBytes(file.toPath))
   }
 
 
