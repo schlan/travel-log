@@ -18,7 +18,7 @@ body {
     padding-bottom: 20px;
     padding-left: 20px;
     padding-right: 20px;
-    z-index: 1500;
+    z-index: 100;
 
     -webkit-overflow-scrolling: touch;
     /*-webkit-transform: translateZ(0);*/
@@ -45,6 +45,14 @@ body {
     display: none;
 }
 
+.jsspinner{
+    font-size: 25px;
+    position:relative;
+    vertical-align: middle;
+    top:0%;
+    left:50%;
+    display: block;
+}
 
 /* Phones */
 @media (max-width: 767px) {
@@ -55,12 +63,12 @@ body {
 
     .toggleDaysMobile {
         top:50px;
-        z-index: 5000;
+        z-index: 100;
         margin-bottom: 50px;
     }
 
     .toggleMenu{
-        z-index: 5001;
+        z-index: 101;
     }
 
     body{
@@ -88,7 +96,7 @@ body {
         top: 51px;
         bottom: 0;
         left: 0;
-        z-index: 1000;
+        z-index: 100;
         display: block;
         padding: 0px;
         overflow-x: hidden;
@@ -135,7 +143,7 @@ body {
         top: 51px;
         bottom: 0;
         left: -1px;
-        z-index: 10000;
+        z-index: 100;
         display: block;
         padding-top: 10px;
         overflow-x: hidden;

@@ -3,21 +3,28 @@
  */
 
 
-function loadJsonDataAndCallback(url, callbacks){
+function loadJsonDataAndCallback(url, callbacks, spinner){
+
     $.getJSON(url,
         function (data) {
             console.log(data)
+
+            for(var x = 0; x < spinner['length']; x++){
+                if(spinner[x] !== "undefined" && spinner[x].style !== "undefined")
+                    spinner[x].style.display = "none"
+            }
+
             $.each( callbacks, function( key, val ) {
-                callbacks[key](data);
+                callbacks[key](data)
             });
         });
 }
 
-function loadTracks(date, callbacks){
-    loadJsonDataAndCallback('/api/getDayTourInformation/' + date, callbacks)
+function loadTracks(date, callbacks, spinner){
+    loadJsonDataAndCallback('/api/getDayTourInformation/' + date, callbacks, spinner)
 }
 
-function loadTripSummary(trip, callbacks){
-    loadJsonDataAndCallback('/api/getTripInformation/' + trip, callbacks)
+function loadTripSummary(trip, callbacks, spinner){
+    loadJsonDataAndCallback('/api/getTripInformation/' + trip, callbacks, spinner)
 }
 

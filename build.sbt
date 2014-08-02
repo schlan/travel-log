@@ -18,7 +18,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery" % "2.1.1",
   "org.webjars" % "bootstrap-modal" % "2.2.5",
   "org.webjars" % "leaflet" % "0.7.3",
-  "org.webjars" % "flot" % "0.8.3"
+  "org.webjars" % "flot" % "0.8.3",
+  "org.webjars" % "font-awesome" % "4.1.0"
 )
 
 

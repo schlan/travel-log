@@ -15,7 +15,8 @@
 
     <script type="text/javascript">
         $(document).ready(function ($) {
-            loadTracks ( '@dayTour.date', Array(initColors,initMap,initImages,initFlot, initMetadata))
+            var spinner = $(".jsspinner")
+            loadTracks ( '@dayTour.date', Array(initColors,initMap,initImages,initFlot, initMetadata), spinner)
         })
     </script>
 }

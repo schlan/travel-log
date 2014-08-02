@@ -15,7 +15,8 @@
 
         <script type="text/javascript">
             $(document).ready(function ($) {
-                loadTripSummary( '@guiTrip.shortName', Array(initColorsForSummary,initMetadataForSummary,initMapForSummary,initFlotForSummary,initImagesForOverview))
+            var spinner = $(".jsspinner")
+            loadTripSummary( '@guiTrip.shortName', Array(initColorsForSummary,initMetadataForSummary,initMapForSummary,initFlotForSummary,initImagesForOverview), spinner)
             })
         </script>
     }
