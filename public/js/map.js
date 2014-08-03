@@ -21,13 +21,12 @@ function initMapForSummary(data) {
     })
     lastPos.addTo(map)
 
-
     var trackOverview = Array()
 
     for (x in tracks) {
         var track = tracks[x]
         var line = getPolyLine(track)
-        //line.on("click", function(){ window.location.href = "/pacific/"  + id; })
+        //line.on("click", function(){ window.location.href = ""  + track["id"]; })
         trackOverview.push(line)
     }
 
@@ -77,7 +76,7 @@ function initLeaflet(){
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     })
 
-    var cycleMap = L.tileLayer('http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png', {
+    var cycleMap = L.tileLayer('http://{s}.tile.opencyclemap.org/transport/{z}/{x}/{y}.png', {
         attribution: 'Tiles courtesy of <a href="http://www.opencyclemap.org/"" target="_blank">Andy Allan</a>'
     })
 

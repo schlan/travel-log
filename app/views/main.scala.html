@@ -20,28 +20,7 @@
 
 
 
-        <script>
-        //event listener form DOM ready
-            function addLoadEvent(func) {
-                var oldonload = window.onload;
-                if (typeof window.onload != 'function') {
-                    window.onload = func;
-                } else {
-                    window.onload = function() {
-                        oldonload();
-                        func();
-                    }
-                }
-            }
-        //call function after DOM ready
-            addLoadEvent(
-                outdatedBrowser({
-                    bgColor: '#f25648',
-                    color: '#ffffff',
-                    lowerThan: 'transform'
-                })
-            );
-        </script>
+
 
 
 
@@ -55,6 +34,30 @@
             <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a></p>
             <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
         </div>
+
+        <script>
+        //event listener form DOM ready
+        function addLoadEvent(func) {
+        var oldonload = window.onload;
+        if (typeof window.onload != 'function') {
+        window.onload = func;
+        } else {
+        window.onload = function() {
+        oldonload();
+        func();
+        }
+        }
+        }
+        //call function after DOM ready
+        addLoadEvent(
+        outdatedBrowser({
+        bgColor: '#f25648',
+        color: '#ffffff',
+        lowerThan: 'transform'
+        })
+        );
+        </script>
+
 
 
         <div class="navbar navbar-inverse navbar-fixed-top toggleMenu" role="navigation">
