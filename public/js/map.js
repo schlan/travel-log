@@ -70,6 +70,7 @@ function initMap(data) {
 }
 
 function initLeaflet(){
+    $("#map").fadeIn( 1000 )
     map = L.map('map', {fullscreenControl: true});
 
     cloudmadeLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {

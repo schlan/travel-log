@@ -56,6 +56,9 @@ function initGeneralChart(data, legend) {
         plot.setSelection({ xaxis: { from: range[0], to: range[1]}});
     });
 
+    $("#chart").fadeIn( 1000 )
+
+
     $("#chart").bind("plotselected", function (event, ranges) {
 
         $.each(plot.getXAxes(), function (_, axis) {

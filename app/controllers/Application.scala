@@ -10,7 +10,7 @@ class Application(gpxTrackService: GpxTrackService)extends Controller {
 
 
   def index = Action {
-    Ok("asdf#")
+    Redirect(routes.TripController.getTripById("pacific"))
   }
 
 }
