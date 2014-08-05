@@ -18,13 +18,15 @@ trait Secured {
     }
   }
 
-  /**
-   * This method shows how you could wrap the withAuth method to also fetch your user
-   * You will need to implement UserDAO.findOneByUsername
-   */
-  def withUser(f: User => Request[AnyContent] => Result) = withAuth { username => implicit request =>
-    userService.findUserByName(username).map { user =>
-      f(user)(request)
-    }.getOrElse(onUnauthorized(request))
-  }
+
+
+//  /**
+//   * This method shows how you could wrap the withAuth method to also fetch your user
+//   * You will need to implement UserDAO.findOneByUsername
+//   */
+//  def withUser(f: User => Request[AnyContent] => Result) = withAuth { username => implicit request =>
+//    userService.findUserByName(username).map { user =>
+//      f(user)(request)
+//    }.getOrElse(onUnauthorized(request))
+//  }
 }

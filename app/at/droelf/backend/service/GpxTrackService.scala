@@ -10,13 +10,14 @@ import models.{TrackMetaData, TrackPoint}
 import org.joda.time.{DateTimeZone, LocalDate}
 import parser.gpxtype.GPXDecoder
 import play.api.Logger
+import play.api.libs.Files.TemporaryFile
 
 class GpxTrackService(fileStorageService: FileStorageService, dbTrackStorageService: DBStorageService) {
 
   // Put
-  def saveTracks(file: File, activity: String, timeZoneOffset: DateTimeZone) {
-    val x = GPXDecoder.decodeFile(file)
-    fileStorageService.saveGpxTrackFile(file)
+  def saveTracks(file: TemporaryFile, activity: String, timeZoneOffset: DateTimeZone) {
+    val path = fileStorageService.saveGpxTrackFile(file)
+    val x = GPXDecoder.decodeFile(path.toFile)
     dbTrackStorageService.saveTracks(x.tracks, timeZoneOffset, activity)
   }
 

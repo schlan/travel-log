@@ -25,8 +25,10 @@ class FileStorageService {
   }
 
 
-  def saveGpxTrackFile(file: File): Path = {
-    Files.write(Paths.get(tracksDir, UUID.randomUUID().toString), Files.readAllBytes(file.toPath))
+  def saveGpxTrackFile(file: TemporaryFile): Path = {
+    val finalPath = Paths.get(tracksDir, UUID.randomUUID().toString)
+    file.moveTo(finalPath.toFile)
+    finalPath
   }
 
 

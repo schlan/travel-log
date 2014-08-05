@@ -2,15 +2,14 @@ package at.droelf.backend.service
 
 import at.droelf.backend.storage.database.DBStorageService
 import models.User
+import play.api.Play
 
 class UserService(dbStorage: DBStorageService) {
   //FIXME
 
-  def checkUserPassword(user: String, password: String): Boolean = {
-    (user== "admin" && password == "1234")
+  private val user = Play.current.configuration.getString("at.droelf.travel-log.user").get
+  private val password = Play.current.configuration.getString("at.droelf.travel-log.password").get
 
-  }
-
-  def findUserByName(userName: String): Option[User] = ???
+  def checkUserPassword(user: String, password: String): Boolean = (user == this.user && password == this.password)
 
 }

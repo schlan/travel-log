@@ -20,7 +20,7 @@ object Global extends GlobalSettings {
 
   lazy val controllerSingletons = Map[Class[_], AnyRef](
     (classOf[Application] -> new Application(gpxTrackService)),
-    (classOf[TracksController] -> new TracksController(gpxTrackService)),
+    (classOf[TracksController] -> new TracksController(gpxTrackService,userService)),
     (classOf[TripController] -> new TripController(tripService,imageService)),
     (classOf[AuthController] -> new AuthController(userService)),
     (classOf[AdminController] -> new AdminController(userService,adminService)),
