@@ -18,13 +18,11 @@
         <link rel="stylesheet" href="@routes.WebJarAssets.at(WebJarAssets.locate("outdatedBrowser.css"))">
         <script src="@routes.WebJarAssets.at(WebJarAssets.locate("outdatedBrowser.js"))"></script>
 
-
-
-
-
-
-
         @assetImports
+
+        @if(play.api.Play.current.configuration.getString("at.droelf.travel-log.db.mode").get == "prod"){
+            @tracking.analytics()
+        }
     </head>
 
     <body>
