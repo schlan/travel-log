@@ -8,40 +8,48 @@ function initMapForSummary(data) {
 
     var tracks = data["condensedTracks"]
 
-    var lastKnownPos = data["lastKnownPosition"]
+    if(tracks.length > 0) {
 
-    var icon =  L.AwesomeMarkers.icon({
-        icon: 'glyphicon glyphicon-asterisk',
-        markerColor: 'red'
-    })
+        var lastKnownPos = data["lastKnownPosition"]
+        console.log(lastKnownPos)
+        if (lastKnownPos != null) {
+            var icon = L.AwesomeMarkers.icon({
+                icon: 'glyphicon glyphicon-asterisk',
+                markerColor: 'red'
+            })
 
-    var lastPos = L.marker([lastKnownPos["latitude"], lastKnownPos["longitude"]],{
-        'icon' : icon,
-        'riseOnHover':true
-    })
-    lastPos.addTo(map)
+            var lastPos = L.marker([lastKnownPos["latitude"], lastKnownPos["longitude"]], {
+                'icon': icon,
+                'riseOnHover': true
+            })
+            lastPos.addTo(map)
+        }
 
-    var trackOverview = Array()
+        var trackOverview = Array()
 
-    for (x in tracks) {
-        var track = tracks[x]
-        var line = getPolyLine(track)
-        //line.on("click", function(){ window.location.href = ""  + track["id"]; })
-        trackOverview.push(line)
+        for (x in tracks) {
+            var track = tracks[x]
+            var line = getPolyLine(track)
+            //line.on("click", function(){ window.location.href = ""  + track["id"]; })
+            trackOverview.push(line)
+        }
+
+        var tracks = L.featureGroup(trackOverview)
+        map.fitBounds(tracks.getBounds());
+        tracks.addTo(map)
+
+        linesLayer["Tracks"] = tracks
+        linesLayer["Last known Position"] = lastPos
+
+
+        var imageLayer = getImageMarkerGroup(data["newestImages"])
+        imageLayer.addTo(map)
+        linesLayer["Images"] = imageLayer
+
+        L.control.layers(mapslayer, linesLayer).addTo(map)
+
     }
 
-    var tracks = L.featureGroup(trackOverview)
-    map.fitBounds(tracks.getBounds());
-    tracks.addTo(map)
-
-    linesLayer["Tracks"] = tracks
-    linesLayer["Last known Position"] = lastPos
-
-    var imageLayer = getImageMarkerGroup(data["newestImages"])
-    imageLayer.addTo(map)
-    linesLayer["Images"] = imageLayer
-
-    L.control.layers(mapslayer, linesLayer).addTo(map)
     L.control.scale().addTo(map)
     cloudmadeLayer.addTo(map)
 }

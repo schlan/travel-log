@@ -33,13 +33,15 @@ POST        /admin/api/daytour/addDayTour              @controllers.AdminControl
 POST        /admin/api/daytour/updateDayTour           @controllers.AdminController.updateDayTour(dayTourId)
 POST        /admin/api/daytour/deleteDayTour           @controllers.AdminController.deleteDayTour(dayTourId)
 
+POST        /admin/api/track/addTrack                  @controllers.AdminController.addTrack
 POST        /admin/api/track/updateTrack               @controllers.AdminController.updateTrack(trackId)
 POST        /admin/api/track/deleteTrack               @controllers.AdminController.deleteTrack(trackId)
+
+POST        /admin/api/trackPoint/addTrackPoint        @controllers.AdminController.addTrackPoint(trackId)
 
 POST        /admin/api/trackMetadata/update            @controllers.AdminController.updateTrackMetadata(trackId)
 
 POST        /admin/api/demoData/insert                 @controllers.AdminController.insertDemoData
-
 
 # auth
 GET         /admin/login                               @controllers.AuthController.login

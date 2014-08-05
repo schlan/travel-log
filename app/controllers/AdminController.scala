@@ -4,9 +4,9 @@ import java.util.UUID
 
 import at.droelf.backend.{ControllerUtils, Secured}
 import at.droelf.backend.service.{AdminService, UserService}
-import at.droelf.gui.entities.{AdminTrackMetaData, AdminTrack, AdminDayTour}
+import at.droelf.gui.entities.{AdminTrackPoint, AdminTrackMetaData, AdminTrack, AdminDayTour}
 import models.{Track, DayTour, Trip}
-import org.joda.time.LocalDate
+import org.joda.time.{DateTimeZone, LocalDateTime, LocalDate}
 import play.api.Logger
 import play.api.data.Forms._
 import play.api.data._
@@ -20,11 +20,11 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
   override val userService: UserService = userSer
 
   def index = withAuth { username => implicit request =>
-    Ok(views.html.admin.adminarea(addTripForm, dayTourForm)(username, adminService.getAllTrips, adminService.getAllTracks, adminService.getAllDayTours))
+    Ok(views.html.admin.adminarea(tripForm, dayTourForm, trackForm)(username, adminService.getAllTrips, adminService.getAllTracks, adminService.getAllDayTours))
   }
 
 
-  val addTripForm = Form(
+  val tripForm = Form(
     mapping(
       "title" -> nonEmptyText,
       "description" -> text,
@@ -35,7 +35,7 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
   )
 
   def addTrip = withAuth { username => implicit request =>
-    addTripForm.bindFromRequest.fold(
+    tripForm.bindFromRequest.fold(
       formWithErrors => BadRequest("Nope"),
       trip => {
         adminService.insertTrip(trip);
@@ -48,14 +48,14 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
     val trip = adminService.getTripById(id)
     trip match {
       case Some(x) => {
-        Ok(views.html.admin.details.admintripdetails(addTripForm.fill(x))(username, x))
+        Ok(views.html.admin.details.admintripdetails(tripForm.fill(x))(username, x))
       }
       case None => BadRequest
     }
   }
 
   def updateTrip = withAuth { username => implicit request =>
-    addTripForm.bindFromRequest.fold(
+    tripForm.bindFromRequest.fold(
       formWithErrors => BadRequest("Nope"),{
         trip => {
           adminService.updateTrip(trip)
@@ -151,11 +151,22 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
     )(AdminTrackMetaData.apply)(AdminTrackMetaData.unapply)
   )
 
+  val trackPointForm = Form(
+    mapping(
+      "latitude" -> float,
+      "longitude" -> float,
+      "elevation" -> float,
+      "datetime" -> text(19,19),
+      "dateTimeZone" -> number(-12,12),
+      "showInOverView" -> boolean
+    )(AdminTrackPoint.apply)(AdminTrackPoint.unapply)
+  )
+
   def trackDetails(id: String) = withAuth{ username => implicit request =>
     parseUUID(id,
       uuid => {
         adminService.getTrackById(uuid) match {
-          case Some(track) => Ok(views.html.admin.details.admintrackdetails(trackForm.fill(AdminTrack(track)), trackMetadataForm.fill(AdminTrackMetaData(adminService.getTrackMetadata(track.trackId))))(track,adminService.getTrackMetadata(track.trackId),adminService.getNoOfTrackPoints(track.trackId),adminService.getDatesForTrack(track.trackId)))
+          case Some(track) => Ok(views.html.admin.details.admintrackdetails(trackForm.fill(AdminTrack(track)), trackMetadataForm.fill(AdminTrackMetaData(adminService.getTrackMetadata(track.trackId))), trackPointForm)(track,adminService.getTrackMetadata(track.trackId),adminService.getNoOfTrackPoints(track.trackId),adminService.getDatesForTrack(track.trackId)))
           case None => NotFound
         }
       })
@@ -196,6 +207,27 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
     parseUUID(trackId, parseForm(_))
   }
 
+  def addTrack() = withAuth { username => implicit request =>
+    trackForm.bindFromRequest.fold(
+      formWithErrors => BadRequest("Nope"),
+      track => {
+        adminService.addTrack(track)
+        Redirect(routes.AdminController.index())
+      }
+    )
+  }
+
+  def addTrackPoint(trackId: String)= withAuth { username => implicit request =>
+    def parseForm(uuid: UUID) = trackPointForm.bindFromRequest.fold(
+      formWithErrors => BadRequest("Nope"),
+      trackPoint => {
+        adminService.insertTrackPoint(trackPoint, uuid)
+        Redirect(routes.AdminController.trackDetails(uuid.toString))
+      }
+    )
+    parseUUID(trackId,parseForm(_))
+  }
+
 }
 
 trait FormTypes {
@@ -205,6 +237,7 @@ trait FormTypes {
   val float = Forms.of[Float]
   val optionalFloat = optional(float)
   val optionalText = optional(text)
+
 
 }
 

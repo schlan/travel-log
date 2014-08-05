@@ -26,7 +26,9 @@ object TrackToLocalDates{
   val trackToLocalDateTable = TableQuery[TrackToLocalDateTable]
 
   def insertTrackToLocalDate(trackToLocalDate: TrackToLocalDate)(implicit session: Session) = {
-    trackToLocalDateTable.insert(trackToLocalDate)
+    if(!trackToLocalDateTable.filter(e => (e.trackId === trackToLocalDate.trackId && e.localDate === trackToLocalDate.date)).exists.run) {
+      trackToLocalDateTable.insert(trackToLocalDate)
+    }
   }
 
   def delete(trackId: UUID)(implicit session: Session) = {

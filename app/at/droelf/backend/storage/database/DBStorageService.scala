@@ -101,6 +101,17 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
   def deleteDayTour(dayTourId: UUID) = db.withTransaction{implicit session => DayTours.deleteDayTour(dayTourId)}
 
 
+  def insertTrackWithEmptyMetaData(track: Track) = db.withTransaction{ implicit session =>
+    Tracks.insertTrack(track)
+    val trackMetaData = TrackMetaData(track.trackId,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None)
+    TrackMetaDatas.insertTrackMetaData(trackMetaData)
+  }
+
+  def insertTrackMetadata(trackMetaData: TrackMetaData) = db.withTransaction{implicit session => TrackMetaDatas.insertTrackMetaData(trackMetaData)}
+
+  def insertTrackPoint(trackPoint: TrackPoint) = db.withTransaction{implicit session => TrackPoints.insertIfNotExists(trackPoint)}
+
+  def insertTrackToLocalDate(trackId: UUID, localDate: LocalDate) = db.withTransaction{implicit session => TrackToLocalDates.insertTrackToLocalDate(TrackToLocalDate(trackId, localDate))}
 
   def insertImage(image: Image) = db.withTransaction{implicit session => Images.insertImage(image)}
 
@@ -109,6 +120,8 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
   def getNewestImagesForTimeRange(startDate: LocalDate, endDate: LocalDate, numberOfImg: Int) = db.withTransaction{implicit session =>
     Images.getNewestImagesForTimeRange(startDate,endDate,numberOfImg)
   }
+
+
 
 
 

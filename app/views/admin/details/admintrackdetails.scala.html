@@ -1,4 +1,4 @@
-@(formTrack: Form[at.droelf.gui.entities.AdminTrack], formTrackMetadata: Form[at.droelf.gui.entities.AdminTrackMetaData])(track: models.Track, metadata: models.TrackMetaData, numberOfTrackPoints: Int, date: Seq[org.joda.time.LocalDate])(implicit session: play.api.mvc.Session)
+@(formTrack: Form[at.droelf.gui.entities.AdminTrack], formTrackMetadata: Form[at.droelf.gui.entities.AdminTrackMetaData], formTrackPoint: Form[at.droelf.gui.entities.AdminTrackPoint])(track: models.Track, metadata: models.TrackMetaData, numberOfTrackPoints: Int, date: Seq[org.joda.time.LocalDate])(implicit session: play.api.mvc.Session)
 @import helper.twitterBootstrap._
 
 @trackHtml = {
@@ -161,10 +161,41 @@
     </div>
 }
 
+@trackPointHtml = {
+    <div class="modal fade" id="addTrackPoint" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Add Tour</h4>
+                </div>
+                <div class="modal-body">
+                @helper.form(action = routes.AdminController.addTrackPoint(track.trackId.toString)) {
+                    @helper.inputText(formTrackPoint("latitude"))
+                    @helper.inputText(formTrackPoint("longitude"))
+                    @helper.inputText(formTrackPoint("elevation"))
+                    @helper.inputText(formTrackPoint("datetime"))
+                    @helper.inputText(formTrackPoint("dateTimeZone"))
+                    @helper.checkbox(formTrackPoint("showInOverView"))
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-default" type="submit">Submit</button>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+    <button class="btn pull-right" data-toggle="modal" data-target="#addTrackPoint">Add TrackPoint</button>
+}
+
 @admin.admin("Adminarea")  {
 
     @trackHtml
 
     @trackMetadataHtml
+
+    @trackPointHtml
 
 }

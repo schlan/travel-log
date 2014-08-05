@@ -1,7 +1,9 @@
 package at.droelf.gui.entities
 
-import models.{TrackMetaData, Track, DayTour}
-import org.joda.time.LocalDate
+import java.util.UUID
+
+import models.{TrackPoint, TrackMetaData, Track, DayTour}
+import org.joda.time.{DateTimeZone, LocalDateTime, LocalDate}
 
 case class AdminDayTour(date: LocalDate, description: String, weatherCond: String, roadCond: String, category: String)
 
@@ -43,3 +45,10 @@ case class AdminTrackMetaData(
 object AdminTrackMetaData{
   def apply(metaData: TrackMetaData): AdminTrackMetaData = AdminTrackMetaData(metaData.description, metaData.distance, metaData.timerTime, metaData.totalElapsedTime, metaData.movingTime, metaData.stoppedTime, metaData.movingSpeed, metaData.maxSpeed, metaData.maxElevation, metaData.minElevation, metaData.ascent, metaData.descent, metaData.avgAscentRate, metaData.maxAscentRate, metaData.avgDescentRate, metaData.maxDescentRate, metaData.calories, metaData.avgHeartRate)
 }
+
+
+case class AdminTrackPoint(latitude: Float, longitude: Float, elevation: Float, dateTime: String, dateTimeZone: Int, showInOverView: Boolean)
+//
+//object AdminTrackPoint{
+//  def apply(trackPoint: TrackPoint): AdminTrackPoint = AdminTrackPoint(trackPoint.latitude,trackPoint.longitude,trackPoint.elevation,trackPoint.dateTime,trackPoint.dateTimeZone.,trackPoint.showInOverView)
+//}

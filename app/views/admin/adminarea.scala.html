@@ -1,4 +1,4 @@
-@(formTrip: Form[models.Trip], formDayTour: Form[at.droelf.gui.entities.AdminDayTour])(title: String, trips: Seq[models.Trip], tracks: Seq[models.Track], dayTours: Map[String, Seq[models.DayTour]])(implicit session: play.api.mvc.Session)
+@(formTrip: Form[models.Trip], formDayTour: Form[at.droelf.gui.entities.AdminDayTour], formTrack: Form[at.droelf.gui.entities.AdminTrack])(title: String, trips: Seq[models.Trip], tracks: Seq[models.Track], dayTours: Map[String, Seq[models.DayTour]])(implicit session: play.api.mvc.Session)
 @import helper.twitterBootstrap._
 
 @tripsHtml = {
@@ -51,11 +51,11 @@
                 </div>
                 <div class="modal-body">
                 @helper.form(action = routes.AdminController.addTrip) {
-                    @helper.inputText(formDayTour("title"))
-                    @helper.inputText(formDayTour("description"))
-                    @helper.inputText(formDayTour("shortName"))
-                    @helper.inputDate(formDayTour("startDate"))
-                    @helper.inputDate(formDayTour("endDate"))
+                    @helper.inputText(formTrip("title"))
+                    @helper.textarea(formTrip("description"),args = 'rows -> 10, 'cols -> 70)
+                    @helper.inputText(formTrip("shortName"))
+                    @helper.inputDate(formTrip("startDate"))
+                    @helper.inputDate(formTrip("endDate"))
                 </div>
 
                 <div class="modal-footer">
@@ -74,6 +74,7 @@
         <div class="panel-heading">
             <span class="panel-title">
                 Tracks
+                <button class="btn pull-right" data-toggle="modal" data-target="#addTrack">Add Track</button>
             </span>
 
         </div>
@@ -93,6 +94,28 @@
                 }
             </table>
 
+        </div>
+    </div>
+
+    <div class="modal fade" id="addTrack" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Add Tour</h4>
+                </div>
+                <div class="modal-body">
+                @helper.form(action = routes.AdminController.addTrack()) {
+                    @helper.inputText(formTrack("name"))
+                    @helper.inputText(formTrack("activity"))
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-default" type="submit">Submit</button>
+                </div>
+                }
+            </div>
         </div>
     </div>
 

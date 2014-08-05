@@ -54,8 +54,6 @@ class TrackMetaDataTable(tag: Tag) extends Table[TrackMetaData](tag, "TRACK_META
 
 object TrackMetaDatas{
 
-
-
   val trackMetDataTable = TableQuery[TrackMetaDataTable]
 
   def insertTrackMetaData(trackMetaData: TrackMetaData)(implicit session: Session) = trackMetDataTable.insert(trackMetaData)
