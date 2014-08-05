@@ -2,25 +2,21 @@ package controllers
 
 import java.util.UUID
 
-import at.droelf.backend.{ControllerUtils, Secured}
 import at.droelf.backend.service.{AdminService, UserService}
-import at.droelf.gui.entities.{AdminTrackPoint, AdminTrackMetaData, AdminTrack, AdminDayTour}
-import models.{Track, DayTour, Trip}
-import org.joda.time.{DateTimeZone, LocalDateTime, LocalDate}
-import play.api.Logger
+import at.droelf.backend.{ControllerUtils, Secured}
+import at.droelf.gui.entities._
+import models.Trip
+import org.joda.time.DateTimeZone
 import play.api.data.Forms._
 import play.api.data._
-import play.api.data.validation.Constraint
-import play.api.mvc.{SimpleResult, Controller}
+import play.api.mvc.Controller
 
-import scala.util.{Success, Failure, Try}
-
-class AdminController(userSer: UserService, adminService: AdminService) extends Controller with Secured with ControllerUtils with FormTypes{
+class AdminController(userSer: UserService, adminService: AdminService) extends Controller with Secured with ControllerUtils with FormTypes {
 
   override val userService: UserService = userSer
 
   def index = withAuth { username => implicit request =>
-    Ok(views.html.admin.adminarea(tripForm, dayTourForm, trackForm)(username, adminService.getAllTrips, adminService.getAllTracks, adminService.getAllDayTours))
+    Ok(views.html.admin.adminarea(tripForm, dayTourForm, trackForm)(username, adminService.getAllTrips, adminService.getAllTracks, adminService.getAllDayTours, adminService.getAllImages))
   }
 
 
@@ -56,12 +52,12 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
 
   def updateTrip = withAuth { username => implicit request =>
     tripForm.bindFromRequest.fold(
-      formWithErrors => BadRequest("Nope"),{
-        trip => {
-          adminService.updateTrip(trip)
-          Redirect(routes.AdminController.tripDetails(trip.shortName))
-        }
-     })
+    formWithErrors => BadRequest("Nope"), {
+      trip => {
+        adminService.updateTrip(trip)
+        Redirect(routes.AdminController.tripDetails(trip.shortName))
+      }
+    })
   }
 
   def deleteTrip(tripId: String) = withAuth { username => implicit request =>
@@ -71,7 +67,6 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
 
   /* DayTour */
 
-  import play.api.data.format.Formats._
   val dayTourForm = Form(
     mapping(
       "date" -> jodaLocalDate,
@@ -94,7 +89,7 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
 
   def dayTourDetails(dayTourId: String) = withAuth { username => implicit request =>
     parseUUID(dayTourId, uuid => {
-      adminService.getDayTourById(uuid) match{
+      adminService.getDayTourById(uuid) match {
         case Some(dayTour) => Ok(views.html.admin.details.admindaytourdetails(dayTourForm.fill(AdminDayTour(dayTour)))(dayTour))
         case None => NotFound
       }
@@ -156,17 +151,17 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
       "latitude" -> float,
       "longitude" -> float,
       "elevation" -> float,
-      "datetime" -> text(19,19),
-      "dateTimeZone" -> number(-12,12),
+      "datetime" -> text(19, 19),
+      "dateTimeZone" -> number(-12, 12),
       "showInOverView" -> boolean
     )(AdminTrackPoint.apply)(AdminTrackPoint.unapply)
   )
 
-  def trackDetails(id: String) = withAuth{ username => implicit request =>
+  def trackDetails(id: String) = withAuth { username => implicit request =>
     parseUUID(id,
       uuid => {
         adminService.getTrackById(uuid) match {
-          case Some(track) => Ok(views.html.admin.details.admintrackdetails(trackForm.fill(AdminTrack(track)), trackMetadataForm.fill(AdminTrackMetaData(adminService.getTrackMetadata(track.trackId))), trackPointForm)(track,adminService.getTrackMetadata(track.trackId),adminService.getNoOfTrackPoints(track.trackId),adminService.getDatesForTrack(track.trackId)))
+          case Some(track) => Ok(views.html.admin.details.admintrackdetails(trackForm.fill(AdminTrack(track)), trackMetadataForm.fill(AdminTrackMetaData(adminService.getTrackMetadata(track.trackId))), trackPointForm)(track, adminService.getTrackMetadata(track.trackId), adminService.getNoOfTrackPoints(track.trackId), adminService.getDatesForTrack(track.trackId)))
           case None => NotFound
         }
       })
@@ -177,7 +172,7 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
       uuid => {
         adminService.deleteCompleteTrack(uuid)
         Redirect(routes.AdminController.index())
-     })
+      })
   }
 
   def insertDemoData = withAuth { username => implicit request =>
@@ -193,7 +188,7 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
         Redirect(routes.AdminController.trackDetails(uuid.toString))
       }
     )
-   parseUUID(trackId, parseForm(_))
+    parseUUID(trackId, parseForm(_))
   }
 
   def updateTrackMetadata(trackId: String) = withAuth { username => implicit request =>
@@ -217,7 +212,7 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
     )
   }
 
-  def addTrackPoint(trackId: String)= withAuth { username => implicit request =>
+  def addTrackPoint(trackId: String) = withAuth { username => implicit request =>
     def parseForm(uuid: UUID) = trackPointForm.bindFromRequest.fold(
       formWithErrors => BadRequest("Nope"),
       trackPoint => {
@@ -225,7 +220,44 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
         Redirect(routes.AdminController.trackDetails(uuid.toString))
       }
     )
-    parseUUID(trackId,parseForm(_))
+    parseUUID(trackId, parseForm(_))
+  }
+
+  /* Image */
+
+  val imageForm = Form(
+    mapping(
+      "name" -> text,
+      "dateTime" -> text(19, 19),
+      "dateTimeZone" -> number(-12, 12)
+    )(AdminImage.apply)(AdminImage.unapply)
+  )
+
+  def imageDetails(imageId: String) = withAuth { username => implicit request =>
+    parseUUID(imageId, id => {
+      val img = adminService.getImage(id)
+      val adminImage = AdminImage(img.name, img.dateTime.toString("yyyy-MM-dd'T'HH:mm:ss"), img.dateTimeZone.toTimeZone.getRawOffset/(1000*60*60))
+      Ok(views.html.admin.details.imagedetails(imageForm.fill(adminImage))(adminService.getImage(id)))
+    })
+  }
+
+  def updateImage(imageId: String) = withAuth { username => implicit request =>
+    def parseForm(uuid: UUID) = imageForm.bindFromRequest.fold(
+      formWithErrors => BadRequest("Nope"),
+      image => {
+        adminService.updateImage(image, uuid)
+        Redirect(routes.AdminController.imageDetails(uuid.toString))
+      }
+    )
+
+    parseUUID(imageId, parseForm(_))
+  }
+
+  def deleteImage(imageId: String) = withAuth { username => implicit request =>
+    parseUUID(imageId, id => {
+      adminService.deleteImage(id)
+      Redirect(routes.AdminController.index)
+    })
   }
 
 }

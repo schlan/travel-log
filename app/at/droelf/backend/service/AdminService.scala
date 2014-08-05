@@ -84,6 +84,17 @@ class AdminService(dbStorage: DBStorageService) {
   }
 
 
+  /* Images */
+  def getAllImages = dbStorage.getAllImages
+
+  def getImage(imageId: UUID) = dbStorage.getImageById(imageId)
 
   def insertDemoData = dbStorage.insertDemoTrips
+
+  def deleteImage(imageId: UUID) = dbStorage.deleteImage(imageId)
+
+  def updateImage(adminImage: AdminImage, uuid: UUID) = {
+    val originalImg = dbStorage.getImageById(uuid)
+    dbStorage.updateImage(Image(uuid, adminImage.name, LocalDateTime.parse(adminImage.dateTime), DateTimeZone.forOffsetHours(adminImage.dateTimeZone),originalImg.path))
+  }
 }

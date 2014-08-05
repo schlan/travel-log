@@ -48,7 +48,6 @@ object AdminTrackMetaData{
 
 
 case class AdminTrackPoint(latitude: Float, longitude: Float, elevation: Float, dateTime: String, dateTimeZone: Int, showInOverView: Boolean)
-//
-//object AdminTrackPoint{
-//  def apply(trackPoint: TrackPoint): AdminTrackPoint = AdminTrackPoint(trackPoint.latitude,trackPoint.longitude,trackPoint.elevation,trackPoint.dateTime,trackPoint.dateTimeZone.,trackPoint.showInOverView)
-//}
+
+
+case class AdminImage(name: String, dateTime: String, dateTimeZone: Int)

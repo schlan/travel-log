@@ -1,4 +1,16 @@
-@(formTrip: Form[models.Trip], formDayTour: Form[at.droelf.gui.entities.AdminDayTour], formTrack: Form[at.droelf.gui.entities.AdminTrack])(title: String, trips: Seq[models.Trip], tracks: Seq[models.Track], dayTours: Map[String, Seq[models.DayTour]])(implicit session: play.api.mvc.Session)
+@(
+        formTrip: Form[models.Trip],
+        formDayTour: Form[at.droelf.gui.entities.AdminDayTour],
+        formTrack: Form[at.droelf.gui.entities.AdminTrack]
+)(
+        title: String,
+        trips: Seq[models.Trip],
+        tracks: Seq[models.Track],
+        dayTours: Map[String, Seq[models.DayTour]],
+        images: Seq[models.Image]
+)(implicit session: play.api.mvc.Session)
+
+
 @import helper.twitterBootstrap._
 
 @tripsHtml = {
@@ -195,6 +207,36 @@
 }
 
 @imagesHtml = {
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="panel-title">
+                Images
+            </span>
+
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Name</th>
+                    <th>Path</th>
+                    <th>DateTime UTC</th>
+                    <th>Timezone</th>
+                </tr>
+
+                @for(image <- images) {
+                        <tr class="clickableRow" href="@routes.AdminController.imageDetails(image.id.toString)">
+                            <td>@image.name</td>
+                            <td>@image.path</td>
+                            <td>@image.dateTime.toString</td>
+                            <td>@image.dateTimeZone.toString</td>
+                        </tr>
+                }
+
+            </table>
+
+        </div>
+    </div>
+
 
 }
 
@@ -219,8 +261,12 @@
 
     @tracksHtml
 
+    @imagesHtml
+
+    <br />
     <form action="@routes.AdminController.insertDemoData" method="POST">
         <button type="submit" class="btn">Insert Demo Data</button>
     </form>
+    <br />
 
 }

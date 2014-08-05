@@ -12,8 +12,6 @@ import scala.slick.driver.JdbcProfile
 
 class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) extends DateTimeUtil{
 
-
-
   val db = new DBConnection(profile).dbObject()
 
   def saveTracks(tracks: List[GPXTrack], dateTimeZone: DateTimeZone, activity: String) = {
@@ -113,6 +111,7 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
 
   def insertTrackToLocalDate(trackId: UUID, localDate: LocalDate) = db.withTransaction{implicit session => TrackToLocalDates.insertTrackToLocalDate(TrackToLocalDate(trackId, localDate))}
 
+
   def insertImage(image: Image) = db.withTransaction{implicit session => Images.insertImage(image)}
 
   def getImagesForLocalDate(date: LocalDate) = db.withTransaction{implicit session => Images.getImagesByLocalDate(date)}
@@ -121,8 +120,13 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
     Images.getNewestImagesForTimeRange(startDate,endDate,numberOfImg)
   }
 
+  def getAllImages = db.withTransaction{implicit session => Images.getAllImages}
 
+  def getImageById(uuid: UUID) = db.withTransaction{implicit session => Images.getImageById(uuid)}
 
+  def deleteImage(uuid: UUID) = db.withTransaction{implicit session => Images.delete(uuid)}
+
+  def updateImage(image: Image) = db.withTransaction{implicit session => Images.update(image)}
 
 
   def insertDemoTrips() {

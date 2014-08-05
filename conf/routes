@@ -24,6 +24,7 @@ GET         /admin                                     @controllers.AdminControl
 GET         /admin/trip/:trip                          @controllers.AdminController.tripDetails(trip)
 GET         /admin/track/:track                        @controllers.AdminController.trackDetails(track)
 GET         /admin/daytour/:daytour                    @controllers.AdminController.dayTourDetails(daytour)
+GET         /admin/image/:image                        @controllers.AdminController.imageDetails(image)
 
 POST        /admin/api/trip/addTrip                    @controllers.AdminController.addTrip
 POST        /admin/api/trip/updateTrip                 @controllers.AdminController.updateTrip
@@ -36,6 +37,9 @@ POST        /admin/api/daytour/deleteDayTour           @controllers.AdminControl
 POST        /admin/api/track/addTrack                  @controllers.AdminController.addTrack
 POST        /admin/api/track/updateTrack               @controllers.AdminController.updateTrack(trackId)
 POST        /admin/api/track/deleteTrack               @controllers.AdminController.deleteTrack(trackId)
+
+POST        /admin/api/image/updateImage               @controllers.AdminController.updateImage(imageId)
+POST        /admin/api/image/deleteImage               @controllers.AdminController.deleteImage(imageId)
 
 POST        /admin/api/trackPoint/addTrackPoint        @controllers.AdminController.addTrackPoint(trackId)
 

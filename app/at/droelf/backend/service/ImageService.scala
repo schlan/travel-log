@@ -18,7 +18,7 @@ class ImageService(fileStorageService: FileStorageService, dbStorage: DBStorageS
     val localdatetime = dateTimeToUtcLocalDateTime(date)
     val timezone = date.getChronology.getZone
 
-    dbStorage.insertImage(Image(name, localdatetime, timezone, path.getFileName.toString))
+    dbStorage.insertImage(Image(dbStorage.getRandomId, name, localdatetime, timezone, path.getFileName.toString))
   }
 
   def getImagesForDate(date: LocalDate): Seq[GuiImage] = {

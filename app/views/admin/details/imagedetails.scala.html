@@ -1,0 +1,53 @@
+@(formImage: Form[at.droelf.gui.entities.AdminImage])(image: models.Image)(implicit session: play.api.mvc.Session)
+@import helper.twitterBootstrap._
+
+@admin.admin("Adminarea")  {
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="panel-title">Image: @image.name</span>
+            <button class="btn pull-right" data-toggle="modal" data-target="#editImage">Edit</button>
+            <form class="pull-right" action="@routes.AdminController.deleteImage(image.id.toString)" method="POST">
+                <button class="btn" type="submit">Delete</button>
+            </form>
+        </div>
+        <div class="panel-body">
+            <dl>
+                <dt>Name</dt>
+                <dd>@image.name</dd>
+                <dt>Path</dt>
+                <dd>@image.path</dd>
+                <dt>DateTime UTC</dt>
+                <dd>@image.dateTime.toString</dd>
+                <dt>DateTimeZone</dt>
+                <dd>@image.dateTimeZone.toString</dd>
+                <dt>Link</dt>
+                <dd><a href="@routes.ImageController.getImage(image.path)">== Show ==</a></dd>
+            </dl>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="editImage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Add Tour</h4>
+                </div>
+                <div class="modal-body">
+                @helper.form(action = routes.AdminController.updateImage(image.id.toString)) {
+                    @helper.inputText(formImage("name"))
+                    @helper.inputText(formImage("dateTime"))
+                    @helper.inputText(formImage("dateTimeZone"))
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-default" type="submit">Submit</button>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+}
