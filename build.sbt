@@ -20,7 +20,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "leaflet" % "0.7.3",
   "org.webjars" % "flot" % "0.8.3",
   "org.webjars" % "font-awesome" % "4.1.0",
-  "org.webjars" % "outdated-browser" % "1.0.2"
+  "org.webjars" % "outdated-browser" % "1.0.2",
+  "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.0"
 )
 
 

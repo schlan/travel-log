@@ -1,4 +1,4 @@
-@(message: String, nav: Seq[(String,String)], guiTrip: at.droelf.gui.entities.GuiTrip, dayTour: at.droelf.gui.entities.GuiDayTour, dayTours: Map[(String,org.joda.time.LocalDate), Seq[(at.droelf.gui.entities.GuiDayTour, Int)]])
+@(message: String, nav: Seq[(String,String)], guiTrip: at.droelf.gui.entities.GuiTrip, dayTour: at.droelf.gui.entities.GuiDayTour, dayTours: Map[(String,org.joda.time.LocalDate), Seq[(at.droelf.gui.entities.GuiDayTour, Int)]], formContact: Form[at.droelf.gui.entities.Email])(implicit session: play.api.mvc.Session)
 
 @metadata = {
     <div  class="row tourimg" />
@@ -21,7 +21,7 @@
     </script>
 }
 
-@tourtemplate(message, nav)(sidebar(guiTrip.shortName, dayTour.dayTourId,dayTours))(metadata)(assets) {
+@tourtemplate(message, nav, formContact)(sidebar(guiTrip.shortName, dayTour.dayTourId,dayTours))(metadata)(assets) {
 
     <h1 class="page-header">@guiTrip.title - <wbr>@dayTour.date</h1>
 

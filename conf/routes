@@ -19,7 +19,7 @@ PUT         /api/images/uploadImage/:date/:name        @controllers.ImageControl
 GET         /api/images/getImage/:name                 @controllers.ImageController.getImage(name)
 
 # Admin
-# TODO make it a bit more abstract --> /admin/api/:type/[add:update:delete] .... -_-
+# //FIXME make it a bit more generic --> /admin/api/:type/[add:update:delete] .... -_-
 GET         /admin                                     @controllers.AdminController.index
 GET         /admin/trip/:trip                          @controllers.AdminController.tripDetails(trip)
 GET         /admin/track/:track                        @controllers.AdminController.trackDetails(track)
@@ -46,6 +46,10 @@ POST        /admin/api/trackPoint/addTrackPoint        @controllers.AdminControl
 POST        /admin/api/trackMetadata/update            @controllers.AdminController.updateTrackMetadata(trackId)
 
 POST        /admin/api/demoData/insert                 @controllers.AdminController.insertDemoData
+
+
+# Contact
+POST       /contact/send                               @controllers.ContactController.sendMessage
 
 # auth
 GET         /admin/login                               @controllers.AuthController.login

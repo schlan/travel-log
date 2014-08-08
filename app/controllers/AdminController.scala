@@ -2,11 +2,11 @@ package controllers
 
 import java.util.UUID
 
+import at.droelf.FormTypes
 import at.droelf.backend.service.{AdminService, UserService}
 import at.droelf.backend.{ControllerUtils, Secured}
 import at.droelf.gui.entities._
 import models.Trip
-import org.joda.time.DateTimeZone
 import play.api.data.Forms._
 import play.api.data._
 import play.api.mvc.Controller
@@ -262,14 +262,5 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
 
 }
 
-trait FormTypes {
 
-  import play.api.data.format.Formats._
-
-  val float = Forms.of[Float]
-  val optionalFloat = optional(float)
-  val optionalText = optional(text)
-
-
-}
 

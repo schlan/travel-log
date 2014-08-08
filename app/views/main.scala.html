@@ -1,6 +1,6 @@
 @(title: String, assetImports: Html, navbarContent: Html)(content: Html)
 <!DOCTYPE html>
-
+e
 <html>
     <head>
         <title>@title</title>
@@ -20,7 +20,7 @@
 
         @assetImports
 
-        @if(play.api.Play.current.configuration.getString("at.droelf.travel-log.db.mode").get == "prod"){
+        @if(at.droelf.Config.analytics.get == "prod"){
             @tracking.analytics()
         }
     </head>

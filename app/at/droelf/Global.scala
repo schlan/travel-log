@@ -16,6 +16,7 @@ object Global extends GlobalSettings {
   lazy val adminService = new AdminService(dbStorageService)
   lazy val timeToLocationService = new TimeToLocationService(gpxTrackService)
   lazy val imageService = new ImageService(fileStorageService,dbStorageService, timeToLocationService)
+  lazy val emailService = new EmailService
 
 
   lazy val controllerSingletons = Map[Class[_], AnyRef](
@@ -25,7 +26,8 @@ object Global extends GlobalSettings {
     (classOf[AuthController] -> new AuthController(userService)),
     (classOf[AdminController] -> new AdminController(userService,adminService)),
     (classOf[ImageController] -> new ImageController(imageService, userService)),
-    (classOf[JsonController] -> new JsonController(gpxTrackService, imageService, tripService))
+    (classOf[JsonController] -> new JsonController(gpxTrackService, imageService, tripService)),
+    (classOf[ContactController] -> new ContactController(emailService, tripService))
   )
 
   override def getControllerInstance[A](controllerClass: Class[A]): A = {

@@ -1,4 +1,5 @@
-@(title: String, trips: Seq[(String, String)])(sidebar: Html)(metadata: Html)(childAssets: Html)(content: Html)
+@(title: String, trips: Seq[(String, String)], formContact: Form[at.droelf.gui.entities.Email])(sidebar: Html)(metadata: Html)(childAssets: Html)(content: Html)(implicit session: play.api.mvc.Session)
+@import org.joda.time.DateTime
 
     @assets = {
         <script>L_PREFER_CANVAS = true;</script>
@@ -29,19 +30,52 @@
         @childAssets
     }
 
+    @contactForm = {
 
-    @navbar = {
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Trips<b class="caret"></b></a>
-            <ul class="dropdown-menu">
-            @for((id, name) <- trips) {
-                <li><a href="@routes.TripController.getTripById(id)">@name</a></li>
-            }
-            </ul>
-        </li>
+        <div class="modal fade" id="sendContactModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Contact</h4>
+                    </div>
+
+                    @if(Math.abs(org.joda.time.Minutes.minutesBetween(DateTime.now(),DateTime.parse(session.get("messageSend").getOrElse("2007-08-31T16:47+00:00"))).getMinutes) >= at.droelf.Config.emailHold.get){
+
+                        <div class="modal-body">
+                        @helper.form(action = routes.ContactController.sendMessage) {
+                            @helper.inputText(formContact("from"))
+                            @helper.textarea(formContact("text"),args = 'rows -> 10, 'cols -> 70)
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button class="btn btn-default" type="submit">Submit</button>
+                        </div>
+                        }
+
+                    }else{
+
+                        <div class="modal-body">
+                            Please wait: @Math.abs(org.joda.time.Minutes.minutesBetween(DateTime.now(),DateTime.parse(session.get("messageSend").getOrElse("2007-08-31T16:47+00:00"))).getMinutes) minutes
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+
+                    }
+
+
+
+
+                </div>
+            </div>
+        </div>
+
     }
 
-@main(title, assets, navbar) {
+
+@main(title, assets, navbar(trips)) {
 
     <div class="navbar navbar-inverse navbar-top toggleDaysMobile">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar">
@@ -78,4 +112,6 @@
 
 
     </div>
+
+    @contactForm
 }

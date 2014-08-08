@@ -4,13 +4,14 @@ import java.nio.file._
 import java.io.File
 import java.util.UUID
 
+import at.droelf.Config
 import play.api.Play
 import play.api.libs.Files.TemporaryFile
 
 class FileStorageService {
 
-  val tracksDir = Play.current.configuration.getString("at.droelf.travel-log.tracks.rootDir").get
-  val imageRootDir = Play.current.configuration.getString("at.droelf.travel-log.images.rootDir").get
+  val tracksDir = Config.tracksPath.get
+  val imageRootDir = Config.imagePath.get
 
   Files.createDirectories(Paths.get(tracksDir))
   Files.createDirectories(Paths.get(imageRootDir))
