@@ -13,7 +13,7 @@ class EmailService {
 
     val mail = use[MailerPlugin].email
 
-    mail.setSubject("Message from droelf.at")
+    mail.setSubject("Message from pacific2014.at")
     mail.setRecipient(Config.emailRecipient.get)
     mail.setFrom(Config.emailSender.get)
     mail.sendHtml(generateBody(email))

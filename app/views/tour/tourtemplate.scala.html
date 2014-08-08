@@ -56,7 +56,7 @@
                     }else{
 
                         <div class="modal-body">
-                            Please wait: @Math.abs(org.joda.time.Minutes.minutesBetween(DateTime.now(),DateTime.parse(session.get("messageSend").getOrElse("2007-08-31T16:47+00:00"))).getMinutes) minutes
+                            Please wait: @(at.droelf.Config.emailHold.get-Math.abs(org.joda.time.Minutes.minutesBetween(DateTime.now(),DateTime.parse(session.get("messageSend").getOrElse("2007-08-31T16:47+00:00"))).getMinutes)) minutes
                         </div>
 
                         <div class="modal-footer">
