@@ -42,10 +42,7 @@ class JsonController(gpxTrackService: GpxTrackService, imageService: ImageServic
         def getSummarizedMetaData(tracks: Seq[GuiTrack]): Map[String, GuiTrackMetaData] = {
 
           def sumByType(typ: String, tracks: Seq[GuiTrack]): GuiTrackMetaData = {
-            (for {
-              track <- tracks
-              if (typ == track.activity)
-            } yield (track.metaData)).foldLeft(GuiTrackMetaData.empty)((m1, m2) => m1 + m2)
+            tracks.filter(_.activity == typ).map(_.metaData).foldLeft(GuiTrackMetaData.empty)((m1, m2) => m1 + m2)
           }
 
           val activityTypes = tracks.map(trk => trk.activity).distinct

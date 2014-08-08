@@ -22,6 +22,7 @@ class AdminService(dbStorage: DBStorageService) {
   /* DayTour */
   def getAllDayTours: Map[String, Seq[DayTour]] = {
     def mapDayToursToTrip(dayTours: Seq[DayTour],startDate: LocalDate, endDate: LocalDate):Seq[DayTour] =  {
+      //TODO filter
       (for{
         dayTour <- dayTours
         if( (dayTour.date.isAfter(startDate) || dayTour.date.isEqual(startDate)) && (dayTour.date.isBefore(endDate) || dayTour.date.isEqual(endDate)) )
