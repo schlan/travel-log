@@ -44,7 +44,7 @@
                         <div class="modal-body">
                         @helper.form(action = routes.ContactController.sendMessage) {
                             @helper.inputText(formContact("from"))
-                            @helper.textarea(formContact("text"),args = 'rows -> 10, 'cols -> 70)
+                            @helper.textarea(formContact("text"),args = 'rows -> 10, 'cols -> 70, 'style -> "width: 100%; padding: 4px;")
                         </div>
 
                         <div class="modal-footer">
@@ -57,6 +57,9 @@
 
                         <div class="modal-body">
                             Please wait: @(at.droelf.Config.emailHold.get-Math.abs(org.joda.time.Minutes.minutesBetween(DateTime.now(),DateTime.parse(session.get("messageSend").getOrElse("2007-08-31T16:47+00:00"))).getMinutes)) minutes
+                            <br />
+                            <br />
+                            <a href="mailto:@at.droelf.Config.emailAlternative">@at.droelf.Config.emailAlternative</a>
                         </div>
 
                         <div class="modal-footer">

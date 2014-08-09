@@ -18,6 +18,7 @@ object Config {
   val emailRecipient = getConfigValueString("at.droelf.travel-log.email.recipient")
   val emailSender = getConfigValueString("at.droelf.travel-log.email.sender")
   val emailHold = getConfigValueInt("at.droelf.travel-log.email.hold")
+  val emailAlternative = getConfigValueString("at.droelf.travel-log.email.alternative")
 
   private def getConfigValueString(key: String) = Play.current.configuration.getString(key)
   private def getConfigValueInt(key: String) = Play.current.configuration.getInt(key)
