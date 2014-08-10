@@ -8,14 +8,14 @@ GET         /webjars/*file                             controllers.WebJarAssets.
 
 # api
 # track specific
-PUT         /api/putTrack/:timezone/:activity          @controllers.TracksController.uploadTracks(timezone: Int, activity)
+PUT         /api/tracks/uploadTrack                    @controllers.TracksController.uploadTracks
 
 # dayTour specific - json stuff
 GET         /api/getDayTourInformation/:date           @controllers.JsonController.getDayTourInformation(date)
 GET         /api/getTripInformation/:tour              @controllers.JsonController.getTripInformation(tour)
 
 # Image upload
-PUT         /api/images/uploadImage/:date/:name        @controllers.ImageController.uploadImage(date, name)
+PUT         /api/images/uploadImage                    @controllers.ImageController.uploadImage
 GET         /api/images/getImage/:name                 @controllers.ImageController.getImage(name)
 
 # Admin
