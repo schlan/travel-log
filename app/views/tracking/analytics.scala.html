@@ -1,4 +1,4 @@
-@(trackingId: String = play.api.Play.current.configuration.getString("at.droelf.travel-log.analytics").getOrElse(""))
+@(trackingId: String = at.droelf.Config.analytics.getOrElse(""))
 
 
 <script>

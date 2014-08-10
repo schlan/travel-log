@@ -21,9 +21,11 @@
 
         @assetImports
 
-        @if(at.droelf.Config.analytics.get == "prod"){
+
+        @if(at.droelf.Config.mode.get == "prod"){
             @tracking.analytics()
         }
+
     </head>
 
     <body>
