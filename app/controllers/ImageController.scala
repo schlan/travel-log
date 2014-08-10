@@ -21,7 +21,6 @@ class ImageController(imageService: ImageService, userService: UserService) exte
 
         if (userService.checkUserPassword(user, pass)) {
 
-          Logger.info(request.body.asFormUrlEncoded.get("dateTime").toString)
           val parsedDateTimeTry = Try(ISODateTimeFormat.dateTimeNoMillis().withOffsetParsed().parseDateTime(request.body.asFormUrlEncoded.get("dateTime").get.head))
 
           parsedDateTimeTry match {

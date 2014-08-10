@@ -45,8 +45,8 @@ class ContactController(emailService: EmailService, tripService: TripService) ex
 object ContactAssets{
   val contactForm = Form(
     mapping(
-      "from" -> nonEmptyText,
-      "text" -> nonEmptyText
+      "From:" -> nonEmptyText,
+      "Message:" -> nonEmptyText
     )(Email.apply)(Email.unapply)
   )
 }

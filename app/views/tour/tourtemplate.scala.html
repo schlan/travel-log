@@ -43,8 +43,8 @@
 
                         <div class="modal-body">
                         @helper.form(action = routes.ContactController.sendMessage) {
-                            @helper.inputText(formContact("from"))
-                            @helper.textarea(formContact("text"),args = 'rows -> 10, 'cols -> 70, 'style -> "width: 100%; padding: 4px;")
+                            @helper.inputText(formContact("From:"))
+                            @helper.textarea(formContact("Message:"),args = 'rows -> 10, 'cols -> 70, 'style -> "width: 100%; padding: 4px;")
                         </div>
 
                         <div class="modal-footer">

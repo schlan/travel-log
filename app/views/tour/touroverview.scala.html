@@ -16,9 +16,13 @@
         <script type="text/javascript">
             $(document).ready(function ($) {
             var spinner = $(".jsspinner")
-            loadTripSummary( '@guiTrip.shortName', Array(initColorsForSummary,initMetadataForSummary,initMapForSummary,initFlotForSummary,initImagesForOverview), spinner)
+                loadTripSummary( '@guiTrip.shortName', Array(initColorsForSummary,initMetadataForSummary,initMapForSummary,initFlotForSummary,initImagesForOverview), spinner)
             })
         </script>
+
+        <meta property="og:title" content="@guiTrip.title" />
+        <meta property="og:description" content="@Html(guiTrip.description)" />
+
     }
 
 @tourtemplate(message, trips, formContact)(sidebar(guiTrip.shortName,java.util.UUID.fromString("804007f0-168c-11e4-8c21-0800200c9a66"),dayTours))(metadata)(assets) {

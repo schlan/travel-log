@@ -19,6 +19,10 @@
             loadTracks ( '@dayTour.date', Array(initColors,initMap,initImages,initFlot, initMetadata), spinner)
         })
     </script>
+
+    <meta property="og:title" content="Pacific Coast Tour - Day @dayTours.values.flatten.filter(_._1.dayTourId == dayTour.dayTourId).head._2 - @dayTour.date.toString("dd. MMMM YYYY")" />
+    <meta property="og:description" content="@Html(dayTour.description)" />
+
 }
 
 @tourtemplate(message, nav, formContact)(sidebar(guiTrip.shortName, dayTour.dayTourId,dayTours))(metadata)(assets) {
