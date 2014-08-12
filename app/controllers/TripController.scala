@@ -26,7 +26,7 @@ class TripController(tripService: TripService, imageService: ImageService) exten
       uuid => {
         (tripService.getTripById(tripId), tripService.getDayTourById(uuid)) match {
           case (Some(trip), Some(dayTour)) => Ok(views.html.tour.tour(trip.title + ": " +dayTour.date.toString, tripService.getAllTripsForNavBar(),trip, dayTour,getCategoryToDayTourMapping(trip.guiDayTours),ContactAssets.contactForm))
-          case (_, _) => NotFound("getDayTour: Err0r: Not found :(")
+          case (_, _) => Redirect(routes.TripController.getTripById(tripId))
         }
     })
   }
