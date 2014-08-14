@@ -20,6 +20,8 @@ object Config {
   val emailHold = getConfigValueInt("at.droelf.travel-log.email.hold")
   val emailAlternative = getConfigValueString("at.droelf.travel-log.email.alternative")
 
+  val disqusShortName = getConfigValueString("at.droelf.travel-log.disqus.shortname")
+
   private def getConfigValueString(key: String) = Play.current.configuration.getString(key)
   private def getConfigValueInt(key: String) = Play.current.configuration.getInt(key)
 
