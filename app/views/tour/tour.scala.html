@@ -27,7 +27,18 @@
 
 @tourtemplate(message, nav, formContact)(sidebar(guiTrip.shortName, dayTour.dayTourId,dayTours))(metadata)(assets) {
 
-    <h1 class="page-header">@guiTrip.title - <wbr>@dayTour.date</h1>
+    <h1 class="page-header">
+        @if(dayTour.title.isEmpty){
+            @guiTrip.title -
+        }else{
+            @dayTour.title - 
+        }
+
+
+        <wbr>
+            @dayTour.date
+
+    </h1>
 
     <div>
         @Html(dayTour.description)

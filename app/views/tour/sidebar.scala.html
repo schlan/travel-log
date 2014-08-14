@@ -30,10 +30,17 @@
                     }
                 <a href="@routes.TripController.getDayTour(guiTripId,dT._1.dayTourId.toString)#@dT._1.dayTourId.toString">
                     <h4>
-                    Day @dT._2
-                        <br />
-                        <small>(@dT._1.date.toString("dd. MMMM YYYY"))</small>
-                </h4>
+                        @if(dT._1.title.isEmpty){
+                            Day @dT._2
+                            <br />
+                            <small>(@dT._1.date.toString("dd. MMMM YYYY"))</small>
+                        }else{
+                            @dT._1.title
+                            <br />
+                            <small>Day @dT._2 (@dT._1.date.toString("dd. MMMM YY"))</small>
+                        }
+
+                    </h4>
                 </a>
             </li>
             }

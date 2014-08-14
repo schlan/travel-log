@@ -70,6 +70,7 @@ class AdminController(userSer: UserService, adminService: AdminService) extends 
   val dayTourForm = Form(
     mapping(
       "date" -> jodaLocalDate,
+      "title" -> text,
       "description" -> text,
       "weatherCond" -> text,
       "roadCond" -> text,

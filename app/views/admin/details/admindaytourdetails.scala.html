@@ -19,6 +19,8 @@
                 <dd>@dayTour.date.toString</dd>
                 <dt>Id</dt>
                 <dd>@dayTour.dayTourId</dd>
+                <dt>Title</dt>
+                <dd>@dayTour.title</dd>
                 <dt>Description</dt>
                 <dd>@dayTour.description</dd>
                 <dt>Road Cond</dt>
@@ -42,6 +44,7 @@
                 <div class="modal-body">
                 @helper.form(action = routes.AdminController.updateDayTour(dayTour.dayTourId.toString)) {
                     @helper.inputDate(formDayTour("date"))
+                    @helper.inputText(formDayTour("title"))
                     @helper.textarea(formDayTour("description"),args = 'rows -> 10, 'cols -> 70)
                     @helper.inputText(formDayTour("weatherCond"))
                     @helper.inputText(formDayTour("roadCond"))

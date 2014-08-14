@@ -5,11 +5,12 @@ import java.util.UUID
 import models.{TrackPoint, TrackMetaData, Track, DayTour}
 import org.joda.time.{DateTimeZone, LocalDateTime, LocalDate}
 
-case class AdminDayTour(date: LocalDate, description: String, weatherCond: String, roadCond: String, category: String)
+case class AdminDayTour(date: LocalDate, title: String, description: String, weatherCond: String, roadCond: String, category: String)
 
 object AdminDayTour{
   def apply(dayTour: DayTour): AdminDayTour = AdminDayTour(
     dayTour.date,
+    dayTour.title,
     dayTour.description,
     dayTour.weatherCond,
     dayTour.roadCond,

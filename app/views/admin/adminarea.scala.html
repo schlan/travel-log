@@ -147,6 +147,7 @@
                 <tr>
                     <th>Trip Name</th>
                     <th>Date</th>
+                    <th>Title</th>
                     <th>Description</th>
                     <th>Weather Cond</th>
                     <th>Road Cond</th>
@@ -158,6 +159,7 @@
                         <tr class="clickableRow" href="@routes.AdminController.dayTourDetails(dayTour.dayTourId.toString)">
                             <td nowrap>@tripName</td>
                             <td nowrap>@dayTour.date.toString</td>
+                            <td>@dayTour.title</td>
                             <td>
                             @if(dayTour.description.length > 20) {
                                 @dayTour.description.substring(0, 19) ...
@@ -189,6 +191,7 @@
                 <div class="modal-body">
                 @helper.form(action = routes.AdminController.addDayTour) {
                     @helper.inputDate(formDayTour("date"))
+                    @helper.inputText(formDayTour("title"))
                     @helper.textarea(formDayTour("description"),args = 'rows -> 10, 'cols -> 70)
                     @helper.inputText(formDayTour("weatherCond"))
                     @helper.inputText(formDayTour("roadCond"))

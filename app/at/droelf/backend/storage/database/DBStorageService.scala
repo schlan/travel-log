@@ -138,7 +138,7 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
 
         for(i <- (0 to Days.daysBetween(st,en).getDays)){
           val id = getRandomId
-          DayTours.insertDayTour(DayTour(st.plusDays(i),id,"<p><b>test</b></p>asdf bl asbasd <u>asdfasdf</u>","Sunny, rainy", "Asphalt", s"Category: ${Math.round(i/10)}"))
+          DayTours.insertDayTour(DayTour(st.plusDays(i),id,"title", "<p><b>test</b></p>asdf bl asbasd <u>asdfasdf</u>","Sunny, rainy", "Asphalt", s"Category: ${Math.round(i/10)}"))
         }
 
       }

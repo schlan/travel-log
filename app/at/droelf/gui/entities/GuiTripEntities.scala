@@ -10,8 +10,8 @@ object GuiTrip{
   def apply(trip: Trip, guiDayTours: Seq[GuiDayTour]): GuiTrip = GuiTrip(trip.title, trip.description, trip.shortName, trip.startDate, trip.endDate, guiDayTours)
 }
 
-case class GuiDayTour(date: LocalDate, dayTourId: UUID, description: String, weatherCond: String, roadCond: String, category: String)
+case class GuiDayTour(date: LocalDate, dayTourId: UUID, title: String, description: String, weatherCond: String, roadCond: String, category: String)
 
 object GuiDayTour{
-  def apply(dayTour: DayTour): GuiDayTour = GuiDayTour(dayTour.date,dayTour.dayTourId,dayTour.description, dayTour.weatherCond, dayTour.roadCond, dayTour.category)
+  def apply(dayTour: DayTour): GuiDayTour = GuiDayTour(dayTour.date,dayTour.dayTourId,dayTour.title, dayTour.description, dayTour.weatherCond, dayTour.roadCond, dayTour.category)
 }
