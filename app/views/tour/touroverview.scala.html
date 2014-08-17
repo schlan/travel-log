@@ -25,7 +25,7 @@
 
     }
 
-@tourtemplate(message, trips, formContact)(sidebar(guiTrip.shortName,java.util.UUID.fromString("804007f0-168c-11e4-8c21-0800200c9a66"),dayTours))(metadata)(assets) {
+@tourtemplate(message, trips, formContact, guiTrip.shortName)(sidebar(guiTrip.shortName,java.util.UUID.fromString("804007f0-168c-11e4-8c21-0800200c9a66"),dayTours))(metadata)(assets) {
     <h1 class="page-header">@guiTrip.title</h1>
     <span>@Html(guiTrip.description)</span>
 
