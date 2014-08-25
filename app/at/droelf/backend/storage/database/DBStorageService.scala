@@ -21,7 +21,7 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
     }
 
     def getLocalDates(track: GPXTrack, timezone: DateTimeZone): Seq[LocalDate] = {
-      track.trackSegments.map( trkSeg => trkSeg.trackPoints.map( wpt => utcWithTimeZoneToDateTime(dateTimeToUtcLocalDateTime(DateTime.parse(wpt.time.get)),timezone).toLocalDate)).flatten.distinct
+      track.trackSegments.map( trkSeg => trkSeg.trackPoints.map( wpt => DateTime.parse(wpt.time.get).withZone(timezone).toLocalDate)).flatten.distinct
     }
 
     db.withTransaction{ implicit session =>
