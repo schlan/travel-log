@@ -50,10 +50,6 @@ object TrackPoints {
     trackPointTable.filter(_.trackId === trackId).length.run
   }
 
-  def getDatesForTrack(trackId: UUID)(implicit session: Session): Seq[LocalDate] = {
-    trackPointTable.filter(_.trackId === trackId).list.map(_.dateTime.toLocalDate).distinct
-  }
-
   def getTrackPointsForOverView(trackId: UUID)(implicit session: Session): Seq[TrackPoint] = {
     trackPointTable.filter(t => ((t.trackId === trackId) && t.showInOverView === true)).list
   }

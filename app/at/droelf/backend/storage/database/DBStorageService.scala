@@ -20,8 +20,10 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
       (index % gap == 0 || index == 0 || index == numOfPt-1)
     }
 
-    def getLocalDates(track: GPXTrack): Seq[LocalDate] = {
-      track.trackSegments.map( trkSeg => trkSeg.trackPoints.map( wpt => dateTimeToUtcLocalDateTime(DateTime.parse(wpt.time.get)).toLocalDate)).flatten.distinct
+    def getLocalDates(track: GPXTrack, timeZone: DateTimeZone): Seq[LocalDate] = {
+      track.trackSegments.map( trkSeg => trkSeg.trackPoints.map(
+        wpt => DateTime.parse(wpt.time.get).withZone(timeZone).toLocalDate
+      )).flatten.distinct
     }
 
     db.withTransaction{ implicit session =>
@@ -29,7 +31,7 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
       tracks.foreach { track =>
         val id = getRandomId
         Tracks.insertTrack(Track(id, track.name, activity))
-        getLocalDates(track).foreach(date => TrackToLocalDates.insertTrackToLocalDate(TrackToLocalDate(id,date)))
+        getLocalDates(track, dateTimeZone).foreach(date => TrackToLocalDates.insertTrackToLocalDate(TrackToLocalDate(id,date)))
 
         TrackMetaDatas.insertTrackMetaData(gpxTrackToTrackMetaData(id, track))
 
@@ -72,7 +74,7 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
     Tracks.deleteTrack(trackId)
   }
 
-  def getDatesForTrack(trackId: UUID) = db.withTransaction{implicit session => TrackPoints.getDatesForTrack(trackId)}
+  def getDatesForTrack(trackId: UUID) = db.withTransaction{implicit session => TrackToLocalDates.getTrackToLocalDateByTrack(trackId).map(_.date)}
 
 
   def getAllTrips(): Seq[Trip] = db.withTransaction{implicit session => Trips.getAllTrips()}

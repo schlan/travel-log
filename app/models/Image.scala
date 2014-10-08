@@ -2,6 +2,7 @@ package models
 
 import java.util.UUID
 
+import at.droelf.backend.DateTimeUtil
 import play.api.db.slick.joda.PlayJodaSupport._
 import play.api.db.slick.Config.driver.simple._
 import org.joda.time._
@@ -20,7 +21,7 @@ class ImageTable(tag: Tag) extends Table[Image](tag, "IMAGES"){
 
 }
 
-object Images{
+object Images extends DateTimeUtil{
 
   val imageTable = TableQuery[ImageTable]
 
@@ -29,10 +30,9 @@ object Images{
   }
 
   def getImagesByLocalDate(date: LocalDate)(implicit session: Session): Seq[Image] = {
-    val start = date.toLocalDateTime(LocalTime.MIDNIGHT)
-    val end = date.plusDays(1).toLocalDateTime(LocalTime.MIDNIGHT)
-
-    imageTable.filter(e => ((e.dateTime >= start) && e.dateTime < end)).list
+    imageTable.list.filter{ img =>
+      utcWithTimeZoneToDateTime(img.dateTime, img.dateTimeZone).toLocalDate.isEqual(date)
+    }
   }
 
   def getNewestImagesForTimeRange(startDate: LocalDate, endDate: LocalDate, numberOfImages: Int)(implicit session: Session): Seq[Image] = {

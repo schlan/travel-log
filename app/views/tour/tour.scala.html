@@ -25,7 +25,7 @@
 
 }
 
-@tourtemplate(message, nav, formContact, dayTour.dayTourId.toString)(sidebar(guiTrip.shortName, dayTour.dayTourId,dayTours))(metadata)(assets) {
+@tourtemplate(message, nav, formContact, guiTrip.shortName)(sidebar(guiTrip.shortName, dayTour.dayTourId,dayTours))(metadata)(assets) {
 
     <h1 class="page-header">
         @if(dayTour.title.isEmpty){
