@@ -32,7 +32,15 @@ object Images{
     val start = date.toLocalDateTime(LocalTime.MIDNIGHT)
     val end = date.plusDays(1).toLocalDateTime(LocalTime.MIDNIGHT)
 
-    imageTable.filter(e => ((e.dateTime >= start) && e.dateTime < end)).list
+ def utcWithTimeZoneToDateTime(utcLocalDateTime: LocalDateTime, timeZone: DateTimeZone): DateTime = utcLocalDateTime.toDateTime(DateTimeZone.UTC).withZone(timeZone)
+ 
+
+//    imageTable.filter(e => ((e.dateTime >= start) && e.dateTime < end)).list
+	val images = imageTable.list
+	images.filter(i => {
+//		i.dateTime.toDateTime(i.dateTimeZone).toLocalDate().isEqual(date)
+		utcWithTimeZoneToDateTime(i.dateTime, i.dateTimeZone).toLocalDate().isEqual(date)
+	})
   }
 
   def getNewestImagesForTimeRange(startDate: LocalDate, endDate: LocalDate, numberOfImages: Int)(implicit session: Session): Seq[Image] = {

@@ -10,6 +10,7 @@ import parser.gpxtype.{GPXWayPoint, GPXTrack}
 
 import scala.slick.driver.JdbcProfile
 
+	import play.api.Logger
 class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) extends DateTimeUtil{
 
   val db = new DBConnection(profile).dbObject()
@@ -21,7 +22,19 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
     }
 
     def getLocalDates(track: GPXTrack, timezone: DateTimeZone): Seq[LocalDate] = {
-      track.trackSegments.map( trkSeg => trkSeg.trackPoints.map( wpt => DateTime.parse(wpt.time.get).withZone(timezone).toLocalDate)).flatten.distinct
+	//import play.api.Logger
+	//Logger.info(timezone.toString())
+	
+      	val l = track.trackSegments.map( trkSeg => trkSeg.trackPoints.map( wpt =>{ 
+			//Logger.info(wpt.time.get)
+			//Logger.info(DateTime.parse(wpt.time.get).withZone(timezone).toString())
+			//Logger.info(DateTime.parse(wpt.time.get).withZone(timezone).toLocalDate().toString())
+			//Logger.info(timezone.toString())
+			DateTime.parse(wpt.time.get).withZone(timezone).toLocalDate
+		}
+	)).flatten.distinct
+	Logger.info(l.mkString(" "))
+	l
     }
 
     db.withTransaction{ implicit session =>
@@ -72,7 +85,7 @@ class DBStorageService(val profile: JdbcProfile = SlickDBDriver.getDriver) exten
     Tracks.deleteTrack(trackId)
   }
 
-  def getDatesForTrack(trackId: UUID) = db.withTransaction{implicit session => TrackPoints.getDatesForTrack(trackId)}
+  def getDatesForTrack(trackId: UUID) = db.withTransaction{implicit session => TrackToLocalDates.getTrackToLocalDateByTrack(trackId).map(_.date)}
 
 
   def getAllTrips(): Seq[Trip] = db.withTransaction{implicit session => Trips.getAllTrips()}
