@@ -3,6 +3,8 @@
  */
 
 var initialRange;
+var counter = 0;
+var dateArray = Array()
 
 function initFlotForSummary(data){
     initGeneralChart(data["condensedTracks"], false)
@@ -31,7 +33,7 @@ function initGeneralChart(data, legend) {
             mode: "x"
         },
         xaxis: {
-            mode: "time"
+            tickFormatter: function(val) { return formTicks(val, dateArray) }
         },
         selection: {
             mode: "x"
@@ -56,7 +58,7 @@ function initGeneralChart(data, legend) {
         plot.setSelection({ xaxis: { from: range[0], to: range[1]}});
     });
 
-    $("#chart").fadeIn( 1000 )
+    $("#chart").fadeIn( 0 )
 
 
     $("#chart").bind("plotselected", function (event, ranges) {
@@ -75,7 +77,8 @@ function initGeneralChart(data, legend) {
 
     $("#chart").bind("plothover", function (event, pos, item) {
 
-        var selectedDate = new Date(pos.x).getTime();
+        console.log(pos.x)
+        var selectedDate = dateArray[Math.round(pos.x)].getTime();
         var bestTrkPt;
         var bestDiff = Number.MAX_VALUE;
 
@@ -93,6 +96,25 @@ function initGeneralChart(data, legend) {
     });
 }
 
+function formTicks(val, ticksArr) {
+    var date = ticksArr[val]
+
+    if(date != undefined){
+
+        return formatNumber(date.getHours()) + ':' + formatNumber(date.getMinutes()) + ' ' + date.getDate() + '.' + date.getMonth() + '.'
+    }else{
+        return ''
+    }
+
+    function formatNumber(i){
+        if(i < 10){
+            return '0' + i
+        }
+        return i +''
+    }
+
+}
+
 function getDataSet(track){
 
     var points = [];
@@ -104,9 +126,11 @@ function getDataSet(track){
 
         var date = new Date(Date.fromISO(date))
 
-        points.push(Array(date.getTime(), elevation))
-
+        points.push(Array(counter, elevation))
+        dateArray[counter] = date
+        counter++
     }
+    counter--
 
     var dataSet = {
         label: track["name"],
