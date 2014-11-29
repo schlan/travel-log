@@ -6,13 +6,16 @@ version := "1.0-SNAPSHOT"
 
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 
+lazy val root = (project in file(".")).enablePlugins(PlayScala, SbtWeb)
+
+scalaVersion := "2.11.4"
 
 libraryDependencies ++= Seq(
-  "org.webjars" %% "webjars-play" % "2.2.2",
-  "com.typesafe.play" %% "play-slick" % "0.6.0.1",
-  "joda-time" % "joda-time" % "2.3",
-  "org.joda" % "joda-convert" % "1.5",
-  "com.github.tototoshi" %% "slick-joda-mapper" % "1.1.0",
+  "org.webjars" %% "webjars-play" % "2.3.0-2",
+  "com.typesafe.play" %% "play-slick" % "0.8.0",
+  "joda-time" % "joda-time" % "2.4",
+  "org.joda" % "joda-convert" % "1.6",
+  "com.github.tototoshi" %% "slick-joda-mapper" % "1.2.0",
   "postgresql" % "postgresql" % "9.1-901.jdbc4",
   "org.webjars" % "bootstrap" % "3.2.0",
   "org.webjars" % "jquery" % "2.1.1",
@@ -21,8 +24,6 @@ libraryDependencies ++= Seq(
   "org.webjars" % "flot" % "0.8.3",
   "org.webjars" % "font-awesome" % "4.1.0",
   "org.webjars" % "outdated-browser" % "1.0.2",
-  "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.0"
+  "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.1"
 )
 
-
-play.Project.playScalaSettings
