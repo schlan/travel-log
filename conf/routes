@@ -57,6 +57,6 @@ GET         /admin/logout                              @controllers.AuthControll
 POST        /admin/auth                                @controllers.AuthController.authenticate
 
 # Home page
-GET         /                                          @controllers.Application.index
+GET         /                                          @controllers.HomeController.index
 GET         /:trip                                     @controllers.TripController.getTripById(trip)
 GET         /:trip/:daytour                            @controllers.TripController.getDayTour(trip, daytour)

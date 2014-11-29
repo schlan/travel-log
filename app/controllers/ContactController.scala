@@ -20,7 +20,7 @@ class ContactController(emailService: EmailService, tripService: TripService) ex
           formWithErrors => BadRequest("Check the form"),
         email => {
           emailService.sendMail(email)
-          Redirect(routes.Application.index).withSession(sessionKey -> DateTime.now().toString())
+          Redirect(routes.HomeController.index).withSession(sessionKey -> DateTime.now().toString())
         }
       )
     }

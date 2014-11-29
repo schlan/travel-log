@@ -34,7 +34,7 @@ class AuthController(userService: UserService) extends Controller{
   }
 
   def logout = Action {
-    Redirect(routes.Application.index).withNewSession
+    Redirect(routes.HomeController.index).withNewSession
   }
 
 }
