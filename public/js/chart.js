@@ -15,12 +15,36 @@ function initFlot(data){
 }
 
 function initGeneralChart(data, legend) {
-    var dataSet = []
+    data.sort(function(d1, d2){
 
+        function minMax(ptList){
+            var min = 0
+            var max = 0
+
+            for(x in ptList){
+                var pt = Date.fromISO(ptList[x].datetime);
+                if(x == 0){
+                    min = pt;
+                    max = pt;
+                }
+                min = (pt < min) ? pt : min;
+                max = (pt > max) ? pt : max;
+            }
+            return {"min" : min, "max" : max}
+        };
+
+        var d1MinMax = minMax(d1["trackPoints"]);
+        var d2MinMax = minMax(d2["trackPoints"]);
+
+        return Date.fromISO(d1MinMax.min).getTime() - Date.fromISO(d2MinMax.min).getTime();
+    })
+
+    var dataSet = []
     for (x in data) {
         var track = data[x];
         dataSet.push(getDataSet(track))
     }
+
 
     var options = {
         series: {
@@ -77,7 +101,6 @@ function initGeneralChart(data, legend) {
 
     $("#chart").bind("plothover", function (event, pos, item) {
 
-        console.log(pos.x)
         var selectedDate = dateArray[Math.round(pos.x)].getTime();
         var bestTrkPt;
         var bestDiff = Number.MAX_VALUE;

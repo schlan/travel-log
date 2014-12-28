@@ -11,7 +11,7 @@ function initMapForSummary(data) {
     if(tracks.length > 0) {
 
         var lastKnownPos = data["lastKnownPosition"]
-        console.log(lastKnownPos)
+        //console.log(lastKnownPos)
         if (lastKnownPos != null) {
             var icon = L.AwesomeMarkers.icon({
                 icon: 'glyphicon glyphicon-asterisk',
@@ -30,7 +30,7 @@ function initMapForSummary(data) {
         for (x in tracks) {
             var track = tracks[x]
             var line = getPolyLine(track)
-            //line.on("click", function(){ window.location.href = ""  + track["id"]; })
+            //line.on("click", function(){ window.location.href = ""  + track["id"]; })//TODO
             trackOverview.push(line)
         }
 

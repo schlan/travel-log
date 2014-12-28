@@ -7,7 +7,6 @@ function loadJsonDataAndCallback(url, callbacks, spinner){
 
     $.getJSON(url,
         function (data) {
-            console.log(data)
 
             for(var x = 0; x < spinner['length']; x++){
                 if(spinner[x] !== "undefined" && spinner[x].style !== "undefined")
