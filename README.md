@@ -26,4 +26,4 @@ Demo
 =====
 http://pacific2014.at
 
-curl --user admin:1234 -X PUT http://localhost:9000/api/tracks/uploadTracks --form file=@file.gpx --form activity=Bike --form timeZone=-0700
+curl --user admin:1234 -X PUT http://localhost:9000/api/tracks/uploadTrack --form file=@file.gpx --form activity=Bike --form timeZone=-0700
