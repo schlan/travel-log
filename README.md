@@ -24,3 +24,5 @@ Technologies
 Demo
 =====
 http://pacific2014.at
+
+[![Build Status](https://travis-ci.org/b-a-s-t-i/travel-log.svg?branch=master)](https://travis-ci.org/b-a-s-t-i/travel-log)
