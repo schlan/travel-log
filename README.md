@@ -23,7 +23,7 @@ at.droelf.travel-log.email.alternative=
 at.droelf.travel-log.disqus.shortname=
 ```
 
-# sbt run
+```sbt run```
 
 
 Features
