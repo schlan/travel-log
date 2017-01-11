@@ -44,6 +44,7 @@ class ImageController(imageService: ImageService, userService: UserService) exte
 
   def getImage(name: String) = Action { implicit request =>
     val image = imageService.getImageFile(name)
+    println(image)
     Ok.sendFile(
       content = image,
       inline = true
