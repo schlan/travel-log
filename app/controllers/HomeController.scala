@@ -6,7 +6,7 @@ import at.droelf.backend.service.GpxTrackService
 class HomeController(gpxTrackService: GpxTrackService) extends Controller {
 
   def index = Action {
-    Ok(views.html.home())
+    Redirect("/pacific")
   }
 
 }
