@@ -43,6 +43,7 @@ class FileStorageService {
 
   def getImageFromDisk(name: String): Option[File] = {
     val path = Paths.get(imageRootDir,name)
+    println(s"$path ${Files.exists(path)} ${Files.isReadable(path)}")
     Files.exists(path) match {
       case true => Some(path.toFile)
       case false => None
