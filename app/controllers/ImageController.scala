@@ -44,11 +44,11 @@ class ImageController(imageService: ImageService, userService: UserService) exte
 
   def getImage(name: String) = Action { implicit request =>
     val image = imageService.getImageFile(name)
-    println(image)
+    println(image.canRead)
     Ok.sendFile(
       content = image,
       inline = true
-    ).withHeaders(CONTENT_TYPE -> Files.probeContentType(image.toPath))
+    ).withHeaders(CONTENT_TYPE -> "image/jpg")
   }
 
 }
