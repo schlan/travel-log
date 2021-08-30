@@ -4,8 +4,14 @@ name := """play-slick-quickstart"""
 
 version := "1.0-SNAPSHOT"
 
-resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
-
+fullResolvers := Seq(
+  Resolver.url("Typesafe repository", url("https://repo.typesafe.com/typesafe/releases/"))(Resolver.ivyStylePatterns),
+  Resolver.url("foo", url("https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/"))(Resolver.ivyStylePatterns),
+  "foo1" at "https://oss.sonatype.org/content/repositories/public",
+  "foo2" at "https://repo.typesafe.com/typesafe/releases",
+  Resolver.url("foo3", url("https://repo.typesafe.com/typesafe/ivy-releases"))(Resolver.ivyStylePatterns),
+  "foobar" at "https://jcenter.bintray.com/"
+)
 
 libraryDependencies ++= Seq(
   "org.webjars" %% "webjars-play" % "2.2.2",
